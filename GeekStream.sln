@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekStream", "GeekStream\GeekStream.csproj", "{22CD52B1-7077-4D66-B121-DAD79DD9E76C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22CD52B1-7077-4D66-B121-DAD79DD9E76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CD52B1-7077-4D66-B121-DAD79DD9E76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CD52B1-7077-4D66-B121-DAD79DD9E76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CD52B1-7077-4D66-B121-DAD79DD9E76C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6942C3A1-D9B2-4D51-B6DE-914AC79A126C}
+	EndGlobalSection
+EndGlobal
