@@ -1,6 +1,4 @@
-using System;
-
-namespace GeekStream.Models
+namespace GeekStream.Web.Models
 {
     public class ErrorViewModel
     {

@@ -1,13 +1,9 @@
-﻿using GeekStream.Models;
+﻿using System.Diagnostics;
+using GeekStream.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace GeekStream.Controllers
+namespace GeekStream.Web.Controllers
 {
     public class HomeController : Controller
     {
