@@ -26,16 +26,12 @@ namespace GeekStream.Core.Entities
             Description = description;
         }
 
-        public int CategoryID 
-        { get; set; }
+        public int Id { get; set; }
 
-        public string Name 
-        { get; set; }
+        public string Name { get; set; }
 
-        public string Description 
-        { get; set; }
+        public string Description { get; set; }
 
-        public IList<Article> Articles 
-        { get; set; }
+        public IList<Article> Articles { get; set; }
     }
 }

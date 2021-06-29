@@ -25,29 +25,21 @@ namespace GeekStream.Core.Entities
             Content = content;
         }
 
-        public int ArticleID 
-        { get; set; }
+        public int Id { get; set; }
 
-        public string Title 
-        { get; set; }
+        public string Title { get; set; }
 
-        public string Content 
-        { get; set; }
+        public string Content { get; set; }
 
-        public string ShortDescribtion 
-        { get; set; }
+        public string ShortDescribtion { get; set; }
         
-        public DateTime PostedOn 
-        { get; set; }
+        public DateTime PostedOn { get; set; }
 
-        public IList<string> Keywords 
-        { get; set; }
+        public IList<string> Keywords { get; set; }
 
-        public Category Category 
-        { get; set; }
+        public Category Category { get; set; }
 
         //TODO Добавить информацию об Авторе И Рейтинг статьи
-        //public КЛАСС_ЮЗЕРА Author
-        //{ get; set; }
+        //public КЛАСС_ЮЗЕРА Author { get; set; }
     }
 }

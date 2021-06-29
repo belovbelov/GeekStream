@@ -15,11 +15,7 @@ namespace GeekStream.Infrastructure.Data
             //TODO Логика репозитория
             return new List<Article>
             {
-                new Article("Test", "First test Article", new List<string>
-                {
-                    "Tecnhologies", 
-                    "Memes"
-                }),
+                new Article("Test", "First test Article")                
             };
         }
     }
