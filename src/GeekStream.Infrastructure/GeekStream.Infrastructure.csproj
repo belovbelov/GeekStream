@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <ProjectReference Include="..\GeekStream.Core\GeekStream.Core.csproj" />
   </ItemGroup>
 
 </Project>

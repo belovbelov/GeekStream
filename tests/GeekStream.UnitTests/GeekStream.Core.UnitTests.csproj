@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GeekStream.Core\GeekStream.Core.csproj" />
+  </ItemGroup>
+
 </Project>
