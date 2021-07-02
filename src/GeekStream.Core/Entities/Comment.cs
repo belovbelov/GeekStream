@@ -8,7 +8,7 @@ namespace GeekStream.Core.Entities
 {
     public class Comment
     {
-        public Comment(string name, string content)
+        public Comment(string name, string content, int articleId)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -19,9 +19,14 @@ namespace GeekStream.Core.Entities
             {
                 throw new ArgumentException(nameof(content));
             }
+
+            if (articleId == null)
+            {
+                throw new ArgumentException(nameof(articleId));
+            }
         }
 
-        public string Name{ get; set; }
+        public string UserName{ get; set; }
 
         public string Content { get; set; }
 

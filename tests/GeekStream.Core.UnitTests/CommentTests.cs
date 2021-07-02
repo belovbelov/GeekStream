@@ -15,10 +15,10 @@ namespace GeekStream.Core.UnitTests
         {
             string name = "Anton";
             string content = null;
-
+            int articleId = 5;
             Assert.Throws<ArgumentException>(() =>
             {
-                var article = new Article(name, content);
+                var article = new Comment(name, content, articleId);
             });
         }
     }

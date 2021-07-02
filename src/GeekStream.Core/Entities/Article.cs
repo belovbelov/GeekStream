@@ -31,7 +31,7 @@ namespace GeekStream.Core.Entities
 
         public string Content { get; set; }
 
-        public string ShortDescribtion { get; set; }
+        public string ShortDescription { get; set; }
         
         public DateTime PostedOn { get; set; }
 
