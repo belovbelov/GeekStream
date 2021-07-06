@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F093EF15
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekStream.Infrastructure", "src\GeekStream.Infrastructure\GeekStream.Infrastructure.csproj", "{440405F4-5EE3-4C3A-A388-1142CDDC12BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekStream.Core", "src\GeekStream.Core\GeekStream.Core.csproj", "{217FFB3C-2A52-4B92-825B-61D4056D5833}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekStream.Core", "src\GeekStream.Core\GeekStream.Core.csproj", "{217FFB3C-2A52-4B92-825B-61D4056D5833}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekStream.UnitTests", "tests\GeekStream.UnitTests\GeekStream.UnitTests.csproj", "{99809E03-0B10-4B59-9331-F6BB0C4D86A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekStream.Core.UnitTests", "tests\GeekStream.Core.UnitTests\GeekStream.Core.UnitTests.csproj", "{99809E03-0B10-4B59-9331-F6BB0C4D86A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

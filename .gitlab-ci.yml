@@ -1,0 +1,27 @@
+image: mcr.microsoft.com/dotnet/sdk:5.0
+
+stages:
+  - build
+  - test
+
+variables:
+  project: "GeekStream"
+
+before_script:
+  - "dotnet restore"
+
+build:
+  stage: build
+  variables:
+    build_path: "src/$project.Web"
+  script:
+    - "cd $build_path"
+    - "dotnet build"
+
+test:
+  stage: test
+  variables:
+    test_path: "tests/$project.Core.UnitTests"
+  script:
+    - "cd $test_path"
+    - "dotnet test"
