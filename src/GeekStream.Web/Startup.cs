@@ -24,6 +24,15 @@ namespace GeekStream.Web
 
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("UserDbContext")));
+
+            services.AddDbContext<ArticleDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ArticleDbContext")));
+
+            services.AddDbContext<CategoryDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CategoryDbContext")));
+
+            services.AddDbContext<CommentDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CommentDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
