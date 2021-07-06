@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using GeekStream.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Web
 {
@@ -19,6 +21,9 @@ namespace GeekStream.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UserDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
