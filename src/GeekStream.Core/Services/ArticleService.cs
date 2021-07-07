@@ -17,10 +17,9 @@ namespace GeekStream.Core.Services
             _articleRepository = articleRepository;
         }
 
-        public IList<Article> GetArticles()
+        public ICollection<Article> GetArticles()
         {
             return _articleRepository.GetArticles();
         }
-        //TODO Логика СервисаСтатьи
     }
 }
