@@ -43,6 +43,15 @@ namespace GeekStream.Infrastructure.Data
                 _context.SaveChanges();
             }
         }
+        public void UnPublishArticle(int id)
+        {
+            var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
+            if (article != null)
+            {
+                article.PostedOn = DateTime.MinValue;
+                _context.SaveChanges();
+            }
+        }
 
         public void DeleteArticle(int id)
         {
