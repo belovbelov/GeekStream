@@ -1,9 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekStream.Core.Entities
 {
     public class User
     {
+        public User()
+        {
+            
+        }
+
        public int Id { get; set; }
 
        [Required]
@@ -18,5 +25,6 @@ namespace GeekStream.Core.Entities
 
         public string PasswordHash { get; set; }
 
+        public ICollection<Article> AuthoredArticles { get; set; }
     }
 }

@@ -9,24 +9,12 @@ namespace GeekStream.Core.Entities
 {
     public class Category
     {
-
-        public Category(string name, string description)
+        public Category()
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException(nameof(name));
-            }
-
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentException(nameof(description));
-            }
-
-            Name = name;
-            Description = description;
+            
         }
 
-        public Category(string name, string description, IList<Article> articles)
+        public Category(string name, string description, IEnumerable<Article> articles)
         {
             
             if (string.IsNullOrWhiteSpace(name))
@@ -49,11 +37,12 @@ namespace GeekStream.Core.Entities
         [StringLength(32,MinimumLength = 5)]
         [Display(Name = "Название")]
         public string Name { get; set; }
+
         [Required]
         [StringLength(200,MinimumLength = 10)]
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
-        public IList<Article> Articles { get; set; }
+        public ICollection<Article> Articles { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace GeekStream.Web.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly UserDbContext _context;
+        private readonly AppDbContext _context;
 
-        public UsersController(UserDbContext context)
+        public UsersController(AppDbContext context)
         {
             _context = context;
         }

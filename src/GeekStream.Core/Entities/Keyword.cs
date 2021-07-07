@@ -4,6 +4,11 @@ namespace GeekStream.Core.Entities
 {
     public class Keyword
     {
+        public Keyword()
+        {
+            
+        }
+        
         [Required]
         public int Id { get; set; }
 
