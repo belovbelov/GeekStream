@@ -47,7 +47,7 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Дата публикации")]
         public DateTime PostedOn { get; set; }
 
-        public IEnumerable<string> Keywords { get; set; }
+        public IEnumerable<Keyword> Keywords { get; set; }
 
         public Category Category { get; set; }
         
