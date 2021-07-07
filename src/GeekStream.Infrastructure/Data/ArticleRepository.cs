@@ -10,6 +10,7 @@ namespace GeekStream.Infrastructure.Data
 {
     public class ArticleRepository : IArticleRepository
     {
+
         public IList<Article> GetArticles()
         {
             //TODO Логика репозитория

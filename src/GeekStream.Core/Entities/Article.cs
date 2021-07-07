@@ -47,11 +47,14 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Дата публикации")]
         public DateTime PostedOn { get; set; }
 
-        public IList<string> Keywords { get; set; }
+        public IEnumerable<string> Keywords { get; set; }
 
         public Category Category { get; set; }
+        
+        [Required]
+        public User Author { get; set; }
 
-        //TODO Добавить информацию об Авторе И Рейтинг статьи
-        //public КЛАСС_ЮЗЕРА Author { get; set; }
+        [Required]
+        public int Rating { get; set; }
     }
 }

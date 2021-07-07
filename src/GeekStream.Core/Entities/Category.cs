@@ -10,6 +10,22 @@ namespace GeekStream.Core.Entities
     public class Category
     {
 
+        public Category(string name, string description)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException(nameof(name));
+            }
+
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentException(nameof(description));
+            }
+
+            Name = name;
+            Description = description;
+        }
+
         public Category(string name, string description, IList<Article> articles)
         {
             
