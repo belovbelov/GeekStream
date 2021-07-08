@@ -23,6 +23,8 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Электронная почта")]
         public string Email { get; set; }
 
+
+        [Required]
         public string PasswordHash { get; set; }
 
         public ICollection<Article> AuthoredArticles { get; set; }

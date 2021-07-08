@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeekStream.Infrastructure.Migrations
 {
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20210708113518_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +21,36 @@ namespace GeekStream.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ArticleCategory", b =>
+                {
+                    b.Property<int>("ArticlesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticlesId", "CategoriesId");
+
+                    b.HasIndex("CategoriesId");
+
+                    b.ToTable("ArticleCategory");
+                });
+
+            modelBuilder.Entity("ArticleKeyword", b =>
+                {
+                    b.Property<int>("ArticlesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KeywordsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticlesId", "KeywordsId");
+
+                    b.HasIndex("KeywordsId");
+
+                    b.ToTable("ArticleKeyword");
+                });
+
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
                     b.Property<int>("Id")
@@ -27,9 +59,6 @@ namespace GeekStream.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -55,8 +84,6 @@ namespace GeekStream.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Articles");
                 });
@@ -106,7 +133,7 @@ namespace GeekStream.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("GeekStream.Core.Entities.Keyword", b =>
+            modelBuilder.Entity("GeekStream.Core.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,13 +143,28 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Word")
-                        .IsRequired()
+                    b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Keyword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Word")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Keywords");
                 });
@@ -152,6 +194,36 @@ namespace GeekStream.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ArticleCategory", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GeekStream.Core.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ArticleKeyword", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GeekStream.Core.Entities.Keyword", null)
+                        .WithMany()
+                        .HasForeignKey("KeywordsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.User", "Author")
@@ -160,30 +232,19 @@ namespace GeekStream.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GeekStream.Core.Entities.Category", "Category")
-                        .WithMany("Articles")
-                        .HasForeignKey("CategoryId");
-
                     b.Navigation("Author");
-
-                    b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("GeekStream.Core.Entities.Keyword", b =>
+            modelBuilder.Entity("GeekStream.Core.Entities.Image", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.Article", null)
-                        .WithMany("Keywords")
+                        .WithMany("Images")
                         .HasForeignKey("ArticleId");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
-                    b.Navigation("Keywords");
-                });
-
-            modelBuilder.Entity("GeekStream.Core.Entities.Category", b =>
-                {
-                    b.Navigation("Articles");
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.User", b =>

@@ -54,12 +54,6 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Дата публикации")]
         public DateTime PostedOn { get; set; }
 
-        public ICollection<Keyword> Keywords { get; set; }
-
-
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-
         [Required]
         public int AuthorId { get; set; }
         [Required]
@@ -67,5 +61,9 @@ namespace GeekStream.Core.Entities
 
         [Required]
         public int Rating { get; set; }
+
+        public ICollection<Keyword> Keywords { get; set; }
+        public ICollection<Category> Categories { get; set; }
+        public ICollection<Image> Images { get; set; }
     }
 }

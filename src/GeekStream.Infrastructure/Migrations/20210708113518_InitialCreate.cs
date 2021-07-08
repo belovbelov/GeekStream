@@ -37,6 +37,19 @@ namespace GeekStream.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Keywords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Word = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Keywords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -61,19 +74,12 @@ namespace GeekStream.Infrastructure.Migrations
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Articles_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Articles_Users_AuthorId",
                         column: x => x.AuthorId,
@@ -83,19 +89,67 @@ namespace GeekStream.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Keywords",
+                name: "ArticleCategory",
+                columns: table => new
+                {
+                    ArticlesId = table.Column<int>(type: "int", nullable: false),
+                    CategoriesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleCategory", x => new { x.ArticlesId, x.CategoriesId });
+                    table.ForeignKey(
+                        name: "FK_ArticleCategory_Articles_ArticlesId",
+                        column: x => x.ArticlesId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleCategory_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleKeyword",
+                columns: table => new
+                {
+                    ArticlesId = table.Column<int>(type: "int", nullable: false),
+                    KeywordsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleKeyword", x => new { x.ArticlesId, x.KeywordsId });
+                    table.ForeignKey(
+                        name: "FK_ArticleKeyword_Articles_ArticlesId",
+                        column: x => x.ArticlesId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleKeyword_Keywords_KeywordsId",
+                        column: x => x.KeywordsId,
+                        principalTable: "Keywords",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Word = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ArticleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Keywords", x => x.Id);
+                    table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Keywords_Articles_ArticleId",
+                        name: "FK_Images_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
@@ -103,34 +157,48 @@ namespace GeekStream.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ArticleCategory_CategoriesId",
+                table: "ArticleCategory",
+                column: "CategoriesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleKeyword_KeywordsId",
+                table: "ArticleKeyword",
+                column: "KeywordsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Articles_AuthorId",
                 table: "Articles",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_CategoryId",
-                table: "Articles",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Keywords_ArticleId",
-                table: "Keywords",
+                name: "IX_Images_ArticleId",
+                table: "Images",
                 column: "ArticleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ArticleCategory");
+
+            migrationBuilder.DropTable(
+                name: "ArticleKeyword");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Keywords");
 
             migrationBuilder.DropTable(
                 name: "Articles");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Users");

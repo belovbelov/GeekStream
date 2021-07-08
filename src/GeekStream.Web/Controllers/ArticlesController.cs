@@ -22,7 +22,7 @@ namespace GeekStream.Web.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Articles.Include(a => a.Author).Include(a => a.Category);
+            var appDbContext = _context.Articles.Include(a => a.Author);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace GeekStream.Web.Controllers
 
             var article = await _context.Articles
                 .Include(a => a.Author)
-                .Include(a => a.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -50,7 +49,6 @@ namespace GeekStream.Web.Controllers
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description");
             return View();
         }
 
@@ -59,7 +57,7 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,ShortDescription,PostedOn,CategoryId,AuthorId,Rating")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,ShortDescription,PostedOn,AuthorId,Rating")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +66,6 @@ namespace GeekStream.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", article.CategoryId);
             return View(article);
         }
 
@@ -86,7 +83,6 @@ namespace GeekStream.Web.Controllers
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", article.CategoryId);
             return View(article);
         }
 
@@ -95,7 +91,7 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,ShortDescription,PostedOn,CategoryId,AuthorId,Rating")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,ShortDescription,PostedOn,AuthorId,Rating")] Article article)
         {
             if (id != article.Id)
             {
@@ -123,7 +119,6 @@ namespace GeekStream.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", article.CategoryId);
             return View(article);
         }
 
@@ -137,7 +132,6 @@ namespace GeekStream.Web.Controllers
 
             var article = await _context.Articles
                 .Include(a => a.Author)
-                .Include(a => a.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {

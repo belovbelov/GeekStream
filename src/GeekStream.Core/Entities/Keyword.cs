@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeekStream.Core.Entities
 {
@@ -14,5 +15,7 @@ namespace GeekStream.Core.Entities
 
         [Required]
         public string Word { get; set; }
+
+        public ICollection<Article> Articles { get; set; }
     }
 }
