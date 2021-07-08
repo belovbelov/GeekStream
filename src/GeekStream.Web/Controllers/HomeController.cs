@@ -1,22 +1,28 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using GeekStream.Infrastructure.Data;
 using GeekStream.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
-
-        public IActionResult Index()
+       
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var appDbContext = _context.Articles.Include(a => a.Author);
+            return View(await appDbContext.ToListAsync());
         }
 
         public IActionResult Privacy()
