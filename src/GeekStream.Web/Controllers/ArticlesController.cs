@@ -20,10 +20,22 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles
-        public async Task<IActionResult> Index()
+        // public async Task<IActionResult> Index()
+        // {
+        //     var appDbContext = _context.Articles.Include(a => a.Author);
+        //     return View(await appDbContext.ToListAsync());
+        // }
+        public async Task<IActionResult> Index(string searchString)
         {
-            var appDbContext = _context.Articles.Include(a => a.Author);
-            return View(await appDbContext.ToListAsync());
+            var articles = from m in _context.Articles
+                select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(s => s.Title.Contains(searchString));
+            }
+
+            return View(await articles.ToListAsync());
         }
 
         // GET: Articles/Details/5
