@@ -47,6 +47,7 @@ namespace GeekStream.Core.Entities
         public string Content { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Краткое описание")]
         public string ShortDescription { get; set; }
 
         [DataType(DataType.Date)]

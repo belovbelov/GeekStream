@@ -5,7 +5,34 @@
 }
 
 <h1>Index</h1>
-
+<div class="row">
+    <div class="col-sm-3">
+        <div style="height: 200px; background-color: aqua">Dummy</div>
+    </div>
+    <div class="feed col-sm-6">
+    @foreach (var item in Model)
+    {
+<div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h2> @Html.DisplayFor(modelItem => item.Title)</h2>
+                    <h4>@Html.DisplayFor(modelItem => item.PostedOn)</h4>
+                    @*
+                    <img src="@Url.Content(item.Images.First().ImgPath)"/>
+                    *@
+                    <p>@Html.DisplayFor(modelItem => item.ShortDescription)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+    <div class="col-sm-3">
+        <div style="height: 200px; background-color: aqua">Dummy</div>
+    </div>
+</div>
+@*
 <table class="table">
     <thead>
         <tr>
@@ -32,6 +59,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        $1$
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -52,6 +80,9 @@
                 @Html.DisplayFor(modelItem => item.Rating)
             </td>
         </tr>
+#1#
+        
 }
+    *@
     </tbody>
 </table>
