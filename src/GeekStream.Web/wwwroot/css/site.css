@@ -23,6 +23,15 @@ for details on configuring this project to bundle and minify static web assets. 
     width: 100%;
 }
 
+.card-navbar {
+    display: flex;
+}
+
+
+.card-navbar > * {
+    margin-right: 10px;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -34,10 +43,13 @@ a {
   color: #0366d6;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.btn-primary.active {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -49,7 +61,7 @@ a {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
@@ -83,7 +95,13 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background-color: #E5E5E5;
 }
+
+p {
+    margin-bottom: 0;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
