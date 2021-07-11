@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
+using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Core.Services
 {
-    class ArticleService
+    public class ArticleService
     {
         private readonly IArticleRepository _articleRepository;
 
@@ -17,9 +18,19 @@ namespace GeekStream.Core.Services
             _articleRepository = articleRepository;
         }
 
-        public ICollection<Article> GetArticles()
+        public IEnumerable<ArticleViewModel> GetArticles(string searchString = null)
         {
-            return _articleRepository.GetArticles();
+            return _articleRepository.GetArticles(page: 1, pageSize: 20, searchString)
+                .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.AuthorId,
+                    Category = article.Categories?.First().Name,
+                    Rating = article.Rating
+                });
         }
     }
 }

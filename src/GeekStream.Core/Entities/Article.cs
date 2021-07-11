@@ -46,16 +46,16 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Содержание")]
         public string Content { get; set; }
 
-        [StringLength(100)]
-        [Display(Name = "Краткое описание")]
-        public string ShortDescription { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Дата публикации")]
-        public DateTime PostedOn { get; set; }
+        public DateTime? PostedOn { get; set; }
+
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         public int AuthorId { get; set; }
+
+        [Display(Name = "Автор")]
         public User Author { get; set; }
 
         public int Rating { get; set; }

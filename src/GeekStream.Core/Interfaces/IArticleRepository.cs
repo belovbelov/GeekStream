@@ -14,6 +14,6 @@ namespace GeekStream.Core.Interfaces
         public void PublishArticle(int id);
         public void UnPublishArticle(int id);
         public Article GetArticle(int id);
-        public ICollection<Article> GetArticles();
+        public IEnumerable<Article> GetArticles(int page, int pageSize, string searchString);
     }
 }

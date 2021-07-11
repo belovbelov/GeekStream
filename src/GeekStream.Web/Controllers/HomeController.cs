@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using GeekStream.Core.Services;
 using GeekStream.Infrastructure.Data;
 using GeekStream.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +12,18 @@ namespace GeekStream.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly AppDbContext _context;
+        private readonly ArticleService _articleService;// TODO убрать потом
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, ArticleService articleService)
         {
             _logger = logger;
-            _context = context;
+            _articleService = articleService;
         }
-       
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Articles.Include(a => a.Author);
-            return View(await appDbContext.ToListAsync());
+            var articles = _articleService.GetArticles();
+            return View(articles);
         }
 
         public IActionResult Privacy()

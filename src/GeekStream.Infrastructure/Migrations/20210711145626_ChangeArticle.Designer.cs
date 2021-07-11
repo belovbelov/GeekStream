@@ -4,14 +4,16 @@ using GeekStream.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeekStream.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210711145626_ChangeArticle")]
+    partial class ChangeArticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,17 +124,10 @@ namespace GeekStream.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -240,21 +235,6 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("GeekStream.Core.Entities.Comment", b =>
-                {
-                    b.HasOne("GeekStream.Core.Entities.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GeekStream.Core.Entities.User", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Article");
-                });
-
             modelBuilder.Entity("GeekStream.Core.Entities.Image", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.Article", null)
@@ -270,8 +250,6 @@ namespace GeekStream.Infrastructure.Migrations
             modelBuilder.Entity("GeekStream.Core.Entities.User", b =>
                 {
                     b.Navigation("AuthoredArticles");
-
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

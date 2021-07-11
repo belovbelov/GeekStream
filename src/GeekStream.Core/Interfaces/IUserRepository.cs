@@ -8,6 +8,6 @@ namespace GeekStream.Core.Interfaces
         public void SaveUser(User user);
         public void DeleteUser(int id);
         public User GetUser(int id);
-        public ICollection<User> GetUsers();
+        public IEnumerable<User> GetUsers();
     }
 }

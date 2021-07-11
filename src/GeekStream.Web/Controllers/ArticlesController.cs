@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
 using GeekStream.Infrastructure.Data;
+using GeekStream.Core.Services;
 
 namespace GeekStream.Web.Controllers
 {
@@ -14,9 +15,12 @@ namespace GeekStream.Web.Controllers
     {
         private readonly AppDbContext _context;
 
-        public ArticlesController(AppDbContext context)
+        private readonly ArticleService _articleService;
+
+        public ArticlesController(AppDbContext context, ArticleService articleService)
         {
             _context = context;
+            _articleService = articleService;
         }
 
         // GET: Articles
@@ -25,17 +29,10 @@ namespace GeekStream.Web.Controllers
         //     var appDbContext = _context.Articles.Include(a => a.Author);
         //     return View(await appDbContext.ToListAsync());
         // }
-        public async Task<IActionResult> Index(string searchString)
+        public IActionResult Index(string searchString = null)
         {
-            var articles = from m in _context.Articles
-                select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                articles = articles.Where(s => s.Title.Contains(searchString));
-            }
-
-            return View(await articles.ToListAsync());
+            var articleViewModels = _articleService.GetArticles(searchString);
+            return View(articleViewModels);
         }
 
         // GET: Articles/Details/5
@@ -60,7 +57,7 @@ namespace GeekStream.Web.Controllers
         // GET: Articles/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -69,7 +66,7 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,ShortDescription,PostedOn,AuthorId,Rating")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,PostedOn,AuthorId,Rating")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +74,7 @@ namespace GeekStream.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", article.AuthorId);
             return View(article);
         }
 

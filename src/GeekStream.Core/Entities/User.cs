@@ -28,5 +28,7 @@ namespace GeekStream.Core.Entities
         public string PasswordHash { get; set; }
 
         public ICollection<Article> AuthoredArticles { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

@@ -18,14 +18,28 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public ICollection<Article> GetArticles()
+        public IEnumerable<Article> GetArticles(int page, int pageSize, string searchString = null)
         {
-            return _context.Articles.ToList();
+            if (searchString == null)
+            {
+                return _context.Articles
+                    .Where(article => article.PostedOn != null)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+
+            return _context.Articles
+                .Where(article => article.PostedOn != null)
+                .Where(article => article.Title.Contains(searchString))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
 
         public void SaveArticle(Article article)
         {
-            _context.Entry(article).State = EntityState.Added;
+            _context.Add(article);
             _context.SaveChanges();
         }
 

@@ -13,7 +13,7 @@ namespace GeekStream.Core.Services
             _userRepository = userRepository;
         }
 
-        public ICollection<User> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
             return _userRepository.GetUsers();
         }

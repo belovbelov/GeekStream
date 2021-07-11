@@ -36,7 +36,7 @@ namespace GeekStream.Infrastructure.Data
             return _context.Users.SingleOrDefault(x => x.Id == id);
         }
 
-        public ICollection<User> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
             return _context.Users.ToList();
         }
