@@ -32,5 +32,19 @@ namespace GeekStream.Core.Services
                     Rating = article.Rating
                 });
         }
+
+        public async Task SaveArticleAsync(ArticleViewModel model)
+        {
+            var article = new Article
+            {
+                Title = model.Title,
+                Content = model.Content,
+                PostedOn = model.PublishedDate,
+                AuthorId = model.Author,
+                Categories = new List<Category>(),
+                Rating = 1
+            };
+            await _articleRepository.SaveArticleAsync(article);
+        }
     }
 }

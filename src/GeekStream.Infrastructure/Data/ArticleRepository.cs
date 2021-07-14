@@ -37,10 +37,10 @@ namespace GeekStream.Infrastructure.Data
                 .ToList();
         }
 
-        public void SaveArticle(Article article)
+        public async Task SaveArticleAsync(Article article)
         {
             _context.Add(article);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public Article GetArticle(int id)

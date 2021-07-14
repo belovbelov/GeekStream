@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
 using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
+using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Web.Controllers
 {
@@ -66,16 +67,15 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,PostedOn,AuthorId,Rating")] Article article)
+        public async Task<IActionResult> Create(ArticleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(article);
-                await _context.SaveChangesAsync();
+                await _articleService.SaveArticleAsync(model);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", article.AuthorId);
-            return View(article);
+            ViewData["AuthorId"] = new SelectList(_articleService.GetArticles(), "Id", "UserName", model.Author);
+            return View(model);
         }
 
         // GET: Articles/Edit/5

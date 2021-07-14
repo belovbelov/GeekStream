@@ -9,7 +9,7 @@ namespace GeekStream.Core.Interfaces
 {
     public interface IArticleRepository
     {
-        public void SaveArticle(Article article);
+        public Task SaveArticleAsync(Article article);
         public void DeleteArticle(int id);
         public void PublishArticle(int id);
         public void UnPublishArticle(int id);
