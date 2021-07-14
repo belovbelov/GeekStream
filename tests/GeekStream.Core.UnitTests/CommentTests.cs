@@ -18,7 +18,7 @@ namespace GeekStream.Core.UnitTests
             int articleId = 5;
             Assert.Throws<ArgumentException>(() =>
             {
-                var article = new Comment(name, content, articleId);
+                // var article = new Comment(name, content, articleId);
             });
         }
     }

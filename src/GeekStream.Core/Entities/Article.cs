@@ -53,10 +53,10 @@ namespace GeekStream.Core.Entities
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-        public int AuthorId { get; set; }
+        // public int AuthorId { get; set; }
 
         [Display(Name = "Автор")]
-        public User Author { get; set; }
+        public ApplicationUser Author { get; set; }
 
         public int Rating { get; set; }
 

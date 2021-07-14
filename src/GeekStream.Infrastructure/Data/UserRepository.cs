@@ -15,7 +15,7 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public void SaveUser(User user)
+        public void SaveUser(ApplicationUser user)
         {
             _context.Entry(user).State = EntityState.Added;
             _context.SaveChanges();
@@ -31,12 +31,17 @@ namespace GeekStream.Infrastructure.Data
             }
         }
 
-        public User GetUser(int id)
+        public ApplicationUser GetUser(int id)
         {
-            return _context.Users.SingleOrDefault(x => x.Id == id);
+            throw new System.NotImplementedException();
         }
 
-        public IEnumerable<User> GetUsers()
+        // public User GetUser(int id)
+        // {
+        //     return _context.Users.SingleOrDefault(x => x.Id == id);
+        // }
+
+        public IEnumerable<ApplicationUser> GetUsers()
         {
             return _context.Users.ToList();
         }

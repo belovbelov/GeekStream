@@ -9,11 +9,12 @@ namespace GeekStream.Core.Entities
 {
     public class Comment
     {
+
         public Comment()
         {
             
         }
-
+        /*
         public Comment(string name, string content, int articleId)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -30,6 +31,7 @@ namespace GeekStream.Core.Entities
             UserName = name;
             ArticleId = articleId;
         }
+        */
 
         public int Id { get; set; }
 

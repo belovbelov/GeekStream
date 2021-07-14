@@ -91,7 +91,7 @@ namespace GeekStream.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
+            // ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
             return View(article);
         }
 
@@ -127,7 +127,7 @@ namespace GeekStream.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
+            // ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
             return View(article);
         }
 

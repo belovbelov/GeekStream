@@ -27,7 +27,7 @@ namespace GeekStream.Core.Services
                     Title = article.Title,
                     Content = article.Content,
                     PublishedDate = article.PostedOn,
-                    Author = article.AuthorId,
+                    // Author = article.AuthorId,
                     Category = article.Categories?.First().Name,
                     Rating = article.Rating
                 });
@@ -40,7 +40,7 @@ namespace GeekStream.Core.Services
                 Title = model.Title,
                 Content = model.Content,
                 PostedOn = model.PublishedDate,
-                AuthorId = model.Author,
+                // AuthorId = model.Author,
                 Categories = new List<Category>(),
                 Rating = 1
             };

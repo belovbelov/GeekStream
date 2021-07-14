@@ -5,9 +5,9 @@ namespace GeekStream.Core.Interfaces
 {
     public interface IUserRepository
     {
-        public void SaveUser(User user);
+        public void SaveUser(ApplicationUser user);
         public void DeleteUser(int id);
-        public User GetUser(int id);
-        public IEnumerable<User> GetUsers();
+        public ApplicationUser GetUser(int id);
+        public IEnumerable<ApplicationUser> GetUsers();
     }
 }
