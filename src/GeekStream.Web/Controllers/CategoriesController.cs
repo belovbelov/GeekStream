@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Infrastructure.Data;
-using GeekStream.Web.Models;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GeekStream.Web.Controllers
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -38,22 +36,21 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var article = await _context.Articles
-                .Include(a => a.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (article == null)
+            var articleViewModel = _articleService.GetArticleById(id);
+
+            if (articleViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(article);
+            return View(articleViewModel);
         }
 
         // GET: Articles/Create

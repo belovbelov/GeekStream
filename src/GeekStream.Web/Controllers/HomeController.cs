@@ -1,11 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 using GeekStream.Core.Services;
-using GeekStream.Infrastructure.Data;
 using GeekStream.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Web.Controllers
 {

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeekStream.Core.Entities
 {
@@ -14,7 +10,6 @@ namespace GeekStream.Core.Entities
         {
             
         }
-        /*
         public Comment(string name, string content, int articleId)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -31,7 +26,6 @@ namespace GeekStream.Core.Entities
             UserName = name;
             ArticleId = articleId;
         }
-        */
 
         public int Id { get; set; }
 

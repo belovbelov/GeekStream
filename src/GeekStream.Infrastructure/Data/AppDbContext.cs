@@ -1,5 +1,4 @@
 ﻿using GeekStream.Core.Entities;
-using System.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

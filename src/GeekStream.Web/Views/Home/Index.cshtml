@@ -15,7 +15,9 @@
                         <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
                         <p>@Html.DisplayFor(modelItem => item.Author)</p>
                     </div>
-                    <h3> @Html.DisplayFor(modelItem => item.Title)</h3>
+                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                        <h3> @Html.DisplayFor(modelItem => item.Title)</h3>
+                    </a>
                     <p>@Html.DisplayFor(modelItem => item.Content)</p>
                     <div class="text-right mb-0">
                         <p>@Html.DisplayFor(modelItem => item.Rating)</p>

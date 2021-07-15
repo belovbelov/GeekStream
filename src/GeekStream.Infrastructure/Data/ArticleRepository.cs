@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
-using GeekStream.Core.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Infrastructure.Data
@@ -19,64 +17,39 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public IEnumerable<ArticleViewModel> GetArticles(int page, int pageSize, string searchString = null)
+        public IEnumerable<Article> GetArticles(int page, int pageSize, string searchString = null)
         {
             if (searchString == null)
             {
                 return _context.Articles
+                    .Include(article => article.Category)
                     .Where(article => article.PostedOn != null)
-                    .Select(
-                        a => new ArticleViewModel
-                        {
-                            Id = a.Id,
-                            Title = a.Title,
-                            Content = a.Content,
-                            PublishedDate = a.CreatedOn,//TODO заменить
-                            Category = _context.Categories
-                                .Where(c => c.Id == a.CategoryId)
-                                .Select(c => c.Name)
-                                .SingleOrDefault(),
-                            // Author = article.AuthorId,
-                            Rating = a.Rating
-                        })
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
                     .ToList();
             }
 
             return _context.Articles
-                .Where(article => article.PostedOn != null)
-                .Where(article => article.Title.Contains(searchString))
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(
-                    a => new ArticleViewModel
-                    {
-                        Id = a.Id,
-                        Title = a.Title,
-                        Content = a.Content,
-                        PublishedDate = a.CreatedOn,
-                        Category = _context.Categories
-                            .Where(c => c.Id == a.CategoryId)
-                            .Select(c => c.Name)
-                            .SingleOrDefault(),
-                        // Author = article.AuthorId,
-                        Rating = a.Rating
-                    })
-                .ToList();
-
+                    .Include(article => article.Category)
+                    .Where(article => article.PostedOn != null)
+                    .Where(article => article.Title.Contains(searchString))
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
         }
 
         public async Task SaveArticleAsync(Article article)
         {
-            var category = _context.Categories
-                .First(c => c.Id == article.CategoryId);
-            article.Category = category;
             _context.Add(article);
             await _context.SaveChangesAsync();
         }
 
         public Article GetArticle(int id)
         {
-            return _context.Articles.SingleOrDefault(x => x.Id == id);
+            var article = _context.Articles
+                .Include(article => article.Category)
+                .SingleOrDefault(x => x.Id == id);
+            return article;
         }
 
         public void PublishArticle(int id)
@@ -108,25 +81,12 @@ namespace GeekStream.Infrastructure.Data
             }
         }
 
-        public IEnumerable<ArticleViewModel> FindByCategoryId(string id = null)
+        public IEnumerable<Article> FindByCategoryId(string id = null)
         {
             return _context.Articles
+                .Include(article => article.Category)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.CategoryId.ToString() == id)
-                .Select(
-                    a => new ArticleViewModel
-                    {
-                        Id = a.Id,
-                        Title = a.Title,
-                        Content = a.Content,
-                        PublishedDate = a.CreatedOn,
-                        Category = _context.Categories
-                            .Where(c => c.Id == a.CategoryId)
-                            .Select(c => c.Name)
-                            .SingleOrDefault(),
-                        // Author = article.AuthorId,
-                        Rating = a.Rating
-                    })
                 .ToList();
         }
     }

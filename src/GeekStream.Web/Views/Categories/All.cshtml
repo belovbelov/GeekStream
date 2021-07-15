@@ -8,9 +8,11 @@
 {
         <div class="col-md-4">
             <div class="card">
-                    <form asp-controller="Categories" asp-action="Index" method="get">
-                        <button type="submit" class="btn btn-light btn-block" name="category" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Name)</button>
-                    </form >
+                <form asp-controller="Categories" asp-action="Index" method="get">
+                    <button type="submit" class="btn btn-light btn-block" name="category" value="@item.Id">
+                        @item.Name
+                    </button>
+                </form >
             </div>
         </div>
     }

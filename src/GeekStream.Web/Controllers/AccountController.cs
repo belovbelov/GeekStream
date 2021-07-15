@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
-using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
 

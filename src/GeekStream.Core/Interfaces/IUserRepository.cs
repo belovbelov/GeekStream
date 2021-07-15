@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GeekStream.Core.Entities;
-using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Core.Interfaces
 {
