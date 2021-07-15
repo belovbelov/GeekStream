@@ -63,16 +63,24 @@ namespace GeekStream.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe,
-                    lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {
                     return RedirectToAction(nameof(Index), "Home");
                 }
+
+                ModelState.AddModelError(string.Empty, "Неверные данные");
             }
 
-            return RedirectToAction("Create", "Articles");
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Index), "Home");
         }
     }
 }

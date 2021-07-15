@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,12 +41,25 @@
                             </form>
                         </li>
                     </ul>
-                    <a asp-area="" asp-controller="Account" asp-action="Login">
-                        <button type="button" class="btn btn-primary" >Войти</button>
-                    </a>
-                    <a asp-area="" asp-controller="Account" asp-action="Register">
-                        <button type="button" class="btn btn-primary" >Регистрация</button>
-                    </a>
+                    
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout @User.Identity.Name</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login">
+                                <button type="button" class="btn btn-primary" >Войти</button>
+                            </a>
+                            <a asp-area="" asp-controller="Account" asp-action="Register">
+                                <button type="button" class="btn btn-primary" >Регистрация</button>
+                            </a>
+                        }
+                    }
+
                 </div>
             </div>
         </nav>
