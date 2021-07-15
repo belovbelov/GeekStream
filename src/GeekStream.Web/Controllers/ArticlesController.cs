@@ -30,6 +30,7 @@ namespace GeekStream.Web.Controllers
         //     var appDbContext = _context.Articles.Include(a => a.Author);
         //     return View(await appDbContext.ToListAsync());
         // }
+        [HttpGet]
         public IActionResult Index(string searchString = null)
         {
             var articleViewModels = _articleService.GetArticles(searchString);
@@ -58,7 +59,7 @@ namespace GeekStream.Web.Controllers
         // GET: Articles/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["Category"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -67,14 +68,14 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleViewModel model)
+        public async Task<IActionResult> Create(ArticleCreationViewModel model)
         {
             if (ModelState.IsValid)
             {
                 await _articleService.SaveArticleAsync(model);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_articleService.GetArticles(), "Id", "UserName", model.Author);
+            ViewData["Category"] = new SelectList(_context.Categories, "Id", "Name");
             return View(model);
         }
 

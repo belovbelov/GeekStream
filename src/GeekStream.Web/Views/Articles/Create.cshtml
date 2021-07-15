@@ -1,4 +1,4 @@
-﻿@model GeekStream.Core.ViewModels.ArticleViewModel
+﻿@model GeekStream.Core.ViewModels.ArticleCreationViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
     <h4>Article</h4>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -18,18 +18,13 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Category"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishedDate" class="control-label"></label>
-                <input asp-for="PublishedDate" class="form-control" />
-                <span asp-validation-for="PublishedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
-                <select asp-for="Author" class ="form-control" asp-items="ViewBag.AuthorId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

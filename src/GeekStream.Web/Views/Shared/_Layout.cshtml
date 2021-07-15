@@ -21,16 +21,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Index">Статьи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Статьи</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Категории</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="All">Категории</a>
                         </li>
+                        @*
                         <li class="nav-item">
-                            @*
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Авторы</a>
-                        *@
                         </li>
+                        *@
                         <li class="nav-item">
                             <a class="btn btn-primary" asp-area="" asp-controller="Articles" asp-action="Create">Написать статью</a>
                         </li>
@@ -55,7 +55,9 @@
             <div class="col-md-3">
                 <div style="height: 200px; background-color: aqua">Dummy</div>
             </div>
-            @RenderBody()
+            <div class="col">
+                @RenderBody()
+            </div>
             <div class="col-md-3">
                 <div style="height: 200px; background-color: aqua">Dummy</div>
             </div>
@@ -63,9 +65,6 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - GeekStream - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

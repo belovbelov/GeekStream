@@ -19,21 +19,6 @@ namespace GeekStream.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ArticleCategory", b =>
-                {
-                    b.Property<int>("ArticlesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticlesId", "CategoriesId");
-
-                    b.HasIndex("CategoriesId");
-
-                    b.ToTable("ArticleCategory");
-                });
-
             modelBuilder.Entity("ArticleKeyword", b =>
                 {
                     b.Property<int>("ArticlesId")
@@ -124,6 +109,9 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -146,6 +134,8 @@ namespace GeekStream.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Articles");
                 });
@@ -369,21 +359,6 @@ namespace GeekStream.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ArticleCategory", b =>
-                {
-                    b.HasOne("GeekStream.Core.Entities.Article", null)
-                        .WithMany()
-                        .HasForeignKey("ArticlesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GeekStream.Core.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ArticleKeyword", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.Article", null)
@@ -405,7 +380,15 @@ namespace GeekStream.Infrastructure.Migrations
                         .WithMany("AuthoredArticles")
                         .HasForeignKey("AuthorId");
 
+                    b.HasOne("GeekStream.Core.Entities.Category", "Category")
+                        .WithMany("Articles")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Comment", b =>
@@ -491,6 +474,11 @@ namespace GeekStream.Infrastructure.Migrations
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Category", b =>
+                {
+                    b.Navigation("Articles");
                 });
 #pragma warning restore 612, 618
         }

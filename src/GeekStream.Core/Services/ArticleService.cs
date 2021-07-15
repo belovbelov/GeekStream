@@ -20,31 +20,27 @@ namespace GeekStream.Core.Services
 
         public IEnumerable<ArticleViewModel> GetArticles(string searchString = null)
         {
-            return _articleRepository.GetArticles(page: 1, pageSize: 20, searchString)
-                .Select(article => new ArticleViewModel
-                {
-                    Id = article.Id,
-                    Title = article.Title,
-                    Content = article.Content,
-                    PublishedDate = article.PostedOn,
-                    // Author = article.AuthorId,
-                    Category = article.Categories?.First().Name,
-                    Rating = article.Rating
-                });
-        }
+            return _articleRepository.GetArticles(page: 1, pageSize: 20, searchString);
+            }
 
-        public async Task SaveArticleAsync(ArticleViewModel model)
+        public async Task SaveArticleAsync(ArticleCreationViewModel model)
         {
             var article = new Article
             {
                 Title = model.Title,
                 Content = model.Content,
-                PostedOn = model.PublishedDate,
+                CreatedOn = DateTime.Now,
+                PostedOn = null,
                 // AuthorId = model.Author,
-                Categories = new List<Category>(),
+                CategoryId= model.CategoryId,
                 Rating = 1
             };
             await _articleRepository.SaveArticleAsync(article);
+        }
+
+        public IEnumerable<ArticleViewModel> FindByCategoryId(string id = null)
+        {
+            return _articleRepository.FindByCategoryId(id);
         }
     }
 }

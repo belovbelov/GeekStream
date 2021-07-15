@@ -1,11 +1,9 @@
-﻿@using GeekStream.Core.ViewModels
-@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-    <div class="feed col-md-6">
     @foreach (var item in Model)
     {
     <div class="row mb-2">
@@ -18,9 +16,6 @@
                         <p>@Html.DisplayFor(modelItem => item.Author)</p>
                     </div>
                     <h3> @Html.DisplayFor(modelItem => item.Title)</h3>
-                    @*
-                    <img src="@Url.Content(item.Images.First().ImgPath)"/>
-                    *@
                     <p>@Html.DisplayFor(modelItem => item.Content)</p>
                     <div class="text-right mb-0">
                         <p>@Html.DisplayFor(modelItem => item.Rating)</p>
@@ -30,60 +25,3 @@
         </div>
     </div>
     }
-</div>
-@*
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShortDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        $1$
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-        </tr>
-#1#
-        
-}
-    *@
-    @*
-    </tbody>
-</table>
-*@

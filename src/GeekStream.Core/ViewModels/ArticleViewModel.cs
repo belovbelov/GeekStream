@@ -1,4 +1,5 @@
 ﻿using System;
+using GeekStream.Core.Entities;
 
 namespace GeekStream.Core.ViewModels
 {

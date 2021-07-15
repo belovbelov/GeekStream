@@ -11,24 +11,17 @@ namespace GeekStream.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ArticleService _articleService;// TODO убрать потом
 
-        public HomeController(ILogger<HomeController> logger, ArticleService articleService)
+        public HomeController(ArticleService articleService)
         {
-            _logger = logger;
             _articleService = articleService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var articles = _articleService.GetArticles();
             return View(articles);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

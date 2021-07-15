@@ -6,23 +6,44 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
+using GeekStream.Core.Services;
 using GeekStream.Infrastructure.Data;
+using GeekStream.Web.Models;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GeekStream.Web.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly CategoryService _categoryService;
+        private readonly ArticleService _articleService;
 
-        public CategoriesController(AppDbContext context)
+        public CategoriesController(AppDbContext context, CategoryService categoryService, ArticleService articleService)
         {
             _context = context;
+            _categoryService = categoryService;
+            _articleService = articleService;
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string category = null)
         {
-            return View(await _context.Categories.ToListAsync());
+            if (category != null)
+            {
+                var articles = _articleService.FindByCategoryId(category);
+                return View(articles);
+            }
+
+            return RedirectToAction(nameof(Index), "Home");
+        }
+
+        public IActionResult All()
+        {
+            var categories = _categoryService.GetAll();
+
+            return View(categories);
         }
 
         // GET: Categories/Details/5
@@ -60,7 +81,7 @@ namespace GeekStream.Web.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(All));
             }
             return View(category);
         }
