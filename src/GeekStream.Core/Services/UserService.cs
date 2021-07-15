@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
+using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Core.Services
 {
@@ -13,9 +14,30 @@ namespace GeekStream.Core.Services
             _userRepository = userRepository;
         }
 
-        public IEnumerable<ApplicationUser> GetUsers()
+        public void Add(RegisterViewModel model)
         {
-            return _userRepository.GetUsers();
+            var user = new ApplicationUser();
+            _userRepository.Add(user);
+        }
+
+        public void Delete(int id)
+        {
+            _userRepository.Delete(id);
+        }
+
+        public void Edit(ApplicationUser user)
+        {
+            _userRepository.Edit(user);
+        }
+
+        public ApplicationUser FindById(int id)
+        {
+            return _userRepository.FindById(id);
+        }
+
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _userRepository.GetAll();
         }
     }
 }

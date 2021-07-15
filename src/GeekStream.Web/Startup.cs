@@ -1,3 +1,4 @@
+using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.Services;
 using Microsoft.AspNetCore.Builder;
@@ -28,13 +29,12 @@ namespace GeekStream.Web
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
 
-            services.AddIdentityCore<IdentityUser>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = true;
                     options.Password.RequiredLength = 6;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
 
