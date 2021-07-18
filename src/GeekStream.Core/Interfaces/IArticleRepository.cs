@@ -6,12 +6,12 @@ namespace GeekStream.Core.Interfaces
 {
     public interface IArticleRepository
     {
-        public Task SaveArticleAsync(Article article);
-        public void DeleteArticle(int id);
-        public void PublishArticle(int id);
-        public void UnPublishArticle(int id);
-        public Article GetArticle(int id);
-        public IEnumerable<Article> GetArticles(int page, int pageSize, string searchString);
+        public Task SaveAsync(Article article);
+        public void Delete(int id);
+        public void Publish(int id);
+        public void UnPublish(int id);
+        public Article GetById(int id);
+        public IEnumerable<Article> GetAll(int page, int pageSize, string searchString);
         public IEnumerable<Article> FindByCategoryId(string id);
     }
 }

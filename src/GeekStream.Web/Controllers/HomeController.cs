@@ -16,7 +16,7 @@ namespace GeekStream.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var articles = _articleService.GetArticles();
+            var articles = _articleService.GetAllArticles();
             return View(articles);
         }
 

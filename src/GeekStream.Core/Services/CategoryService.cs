@@ -12,7 +12,7 @@ namespace GeekStream.Core.Services
         {
             _categoryRepository = categoryRepository;
         }
-        public IEnumerable<Category> GetAll()
+        public IEnumerable<Category> GetAllCategories()
         {
             return _categoryRepository.GetAll();
         }

@@ -21,18 +21,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
-                        <li class="nav-item">
+                        <li class="nav-item mr-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Статьи</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mr-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="All">Категории</a>
                         </li>
                         @*
-                        <li class="nav-item">
+                        <li class="nav-item mr-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Авторы</a>
                         </li>
                         *@
-                        <li class="nav-item">
+                        <li class="nav-item mr-2">
                             <a class="btn btn-primary" asp-area="" asp-controller="Articles" asp-action="Create">Написать статью</a>
                         </li>
                         <li class="nav-item">
@@ -51,7 +51,7 @@
                         }
                         else
                         {
-                            <a asp-area="" asp-controller="Account" asp-action="Login">
+                            <a asp-area="" asp-controller="Account" asp-action="Login" class="mr-2">
                                 <button type="button" class="btn btn-primary" >Войти</button>
                             </a>
                             <a asp-area="" asp-controller="Account" asp-action="Register">

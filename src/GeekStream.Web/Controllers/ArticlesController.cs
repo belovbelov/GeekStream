@@ -31,18 +31,13 @@ namespace GeekStream.Web.Controllers
         [HttpGet]
         public IActionResult Index(string searchString = null)
         {
-            var articleViewModels = _articleService.GetArticles(searchString);
+            var articleViewModels = _articleService.GetAllArticles(searchString);
             return View(articleViewModels);
         }
 
         // GET: Articles/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var articleViewModel = _articleService.GetArticleById(id);
 
             if (articleViewModel == null)

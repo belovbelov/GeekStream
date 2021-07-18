@@ -17,7 +17,7 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public IEnumerable<Article> GetArticles(int page, int pageSize, string searchString = null)
+        public IEnumerable<Article> GetAll(int page, int pageSize, string searchString = null)
         {
             if (searchString == null)
             {
@@ -38,13 +38,13 @@ namespace GeekStream.Infrastructure.Data
                     .ToList();
         }
 
-        public async Task SaveArticleAsync(Article article)
+        public async Task SaveAsync(Article article)
         {
             _context.Add(article);
             await _context.SaveChangesAsync();
         }
 
-        public Article GetArticle(int id)
+        public Article GetById(int id)
         {
             var article = _context.Articles
                 .Include(article => article.Category)
@@ -52,7 +52,7 @@ namespace GeekStream.Infrastructure.Data
             return article;
         }
 
-        public void PublishArticle(int id)
+        public void Publish(int id)
         {
             var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
             if (article != null)
@@ -61,7 +61,7 @@ namespace GeekStream.Infrastructure.Data
                 _context.SaveChanges();
             }
         }
-        public void UnPublishArticle(int id)
+        public void UnPublish(int id)
         {
             var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
             if (article != null)
@@ -71,9 +71,9 @@ namespace GeekStream.Infrastructure.Data
             }
         }
 
-        public void DeleteArticle(int id)
+        public void Delete(int id)
         {
-            var article = GetArticle(id);
+            var article = GetById(id);
             if (article != null)
             {
                 _context.Articles.Remove(article);

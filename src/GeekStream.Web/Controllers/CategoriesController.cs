@@ -35,7 +35,7 @@ namespace GeekStream.Web.Controllers
 
         public IActionResult All()
         {
-            var categories = _categoryService.GetAll();
+            var categories = _categoryService.GetAllCategories();
 
             return View(categories);
         }

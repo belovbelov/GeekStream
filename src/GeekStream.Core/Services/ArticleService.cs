@@ -17,9 +17,9 @@ namespace GeekStream.Core.Services
             _articleRepository = articleRepository;
         }
 
-        public IEnumerable<ArticleViewModel> GetArticles(string searchString = null)
+        public IEnumerable<ArticleViewModel> GetAllArticles(string searchString = null)
         {
-            return _articleRepository.GetArticles(page: 1, pageSize: 20, searchString)
+            return _articleRepository.GetAll(page: 1, pageSize: 20, searchString)
                 .Select(article => new ArticleViewModel
                 {
                 Id = article.Id,
@@ -45,12 +45,12 @@ namespace GeekStream.Core.Services
                 CategoryId= model.CategoryId,
                 Rating = 1
             };
-            await _articleRepository.SaveArticleAsync(article);
+            await _articleRepository.SaveAsync(article);
         }
 
         public ArticleViewModel GetArticleById(int id)
         {
-            var article = _articleRepository.GetArticle(id);
+            var article = _articleRepository.GetById(id);
             return new ArticleViewModel
             {
                 Id = article.Id,
