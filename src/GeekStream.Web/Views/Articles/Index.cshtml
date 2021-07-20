@@ -6,9 +6,7 @@
 
     @foreach (var item in Model)
     {
-    <div class="row mb-2">
-        <div class="col">
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-body">
                     <div class="card-navbar">
                         <p>@Html.DisplayFor(modelItem => item.Category)</p>
@@ -28,7 +26,5 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </div>
-        </div>
-    </div>
     }
 

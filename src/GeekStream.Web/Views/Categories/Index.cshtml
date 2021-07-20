@@ -1,5 +1,4 @@
-﻿@using GeekStream.Core.ViewModels
-@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,17 +6,15 @@
 
     @foreach (var item in Model)
     {
-    <div class="row mb-2">
-        <div class="col">
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-body">
                     <div class="card-navbar">
                         <p>@Html.DisplayFor(modelItem => item.Category)</p>
                         <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
                         <p>@Html.DisplayFor(modelItem => item.Author)</p>
                     </div>
-                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
-                        <h3> @Html.DisplayFor(modelItem => item.Title)</h3>
+                    <a  asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                        <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
                     </a>
                     <p>@Html.DisplayFor(modelItem => item.Content)</p>
                     <div class="text-right mb-0">
@@ -25,6 +22,4 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     }
