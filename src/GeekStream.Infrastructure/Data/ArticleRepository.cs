@@ -23,6 +23,7 @@ namespace GeekStream.Infrastructure.Data
             {
                 return _context.Articles
                     .Include(article => article.Category)
+                    .Include(article => article.Author)
                     .Where(article => article.PostedOn != null)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
@@ -31,6 +32,7 @@ namespace GeekStream.Infrastructure.Data
 
             return _context.Articles
                     .Include(article => article.Category)
+                    .Include(article => article.Author)
                     .Where(article => article.PostedOn != null)
                     .Where(article => article.Title.Contains(searchString))
                     .Skip((page - 1) * pageSize)
@@ -48,6 +50,7 @@ namespace GeekStream.Infrastructure.Data
         {
             var article = _context.Articles
                 .Include(article => article.Category)
+                .Include(article => article.Author)
                 .SingleOrDefault(x => x.Id == id);
             return article;
         }
@@ -85,6 +88,7 @@ namespace GeekStream.Infrastructure.Data
         {
             return _context.Articles
                 .Include(article => article.Category)
+                .Include(article => article.Author)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.CategoryId.ToString() == id)
                 .ToList();

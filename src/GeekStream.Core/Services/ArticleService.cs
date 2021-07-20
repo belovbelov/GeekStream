@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Core.Services
 {
     public class ArticleService
     {
         private readonly IArticleRepository _articleRepository;
+        private readonly UserService _userService;
 
-        public ArticleService(IArticleRepository articleRepository)
+        public ArticleService(IArticleRepository articleRepository, UserService userService)
         {
             _articleRepository = articleRepository;
+            _userService = userService;
         }
 
         public IEnumerable<ArticleViewModel> GetAllArticles(string searchString = null)
@@ -26,7 +29,7 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                // Author = article.Author,
+                Author = article.Author.UserName,
                 Category = article.Category.Name,
                 Rating = article.Rating
                 });
@@ -41,7 +44,7 @@ namespace GeekStream.Core.Services
                 Content = model.Content,
                 CreatedOn = DateTime.Now,
                 PostedOn = DateTime.MinValue,
-                // AuthorId = model.Author,
+                Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
                 Rating = 1
             };
@@ -57,7 +60,7 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                // Author = article.Author,
+                Author = article.Author.UserName,
                 Category = article.Category.Name,
                 Rating = article.Rating
             };
@@ -72,7 +75,7 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                // Author = article.Author,
+                Author = article.Author.UserName,
                 Category = article.Category.Name,
                 Rating = article.Rating
                 });

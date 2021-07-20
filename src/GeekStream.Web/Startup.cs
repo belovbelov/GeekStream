@@ -7,8 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GeekStream.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GeekStream.Web
 {
@@ -37,12 +41,24 @@ namespace GeekStream.Web
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            }).AddXmlDataContractSerializerFormatters();
+
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<ArticleService>();
             services.AddScoped<IArticleRepository, ArticleRepository>();
             
             services.AddScoped<CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            services.AddScoped<UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,17 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Core.Services
 {
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _accessor;
 
-        public UserService(IUserRepository userRepository)
+
+        public UserService(IUserRepository userRepository, UserManager<ApplicationUser> userManager,IHttpContextAccessor accessor)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
+            _accessor = accessor;
+        }
+
+        public ApplicationUser GetCurrentUser()
+        {
+            return _userManager.GetUserAsync(_accessor.HttpContext.User).Result;
         }
 
         public void Add(RegisterViewModel model)

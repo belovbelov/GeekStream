@@ -13,7 +13,7 @@ namespace GeekStream.Core.ViewModels
 
         public DateTime? PublishedDate { get; set; }
 
-        public int Author { get; set; }
+        public string Author { get; set; }
 
         public string Category { get; set; }
 

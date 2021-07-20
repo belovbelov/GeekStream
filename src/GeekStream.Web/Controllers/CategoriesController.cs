@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeekStream.Web.Controllers
 {
@@ -22,6 +23,7 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public IActionResult Index(string category = null)
         {
             if (category != null)
@@ -33,6 +35,8 @@ namespace GeekStream.Web.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult All()
         {
             var categories = _categoryService.GetAllCategories();

@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
@@ -21,6 +22,7 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -50,6 +52,7 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -77,7 +80,8 @@ namespace GeekStream.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Index), "Home");
+         //   return RedirectToAction(nameof(Index), "Home");
+         return SignOut();
         }
     }
 }

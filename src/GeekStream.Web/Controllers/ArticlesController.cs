@@ -7,6 +7,7 @@ using GeekStream.Core.Entities;
 using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeekStream.Web.Controllers
 {
@@ -29,6 +30,7 @@ namespace GeekStream.Web.Controllers
         //     return View(await appDbContext.ToListAsync());
         // }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
             var articleViewModels = _articleService.GetAllArticles(searchString);
@@ -36,6 +38,7 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var articleViewModel = _articleService.GetArticleById(id);

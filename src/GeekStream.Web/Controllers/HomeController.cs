@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GeekStream.Core.Services;
 using GeekStream.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekStream.Web.Controllers
@@ -14,6 +15,7 @@ namespace GeekStream.Web.Controllers
             _articleService = articleService;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var articles = _articleService.GetAllArticles();
