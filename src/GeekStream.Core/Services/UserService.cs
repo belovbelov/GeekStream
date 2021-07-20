@@ -49,7 +49,7 @@ namespace GeekStream.Core.Services
             return _userRepository.FindById(id);
         }
 
-        public IEnumerable<ApplicationUser> GetAll()
+        public IEnumerable<ApplicationUser> GetAllUsers()
         {
             return _userRepository.GetAll();
         }

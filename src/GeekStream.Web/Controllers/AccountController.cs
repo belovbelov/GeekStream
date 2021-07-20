@@ -88,7 +88,7 @@ namespace GeekStream.Web.Controllers
         {
             await _signInManager.SignOutAsync();
          //   return RedirectToAction(nameof(Index), "Home");
-         return SignOut();
+            return RedirectToAction(nameof(Index),"Home");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,7 @@ namespace GeekStream.Web.Controllers
                 var articles = _articleService.FindByCategoryId(category);
                 return View(articles);
             }
-
-            return RedirectToAction(nameof(Index), "Home");
+            return NotFound();
         }
 
         [HttpGet]
