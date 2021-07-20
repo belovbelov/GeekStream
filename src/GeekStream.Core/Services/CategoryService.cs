@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 
@@ -15,6 +16,21 @@ namespace GeekStream.Core.Services
         public IEnumerable<Category> GetAllCategories()
         {
             return _categoryRepository.GetAll();
+        }
+
+        public async Task SaveCategoryAsync(Category category)
+        {
+            await _categoryRepository.SaveAsync(category);
+        }
+
+        public Category GetCategoryById(int id)
+        {
+            return _categoryRepository.GetById(id);
+        }
+
+        public async Task UpdateCategory(Category category)
+        {
+            await _categoryRepository.Update(category);
         }
     }
 }

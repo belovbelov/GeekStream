@@ -62,28 +62,7 @@ namespace GeekStream.Web.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(All));
-            }
-            return View(category);
-        }
-
+        
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

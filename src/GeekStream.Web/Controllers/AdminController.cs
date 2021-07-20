@@ -5,20 +5,25 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
+using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CategoryService _categoryService;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, CategoryService categoryService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -179,6 +184,51 @@ namespace GeekStream.Web.Controllers
             }
 
             return RedirectToAction("EditRole", new { Id = roleId });
+        }
+
+        [HttpGet]
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory([Bind("Id,Name,Description")] Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                await _categoryService.SaveCategoryAsync(category);
+                return RedirectToAction(nameof(ListCategories));
+            }
+            return View(category);
+        }
+
+        [HttpGet]
+        public IActionResult EditCategory(int id)
+        {
+            var category = _categoryService.GetCategoryById(id);
+
+            return View(category);
+        }
+
+        [HttpPost]
+        public IActionResult EditCategory(Category category)
+        {
+            var result = _categoryService.UpdateCategory(category);
+
+            if (result.IsCompletedSuccessfully)
+            {
+                return RedirectToAction(nameof(ListCategories), "Admin");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ListCategories()
+        {
+            var categories = _categoryService.GetAllCategories();
+            return View(categories);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace GeekStream.Web.Controllers
 {
     public class UsersController : Controller
     {
-        // public IActionResult Index()
-        // {
-        //     return View();
-        // }
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

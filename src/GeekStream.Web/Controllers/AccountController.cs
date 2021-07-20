@@ -21,6 +21,11 @@ namespace GeekStream.Web.Controllers
             _signInManager = signInManager;
         }
 
+        public IActionResult Index()
+        {
+            return NotFound();
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()

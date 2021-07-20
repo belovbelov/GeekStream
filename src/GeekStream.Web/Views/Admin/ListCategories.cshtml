@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GeekStream.Core.Entities.Category>
+
+@{
+    ViewData["Title"] = "All Categories";
+}
+
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" asp-controller="Admin" asp-action="CreateCategory">Add new category</a>
+
+    foreach (var category in Model)
+    {
+        <div class="card mb-2">
+            <div class="card-header">
+                Role Id : @category.Id
+            </div>
+            <div class="card-body">
+                    <h5 class="card-title">
+                        @category.Name
+                    </h5>
+            </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditCategory" asp-route-id="@category.Id">Edit</a>
+                    <a class="btn btn-danger">Delete</a>
+                </div>
+        </div>
+    }
+    
+}
+else
+{
+    
+}
