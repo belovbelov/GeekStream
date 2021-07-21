@@ -32,5 +32,11 @@ namespace GeekStream.Core.Services
         {
             await _categoryRepository.Update(category);
         }
+
+        public async Task DeleteCategory(int id)
+        {
+            var category = _categoryRepository.GetById(id);
+            await _categoryRepository.Delete(category);
+        }
     }
 }

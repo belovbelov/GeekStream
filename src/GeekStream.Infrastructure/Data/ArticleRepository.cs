@@ -93,5 +93,14 @@ namespace GeekStream.Infrastructure.Data
                 .Where(a => a.CategoryId.ToString() == id)
                 .ToList();
         }
+
+        public IEnumerable<Article> FindByAuthorName(string name)
+        {
+            return _context.Articles
+                .Include(article => article.Category)
+                .Include(article => article.Author)
+                .Where(article => article.PostedOn != null)
+                .Where(a => a.Author.UserName == name);
+        }
     }
 }

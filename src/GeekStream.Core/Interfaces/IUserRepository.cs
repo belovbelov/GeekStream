@@ -8,7 +8,7 @@ namespace GeekStream.Core.Interfaces
         public void Add(ApplicationUser user);
         public void Delete(int id);
         public void Edit(ApplicationUser user);
-        public ApplicationUser FindById(int id);
+        public ApplicationUser GetByName(string name);
         public IEnumerable<ApplicationUser> GetAll();
     }
 }

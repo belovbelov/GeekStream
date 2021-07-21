@@ -9,7 +9,7 @@
             <div class="card mb-2">
                 <div class="card-body">
                     <div class="card-navbar">
-                        <p>@Html.DisplayFor(modelItem => item.UserName)</p>
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
                     </div>
                 </div>
             </div>

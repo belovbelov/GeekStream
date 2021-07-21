@@ -37,5 +37,14 @@ namespace GeekStream.Infrastructure.Data
             _context.Entry(category).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task Delete(Category category)
+        {
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

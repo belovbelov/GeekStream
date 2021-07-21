@@ -39,6 +39,7 @@ namespace GeekStream.Web.Controllers
 
         // GET: Articles/Details/5
         [AllowAnonymous]
+        [Route("{controller}/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var articleViewModel = _articleService.GetArticleById(id);

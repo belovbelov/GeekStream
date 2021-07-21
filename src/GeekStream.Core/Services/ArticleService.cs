@@ -80,5 +80,20 @@ namespace GeekStream.Core.Services
                 Rating = article.Rating
                 });
         }
+
+        public IEnumerable<ArticleViewModel> FindByAuthorName(string name)
+        {
+            return _articleRepository.FindByAuthorName(name)
+                .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.Author.UserName,
+                    Category = article.Category.Name,
+                    Rating = article.Rating
+                });
+        }
     }
 }

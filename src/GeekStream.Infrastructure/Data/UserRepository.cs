@@ -14,7 +14,7 @@ namespace GeekStream.Infrastructure.Data
         {
             _context = context;
         }
-
+//----------------------------------------------------------------
         public void Add(ApplicationUser user)
         {
             _context.Users.Add(user);
@@ -23,10 +23,9 @@ namespace GeekStream.Infrastructure.Data
 
         public void Delete(int id)
         {
-            var user = FindById(id);
+            var user = (id);
             if (user != null)
             {
-                _context.Users.Remove(user);
                 _context.SaveChanges();
             }
         }
@@ -36,10 +35,10 @@ namespace GeekStream.Infrastructure.Data
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
         }
-
-        public ApplicationUser FindById(int id)
+//----------------------------------------------------------------
+        public ApplicationUser GetByName(string name)
         {
-            throw new System.NotImplementedException();
+            return _context.Users.SingleOrDefault(a => a.UserName == name);
         }
 
         public IEnumerable<ApplicationUser> GetAll()

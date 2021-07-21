@@ -218,16 +218,25 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditCategory(Category category)
+        public async Task<IActionResult> EditCategory(Category category)
         {
-            var result = _categoryService.UpdateCategory(category);
+            await _categoryService.UpdateCategory(category);
 
-            if (result.IsCompletedSuccessfully)
-            {
-                return RedirectToAction(nameof(ListCategories), "Admin");
-            }
+            return RedirectToAction(nameof(ListCategories), "Admin");
+        }
 
+        [HttpGet]
+        public IActionResult DeleteCategory(int id)
+        {
             return View();
+        }
+
+        [HttpPost]
+        [ActionName("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategoryConfirmed(int id)
+        {
+            await _categoryService.DeleteCategory(id);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

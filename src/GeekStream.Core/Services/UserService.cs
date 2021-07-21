@@ -44,9 +44,13 @@ namespace GeekStream.Core.Services
             _userRepository.Edit(user);
         }
 
-        public ApplicationUser FindById(int id)
+        public UserViewModel GetUserByName(string name)
         {
-            return _userRepository.FindById(id);
+            var user = _userRepository.GetByName(name);
+            return new UserViewModel
+            {
+                UserName = user.UserName
+            };
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()
