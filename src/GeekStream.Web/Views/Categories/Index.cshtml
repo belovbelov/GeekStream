@@ -1,11 +1,19 @@
-﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+﻿@model GeekStream.Core.ViewModels.CategoryViewModel
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = Model.Name;
 }
 
+<div class="card mb-2">
+    <div class="card-body align-items-center">
+        <div class="card-navbar justify-content-between">
+            <h3 class="card-title">@Model.Name</h3>
+            <button class="btn btn-primary">Подписаться</button>
+        </div>
+    </div>
+</div>
 
-@foreach (var item in Model)
+@foreach (var item in Model.Articles)
     {
             <div class="card mb-2">
                 <div class="card-body">

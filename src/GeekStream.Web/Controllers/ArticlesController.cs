@@ -24,11 +24,6 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles
-        // public async Task<IActionResult> Index()
-        // {
-        //     var appDbContext = _context.Articles.Include(a => a.Author);
-        //     return View(await appDbContext.ToListAsync());
-        // }
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
@@ -38,8 +33,8 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Details/5
-        [AllowAnonymous]
-        [Route("{controller}/{id}")]
+        [HttpGet]
+        [Route("[controller]/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var articleViewModel = _articleService.GetArticleById(id);
@@ -53,6 +48,8 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Create
+        [HttpGet]
+        [Route("[controller]/[action]")]
         public IActionResult Create()
         {
             ViewData["Category"] = new SelectList(_context.Categories, "Id", "Name");
@@ -76,6 +73,7 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Edit/5
+        [Route("[controller]/{id}/[action]")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -129,6 +127,8 @@ namespace GeekStream.Web.Controllers
         }
 
         // GET: Articles/Delete/5
+        [HttpGet]
+        [Route("[controller]/{id}/[action]")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,7 +148,9 @@ namespace GeekStream.Web.Controllers
         }
 
         // POST: Articles/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
+        [Route("[controller]/{id}/[action]")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

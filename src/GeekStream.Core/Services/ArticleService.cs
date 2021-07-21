@@ -66,7 +66,7 @@ namespace GeekStream.Core.Services
             };
         }
 
-        public IEnumerable<ArticleViewModel> FindByCategoryId(string id = null)
+        public IEnumerable<ArticleViewModel> FindByCategoryId(int id)
         {
             return _articleRepository.FindByCategoryId(id)
                 .Select(article => new ArticleViewModel

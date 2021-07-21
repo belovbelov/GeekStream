@@ -12,7 +12,7 @@ namespace GeekStream.Core.Interfaces
         public void UnPublish(int id);
         public Article GetById(int id);
         public IEnumerable<Article> GetAll(int page, int pageSize, string searchString);
-        public IEnumerable<Article> FindByCategoryId(string id);
+        public IEnumerable<Article> FindByCategoryId(int id);
         public IEnumerable<Article> FindByAuthorName(string name);
     }
 }

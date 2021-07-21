@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -41,6 +40,11 @@
                     </ul>
                     
                     @{
+                        if (User.IsInRole("Reviewer"))
+                        {
+                            <a class="btn btn-outline-info" asp-area="" asp-controller="Articles" asp-action="Index">Проверить статьи</a>//TODO ACTION - PENDING
+                        }
+
                         if (User.Identity.IsAuthenticated)
                         {
                             <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
@@ -49,12 +53,8 @@
                         }
                         else
                         {
-                            <a asp-area="" asp-controller="Account" asp-action="Login" class="mr-2">
-                                <button type="button" class="btn btn-primary" >Войти</button>
-                            </a>
-                            <a asp-area="" asp-controller="Account" asp-action="Register">
-                                <button type="button" class="btn btn-primary" >Регистрация</button>
-                            </a>
+                            <a asp-area="" asp-controller="Account" asp-action="Login" class="mr-2 btn btn-primary">Войти</a>
+                            <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
                         }
                     }
 

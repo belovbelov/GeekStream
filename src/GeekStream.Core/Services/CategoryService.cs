@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
+using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Core.Services
 {

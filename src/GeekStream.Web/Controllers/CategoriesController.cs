@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
+using GeekStream.Core.ViewModels;
 using GeekStream.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 
@@ -27,12 +28,17 @@ namespace GeekStream.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("{controller}/{category}")]
-        public IActionResult Index(string category)
+        public IActionResult Index(int category)
         {
             if (category != null)
             {
-                var articles = _articleService.FindByCategoryId(category);
-                return View(articles);
+                var foundCategory = _categoryService.GetCategoryById(category);
+                var categoryViewModel = new CategoryViewModel
+                {
+                    Name = foundCategory.Name
+                };
+                categoryViewModel.Articles = _articleService.FindByCategoryId(category);
+                return View(categoryViewModel);
             }
             return NotFound();
         }

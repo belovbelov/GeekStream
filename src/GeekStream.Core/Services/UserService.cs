@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;

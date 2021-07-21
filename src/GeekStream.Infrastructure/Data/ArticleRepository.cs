@@ -84,13 +84,13 @@ namespace GeekStream.Infrastructure.Data
             }
         }
 
-        public IEnumerable<Article> FindByCategoryId(string id = null)
+        public IEnumerable<Article> FindByCategoryId(int id)
         {
             return _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
                 .Where(article => article.PostedOn != null)
-                .Where(a => a.CategoryId.ToString() == id)
+                .Where(a => a.CategoryId== id)
                 .ToList();
         }
 
