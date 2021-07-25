@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using GeekStream.Core.Interfaces;
 
 namespace GeekStream.Core.Entities
 {
@@ -46,7 +48,6 @@ namespace GeekStream.Core.Entities
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-        // public int AuthorId { get; set; }
 
         [Display(Name = "Автор")]
         public ApplicationUser Author { get; set; }

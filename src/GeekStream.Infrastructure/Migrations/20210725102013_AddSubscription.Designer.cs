@@ -4,14 +4,16 @@ using GeekStream.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeekStream.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210725102013_AddSubscription")]
+    partial class AddSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,8 +232,9 @@ namespace GeekStream.Infrastructure.Migrations
 
             modelBuilder.Entity("GeekStream.Core.Entities.Subscription", b =>
                 {
-                    b.Property<string>("PublishSource")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("PublishSource")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -430,11 +433,9 @@ namespace GeekStream.Infrastructure.Migrations
 
             modelBuilder.Entity("GeekStream.Core.Entities.Subscription", b =>
                 {
-                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", null)
                         .WithMany("Subscriptions")
                         .HasForeignKey("ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

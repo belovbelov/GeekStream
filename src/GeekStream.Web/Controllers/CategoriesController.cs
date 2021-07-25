@@ -16,12 +16,14 @@ namespace GeekStream.Web.Controllers
         private readonly AppDbContext _context;
         private readonly CategoryService _categoryService;
         private readonly ArticleService _articleService;
+        private readonly UserService _userService;
 
-        public CategoriesController(AppDbContext context, CategoryService categoryService, ArticleService articleService)
+        public CategoriesController(AppDbContext context, CategoryService categoryService, ArticleService articleService, UserService userService)
         {
             _context = context;
             _categoryService = categoryService;
             _articleService = articleService;
+            _userService = userService;
         }
 
         // GET: Categories
@@ -35,7 +37,9 @@ namespace GeekStream.Web.Controllers
                 var foundCategory = _categoryService.GetCategoryById(category);
                 var categoryViewModel = new CategoryViewModel
                 {
-                    Name = foundCategory.Name
+                    Id = foundCategory.Id,
+                    Name = foundCategory.Name,
+                    IsSubscribed = _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString())
                 };
                 categoryViewModel.Articles = _articleService.FindByCategoryId(category);
                 return View(categoryViewModel);

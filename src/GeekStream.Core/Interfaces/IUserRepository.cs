@@ -5,10 +5,10 @@ namespace GeekStream.Core.Interfaces
 {
     public interface IUserRepository
     {
-        public void Add(ApplicationUser user);
-        public void Delete(int id);
-        public void Edit(ApplicationUser user);
         public ApplicationUser GetByName(string name);
         public IEnumerable<ApplicationUser> GetAll();
+        public void Subscribe(Subscription subscription);
+        public void Unsubscribe(Subscription subscription);
+        public bool IsSubscribed(ApplicationUser user, string subId);
     }
 }

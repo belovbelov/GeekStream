@@ -23,9 +23,11 @@
             <div class="card mb-2">
                 <div class="card-body">
                     <div class="card-navbar">
-                        <p>@Html.DisplayFor(modelItem => item.Category)</p>
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                        @item.Category
+                    </a>
                         <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Author)</p>
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Author">@Html.DisplayFor(modelItem => item.Author)</a>
                     </div>
                     <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
                         <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>

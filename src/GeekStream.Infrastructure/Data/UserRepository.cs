@@ -14,28 +14,7 @@ namespace GeekStream.Infrastructure.Data
         {
             _context = context;
         }
-//----------------------------------------------------------------
-        public void Add(ApplicationUser user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-        }
 
-        public void Delete(int id)
-        {
-            var user = (id);
-            if (user != null)
-            {
-                _context.SaveChanges();
-            }
-        }
-
-        public void Edit(ApplicationUser user)
-        {
-            _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChanges();
-        }
-//----------------------------------------------------------------
         public ApplicationUser GetByName(string name)
         {
             return _context.Users.SingleOrDefault(a => a.UserName == name);
@@ -44,6 +23,23 @@ namespace GeekStream.Infrastructure.Data
         public IEnumerable<ApplicationUser> GetAll()
         {
             return _context.Users.ToList();
+        }
+
+        public void Subscribe(Subscription subscription)
+        {
+            _context.Subscription.Add(subscription);
+            _context.SaveChanges();
+        }
+
+        public void Unsubscribe(Subscription subscription)
+        {
+            _context.Subscription.Remove(subscription);
+            _context.SaveChanges();
+        }
+
+        public bool IsSubscribed(ApplicationUser user, string subId)
+        {
+            return _context.Subscription.Any(s => s.ApplicationUser == user && s.PublishSource == subId);
         }
     }
 }

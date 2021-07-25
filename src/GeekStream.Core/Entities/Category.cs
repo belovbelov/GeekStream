@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GeekStream.Core.Interfaces;
 
 namespace GeekStream.Core.Entities
 {

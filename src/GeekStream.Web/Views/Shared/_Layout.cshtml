@@ -21,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item mr-2">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Статьи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Index">Статьи</a>
                         </li>
                         <li class="nav-item mr-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="All">Категории</a>
@@ -65,13 +65,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
+                @await RenderSectionAsync("subscriptions", required: false)
                 <div style="height: 200px; background-color: aqua">Dummy</div>
             </div>
             <div class="col">
                 @RenderBody()
             </div>
             <div class="col-md-3">
-                <div style="height: 200px; background-color: aqua">Dummy</div>
+                @await RenderSectionAsync("discussingNow",required: false)
             </div>
         </div>
     </div>

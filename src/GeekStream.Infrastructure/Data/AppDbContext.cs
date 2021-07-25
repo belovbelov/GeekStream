@@ -15,5 +15,6 @@ namespace GeekStream.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Subscription> Subscription { get; set; }
     }
 }

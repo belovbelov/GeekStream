@@ -31,6 +31,7 @@ namespace GeekStream.Core.Services
                 PublishedDate = article.PostedOn,
                 Author = article.Author.UserName,
                 Category = article.Category.Name,
+                CategoryId = article.CategoryId,
                 Rating = article.Rating
                 });
 
@@ -62,6 +63,7 @@ namespace GeekStream.Core.Services
                 PublishedDate = article.PostedOn,
                 Author = article.Author.UserName,
                 Category = article.Category.Name,
+                CategoryId = article.CategoryId,
                 Rating = article.Rating
             };
         }
@@ -77,6 +79,7 @@ namespace GeekStream.Core.Services
                 PublishedDate = article.PostedOn,
                 Author = article.Author.UserName,
                 Category = article.Category.Name,
+                CategoryId = article.CategoryId,
                 Rating = article.Rating
                 });
         }
@@ -92,8 +95,28 @@ namespace GeekStream.Core.Services
                     PublishedDate = article.PostedOn,
                     Author = article.Author.UserName,
                     Category = article.Category.Name,
+                    CategoryId = article.CategoryId,
                     Rating = article.Rating
                 });
+        }
+
+        public IEnumerable<ArticleViewModel> FindBySubscription(string? subscriptionId = null)
+        {
+            var userId = _userService.GetCurrentUser().Id;
+            var articles = _articleRepository.FindBySubscription(userId, subscriptionId)
+                .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.Author.UserName,
+                    Category = article.Category.Name,
+                    CategoryId = article.CategoryId,
+                    Rating = article.Rating
+                });
+
+            return articles;
         }
     }
 }

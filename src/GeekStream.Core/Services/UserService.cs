@@ -26,20 +26,26 @@ namespace GeekStream.Core.Services
             return _userManager.GetUserAsync(_accessor.HttpContext.User).Result;
         }
 
-        public void Add(RegisterViewModel model)
+        public void Subscribe(string subscriptionId)
         {
-            var user = new ApplicationUser();
-            _userRepository.Add(user);
+            var user = GetCurrentUser();
+            var subscription = new Subscription
+            {
+                ApplicationUser = user,
+                PublishSource = subscriptionId.ToString()
+            };
+            _userRepository.Subscribe(subscription);
         }
 
-        public void Delete(int id)
+        public void Unsubscribe(string subscriptionId)
         {
-            _userRepository.Delete(id);
-        }
-
-        public void Edit(ApplicationUser user)
-        {
-            _userRepository.Edit(user);
+            var user = GetCurrentUser();
+            var subscription = new Subscription
+            {
+                ApplicationUser = user,
+                PublishSource = subscriptionId
+            };
+            _userRepository.Unsubscribe(subscription);
         }
 
         public UserViewModel GetUserByName(string name)
@@ -47,6 +53,7 @@ namespace GeekStream.Core.Services
             var user = _userRepository.GetByName(name);
             return new UserViewModel
             {
+                Id = user.Id,
                 UserName = user.UserName
             };
         }
@@ -54,6 +61,11 @@ namespace GeekStream.Core.Services
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
             return _userRepository.GetAll();
+        }
+
+        public bool IsSubscribed(ApplicationUser user, string subId)
+        {
+            return _userRepository.IsSubscribed(user, subId);
         }
     }
 }

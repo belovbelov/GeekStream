@@ -52,7 +52,7 @@ namespace GeekStream.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(Index), "Home");
+                   return RedirectToAction(nameof(Index), "Home");
                 }
             }
             return View(model);

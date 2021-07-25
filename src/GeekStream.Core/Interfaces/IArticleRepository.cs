@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
+using GeekStream.Core.ViewModels;
 
 namespace GeekStream.Core.Interfaces
 {
@@ -14,5 +15,6 @@ namespace GeekStream.Core.Interfaces
         public IEnumerable<Article> GetAll(int page, int pageSize, string searchString);
         public IEnumerable<Article> FindByCategoryId(int id);
         public IEnumerable<Article> FindByAuthorName(string name);
+        public IEnumerable<Article> FindBySubscription(string currentUserId,string subscriptionId);
     }
 }
