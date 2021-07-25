@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using GeekStream.Core.Interfaces;
 
 namespace GeekStream.Core.Entities
@@ -35,6 +36,8 @@ namespace GeekStream.Core.Entities
         [StringLength(32,MinimumLength = 5)]
         [Display(Name = "Название")]
         public string Name { get; set; }
+
+        public File Image { get; set; }
 
         [Required]
         [StringLength(200,MinimumLength = 10)]

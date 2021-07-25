@@ -3,25 +3,24 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h3 mb-2>Лента</h3>
-    @foreach (var item in Model)
+<h5 class="mb-2">Лента</h5>
+
+@foreach (var item in Model)
     {
-            <div class="card mb-2">
-                <div class="card-body">
-                    <div class="card-navbar">
-                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
-                        @item.Category
-                    </a>
-                        <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
-                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Author">@Html.DisplayFor(modelItem => item.Author)</a>
-                    </div>
-                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
-                        <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
-                    </a>
-                    <p>@Html.DisplayFor(modelItem => item.Content)</p>
-                    <div class="text-right mb-0">
-                        <p>@Html.DisplayFor(modelItem => item.Rating)</p>
-                    </div>
-                </div>
-            </div>
+      <div class="card mb-2">
+          <div class="card-body">
+              <div class="card-navbar">
+                  <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">@item.Category</a>
+                  <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
+                  <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Author">@Html.DisplayFor(modelItem => item.Author)</a>
+              </div>
+              <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                  <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+              </a>
+              <p>@Html.DisplayFor(modelItem => item.Content)</p>
+              <div class="text-right mb-0">
+                  <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+              </div>
+          </div>
+      </div>
     }

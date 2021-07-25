@@ -20,9 +20,9 @@ namespace GeekStream.Web.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string? id)
         {
-            var articles = _articleService.FindBySubscription();
+            var articles = _articleService.FindBySubscription(id);
             return View(articles);
         }
 

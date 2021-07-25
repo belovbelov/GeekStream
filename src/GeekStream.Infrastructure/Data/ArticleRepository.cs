@@ -104,7 +104,7 @@ namespace GeekStream.Infrastructure.Data
                 .Where(a => a.Author.UserName == name);
         }
 
-        public IEnumerable<Article> FindBySubscription(string currentUserId,string subscriptionId)
+        public IEnumerable<Article> FindBySubscription(string currentUserId,string? subscriptionId)
         {
             var sub = _context.Subscription
                     .Where(s => currentUserId == s.ApplicationUser.Id);
@@ -114,11 +114,17 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Author)
                 .Where(article => article.PostedOn != null);
 
-            return articles.Join(
+            if (subscriptionId != null)
+            {
+                articles = articles
+                    .Where(article => article.CategoryId.ToString() == subscriptionId || article.Author.Id == subscriptionId);
+            }
+
+            articles = articles.Join(
                 sub,
                 a => a.CategoryId.ToString(),
                 s => s.PublishSource,
-                (a,s) => new Article
+                (a, s) => new Article
                 {
                     Id = a.Id,
                     Title = a.Title,
@@ -127,7 +133,24 @@ namespace GeekStream.Infrastructure.Data
                     PostedOn = a.PostedOn,
                     Author = a.Author,
                     Category = a.Category,
-                    CategoryId= a.CategoryId,
+                    CategoryId = a.CategoryId,
+                    Rating = a.Rating
+                }
+            );
+            return articles.Join(
+                sub,
+                a => a.Author.Id,
+                s => s.PublishSource,
+                (a, s) => new Article
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Content = a.Content,
+                    CreatedOn = a.CreatedOn,
+                    PostedOn = a.PostedOn,
+                    Author = a.Author,
+                    Category = a.Category,
+                    CategoryId = a.CategoryId,
                     Rating = a.Rating
                 }
             );

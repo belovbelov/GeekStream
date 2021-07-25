@@ -10,7 +10,20 @@
         <div class="card-navbar justify-content-between">
             <h3 class="card-title">@Model.UserName</h3>
             <div>
-                <button class="btn btn-primary">Подписаться</button>
+                @if(Model.IsSubscribed)
+                {
+                    <form asp-controller="Home" asp-action="Unsubscribe">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <input asp-for="Id" class="btn btn-outline-primary" type="submit" value="✓ Вы подписаны" script="window.location.reload()"/>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Home" asp-action="Subscribe">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <input class="btn btn-primary" type="submit"value="Подписаться" />
+                    </form>
+                }
                 <button class="btn btn-outline-light">Написать</button>
             </div>
         </div>

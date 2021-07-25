@@ -6,16 +6,18 @@
 
     
 <div class="card mb-2">
-      <div class="card-body">
-          <div class="card-navbar">
-              <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">@Model.Category</a>
-              <p>@Html.DisplayFor(modelItem => Model.PublishedDate)</p>
-              <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@Model.Author">@Html.DisplayFor(modelItem => Model.Author)</a>
-          </div>
-      </div>
-    <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
-    <p>@Html.DisplayFor(modelItem => Model.Content)</p>
-    <div class="text-right mb-0">
-        <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
-    </div>
-</div>
+                <div class="card-body">
+                    <div class="card-navbar">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">
+                        @Model.Category
+                    </a>
+                        <p>@Html.DisplayFor(modelItem => Model.PublishedDate)</p>
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@Model.Author">@Html.DisplayFor(modelItem => Model.Author)</a>
+                    </div>
+                        <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
+                    <p>@Html.DisplayFor(modelItem => Model.Content)</p>
+                    <div class="text-right mb-0">
+                        <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
+                    </div>
+                </div>
+            </div>
