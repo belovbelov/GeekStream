@@ -5,8 +5,12 @@ namespace GeekStream.Core.ViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Никнейм")]
-        public string UserName { get; set; }
+        [Display(Name = "Имя")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Фамилия")]
+        public string LastName { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]

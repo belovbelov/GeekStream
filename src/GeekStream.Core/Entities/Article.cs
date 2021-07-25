@@ -57,6 +57,6 @@ namespace GeekStream.Core.Entities
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public ICollection<Keyword> Keywords { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public ICollection<File> Images { get; set; }
     }
 }

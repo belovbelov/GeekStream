@@ -22,8 +22,16 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index(string? id)
         {
-            var articles = _articleService.FindBySubscription(id);
-            return View(articles);
+            if (User.Identity.IsAuthenticated)
+            {
+                var articles = _articleService.FindBySubscription(id);
+                return View(articles);
+            }
+            else
+            {
+                var articles = _articleService.GetAllArticles();
+                return View(articles);
+            }
         }
 
         [HttpPost]

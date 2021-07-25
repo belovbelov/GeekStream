@@ -13,7 +13,7 @@
                         @item.Category
                     </a>
                         <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
-                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Author">@Html.DisplayFor(modelItem => item.Author)</a>
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.Author)</a>
                     </div>
                     <h3> @Html.DisplayFor(modelItem => item.Title)</h3>
                     @*

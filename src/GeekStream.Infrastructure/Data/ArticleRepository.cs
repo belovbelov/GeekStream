@@ -95,13 +95,13 @@ namespace GeekStream.Infrastructure.Data
                 .ToList();
         }
 
-        public IEnumerable<Article> FindByAuthorName(string name)
+        public IEnumerable<Article> FindByAuthorId(string id)
         {
             return _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
                 .Where(article => article.PostedOn != null)
-                .Where(a => a.Author.UserName == name);
+                .Where(a => a.Author.Id== id);
         }
 
         public IEnumerable<Article> FindBySubscription(string currentUserId,string? subscriptionId)
@@ -109,18 +109,18 @@ namespace GeekStream.Infrastructure.Data
             var sub = _context.Subscription
                     .Where(s => currentUserId == s.ApplicationUser.Id);
 
-            var articles = _context.Articles
+            var allArticles = _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
                 .Where(article => article.PostedOn != null);
 
             if (subscriptionId != null)
             {
-                articles = articles
+                allArticles = allArticles
                     .Where(article => article.CategoryId.ToString() == subscriptionId || article.Author.Id == subscriptionId);
             }
 
-            articles = articles.Join(
+            var articles = allArticles.Join(
                 sub,
                 a => a.CategoryId.ToString(),
                 s => s.PublishSource,
@@ -137,7 +137,7 @@ namespace GeekStream.Infrastructure.Data
                     Rating = a.Rating
                 }
             );
-            return articles.Join(
+            return allArticles.Join(
                 sub,
                 a => a.Author.Id,
                 s => s.PublishSource,
@@ -153,7 +153,7 @@ namespace GeekStream.Infrastructure.Data
                     CategoryId = a.CategoryId,
                     Rating = a.Rating
                 }
-            );
+            ).Concat(articles);
         }
 
     }

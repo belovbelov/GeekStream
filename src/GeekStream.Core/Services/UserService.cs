@@ -32,7 +32,7 @@ namespace GeekStream.Core.Services
             var subscription = new Subscription
             {
                 ApplicationUser = user,
-                PublishSource = subscriptionId.ToString()
+                PublishSource = subscriptionId
             };
             _userRepository.Subscribe(subscription);
         }
@@ -48,14 +48,15 @@ namespace GeekStream.Core.Services
             _userRepository.Unsubscribe(subscription);
         }
 
-        public UserViewModel GetUserByName(string name)
+        public UserViewModel GetUserById(string id)
         {
-            var user = _userRepository.GetByName(name);
+            var user = _userRepository.GetByName(id);
             return new UserViewModel
             {
                 Id = user.Id,
-                UserName = user.UserName
-            };
+                UserName = user.FirstName + " " + user.LastName,
+                IsSubscribed = IsSubscribed(GetCurrentUser(), user.Id
+                )};
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()

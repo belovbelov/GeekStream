@@ -25,11 +25,11 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{controller}/{name}")]
-        public IActionResult UserProfile(string name)
+        [Route("[controller]/{id}")]
+        public IActionResult UserProfile(string id)
         {
-            var userViewModel = _userService.GetUserByName(name);
-            userViewModel.Articles = _articleService.FindByAuthorName(name);
+            var userViewModel = _userService.GetUserById(id);
+            userViewModel.Articles = _articleService.FindByAuthorId(id);
             if (userViewModel == null)
             {
                 return NotFound();

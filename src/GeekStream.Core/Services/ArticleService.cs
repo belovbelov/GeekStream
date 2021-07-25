@@ -29,7 +29,8 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                Author = article.Author.UserName,
+                Author = article.Author.FirstName + " " + article.Author.LastName,
+                AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating
@@ -61,7 +62,8 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                Author = article.Author.UserName,
+                Author = article.Author.FirstName + " " + article.Author.LastName,
+                AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating
@@ -77,23 +79,25 @@ namespace GeekStream.Core.Services
                 Title = article.Title,
                 Content = article.Content,
                 PublishedDate = article.PostedOn,
-                Author = article.Author.UserName,
+                Author = article.Author.FirstName + " " + article.Author.LastName,
+                AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating
                 });
         }
 
-        public IEnumerable<ArticleViewModel> FindByAuthorName(string name)
+        public IEnumerable<ArticleViewModel> FindByAuthorId(string id)
         {
-            return _articleRepository.FindByAuthorName(name)
+            return _articleRepository.FindByAuthorId(id)
                 .Select(article => new ArticleViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
                     Content = article.Content,
                     PublishedDate = article.PostedOn,
-                    Author = article.Author.UserName,
+                    Author = article.Author.FirstName + " " + article.Author.LastName,
+                    AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating
@@ -110,7 +114,8 @@ namespace GeekStream.Core.Services
                     Title = article.Title,
                     Content = article.Content,
                     PublishedDate = article.PostedOn,
-                    Author = article.Author.UserName,
+                    Author = article.Author.FirstName + " " + article.Author.LastName,
+                    AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating

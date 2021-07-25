@@ -5,8 +5,8 @@ namespace GeekStream.Core.ViewModels
     public class LoginViewModel
     {
             [Required]
-            [Display(Name = "Никнейм")]
-            public string UserName { get; set; }
+            [Display(Name = "Электронная почта")]
+            public string Email { get; set; }
 
             [Required]
             [DataType(DataType.Password)]

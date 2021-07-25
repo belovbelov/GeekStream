@@ -14,7 +14,7 @@ namespace GeekStream.Core.Interfaces
         public Article GetById(int id);
         public IEnumerable<Article> GetAll(int page, int pageSize, string searchString);
         public IEnumerable<Article> FindByCategoryId(int id);
-        public IEnumerable<Article> FindByAuthorName(string name);
+        public IEnumerable<Article> FindByAuthorId(string name);
         public IEnumerable<Article> FindBySubscription(string currentUserId,string subscriptionId);
     }
 }

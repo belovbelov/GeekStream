@@ -15,9 +15,9 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public ApplicationUser GetByName(string name)
+        public ApplicationUser GetByName(string id)
         {
-            return _context.Users.SingleOrDefault(a => a.UserName == name);
+            return _context.Users.SingleOrDefault(a => a.Id == id);
         }
 
         public IEnumerable<ApplicationUser> GetAll()
