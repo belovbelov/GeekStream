@@ -1,0 +1,16 @@
+﻿@model IEnumerable<GeekStream.Core.Entities.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Users";
+}
+<h3 mb-2>Пользователи</h3>
+    @foreach (var item in Model)
+    {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="card-navbar">
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.Id">@item.FirstName @item.LastName</a>
+                    </div>
+                </div>
+            </div>
+    }

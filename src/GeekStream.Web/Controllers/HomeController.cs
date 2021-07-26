@@ -1,27 +1,63 @@
 ﻿using System.Diagnostics;
+using System.Linq;
+using GeekStream.Core.Services;
+using GeekStream.Core.ViewModels;
 using GeekStream.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ArticleService _articleService;
+        private readonly UserService _userService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ArticleService articleService, UserService userService)
         {
-            _logger = logger;
+            _articleService = articleService;
+            _userService = userService;
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Index(string? id = null)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (_userService.IsSubscribed(_userService.GetCurrentUser()))
+                {
+                    var allArticles = _articleService.FindBySubscription(id);
+                    return View(allArticles);
+                }
+
+            }
+
+            var articles = _articleService.GetAllArticles();
+            return View(articles);
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult Subscribe(bool isSubscribed, string id)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _userService.Subscribe(id);
+                return RedirectToAction("Index", "Categories");
+            }
+
+            return NotFound();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult Unsubscribe(bool isSubscribed, string id)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _userService.Unsubscribe(id);
+                return RedirectToAction("Index", "Categories");
+            }
+            return NotFound();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

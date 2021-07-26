@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using GeekStream.Core.Interfaces;
 
 namespace GeekStream.Core.Entities
 {
     public class Article
     {
+        public Article()
+        {
+            
+        }
+
         public Article(string title, string content)
         {
             if (string.IsNullOrWhiteSpace(title))
@@ -39,19 +41,22 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Содержание")]
         public string Content { get; set; }
 
-        [StringLength(100)]
-        public string ShortDescription { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Дата публикации")]
-        public DateTime PostedOn { get; set; }
+        public DateTime? PostedOn { get; set; }
 
-        public IList<string> Keywords { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
+
+        [Display(Name = "Автор")]
+        public ApplicationUser Author { get; set; }
+
+        public int Rating { get; set; }
+
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-        //TODO Добавить информацию об Авторе И Рейтинг статьи
-        //public КЛАСС_ЮЗЕРА Author { get; set; }
+        public IEnumerable<Keyword> Keywords { get; set; }
+        public IEnumerable<FilePath> Images { get; set; }
     }
 }

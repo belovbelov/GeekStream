@@ -1,0 +1,58 @@
+﻿@model GeekStream.Core.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = Model.UserName;
+}
+
+
+<div class="card mb-2">
+    <div class="card-body">
+        <div class="card-navbar justify-content-between">
+            <h3 class="card-title">@Model.UserName</h3>
+            <div>
+                @if (Model.UserMail != User.Identity.Name)
+                {
+                    @if (Model.IsSubscribed)
+                    {
+                        <form asp-controller="Home" asp-action="Unsubscribe">
+                            <input type="hidden" asp-for="@Model.Id"/>
+                            <input asp-for="Id" class="btn btn-outline-primary" type="submit" value="✓ Вы подписаны" script="window.location.reload()"/>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Home" asp-action="Subscribe">
+                            <input type="hidden" asp-for="@Model.Id"/>
+                            <input class="btn btn-primary" type="submit"value="Подписаться"/>
+                        </form>
+                    }
+                    <button class="btn btn-outline-light">Написать</button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 mb-2>Статьи от данного автора</h3>
+    @foreach (var item in Model.Articles)
+    {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="card-navbar">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                        @item.Category
+                    </a>
+                        <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
+                        <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Id">@Html.DisplayFor(modelItem => item.Author)</a>
+                    </div>
+                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                        <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+                    </a>
+                    <p>@Html.DisplayFor(modelItem => item.Content)</p>
+                    <div class="text-right mb-0">
+                        <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                    </div>
+                </div>
+            </div>
+    }

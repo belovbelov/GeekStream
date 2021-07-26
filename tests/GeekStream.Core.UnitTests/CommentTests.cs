@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using Xunit;
 
@@ -18,7 +14,7 @@ namespace GeekStream.Core.UnitTests
             int articleId = 5;
             Assert.Throws<ArgumentException>(() =>
             {
-                var article = new Comment(name, content, articleId);
+                 var article = new Comment(name, content, articleId);
             });
         }
     }
