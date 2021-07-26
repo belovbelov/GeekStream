@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +10,9 @@ using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+
 
 namespace GeekStream.Web.Controllers
 {
@@ -17,12 +22,14 @@ namespace GeekStream.Web.Controllers
 
         private readonly ArticleService _articleService;
         private readonly CategoryService _categoryService;
+        private readonly UserService _userService;
 
-        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService)
+        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService, UserService userService)
         {
             _context = context;
             _articleService = articleService;
             _categoryService = categoryService;
+            _userService = userService;
         }
 
         // GET: Articles
@@ -30,8 +37,12 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
-            var articleViewModels = _articleService.FindByKeywords(searchString);
-            return View(articleViewModels);
+            if (_userService.IsSubscribed(_userService.GetCurrentUser()))
+            {
+                var articleViewModels = _articleService.FindByKeywords(searchString);
+                return View(articleViewModels);
+            }
+            return NotFound();
         }
 
         // GET: Articles/Details/5
@@ -63,12 +74,26 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleCreationViewModel model)
+        public async Task<IActionResult> Create(ArticleCreationViewModel model, List<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
-                await _articleService.SaveArticleAsync(model);
-                return RedirectToAction(nameof(Index));
+                if (files != null && files.Count > 0)
+                {
+                    foreach (var file in files)
+                    {
+                        var image = new FilePath
+                        {
+                            FileName = System.IO.Path.GetFileName(file.FileName),
+                            FileType = FileType.Photo,
+                            User = _userService.GetCurrentUser()
+                        };
+                        model.FilePaths.Add(image);
+                    }
+                    await _articleService.SaveArticleAsync(model);
+                    return RedirectToAction(nameof(Index));
+                    
+                }
             }
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View(model);

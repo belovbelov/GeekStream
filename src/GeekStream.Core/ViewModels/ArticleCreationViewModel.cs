@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GeekStream.Core.Entities;
 
 namespace GeekStream.Core.ViewModels
 {
@@ -20,5 +21,7 @@ namespace GeekStream.Core.ViewModels
         [Required]
         [Display(Name = "Укажите ключевые слова")]
         public string Keywords { get; set; }
+
+        public List<FilePath> FilePaths { get; set; } = new();
     }
 }

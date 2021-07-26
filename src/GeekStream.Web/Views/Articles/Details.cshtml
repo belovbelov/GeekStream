@@ -15,6 +15,7 @@
                 <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">@Html.DisplayFor(modelItem => Model.Author)</a>
             </div>
                 <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
+                    <img src="/images/@Url.Content(Model.Image)"/>
                 <p>@Html.DisplayFor(modelItem => Model.Content)</p>
             <div class="text-right mb-0">
                 <p>@Html.DisplayFor(modelItem => Model.Rating)</p>

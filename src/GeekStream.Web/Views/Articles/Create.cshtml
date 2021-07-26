@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
 
 <div class="navbar">
     <h5>Новая статья</h5>
@@ -36,7 +36,13 @@
                 <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-        </form>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label  asp-for="FilePaths"class="control-label"></label>
+                    <input type="file" id="files" name="files" multiple=""/>
+                </div>
+            </div>
+    </form>
 
 <div>
     <a asp-action="Index">Back to List</a>

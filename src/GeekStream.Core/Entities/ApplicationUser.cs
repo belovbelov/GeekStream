@@ -17,12 +17,10 @@ namespace GeekStream.Core.Entities
         [Required]
         public string LastName { get; set; }
 
-        public File Avatar { get; set; } 
+        public IEnumerable<Article> AuthoredArticles { get; set; }
 
-        public ICollection<Article> AuthoredArticles { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
-
-        public ICollection<Subscription> Subscriptions { get; set; }
+        public IEnumerable<Subscription> Subscriptions { get; set; }
     }
 }

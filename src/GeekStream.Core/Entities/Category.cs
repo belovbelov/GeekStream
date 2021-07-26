@@ -36,7 +36,7 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        public File Image { get; set; }
+        public FilePath Image { get; set; }
 
         [Required]
         [Display(Name = "Описание")]

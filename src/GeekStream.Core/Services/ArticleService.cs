@@ -35,7 +35,8 @@ namespace GeekStream.Core.Services
                 AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
-                Rating = article.Rating
+                Rating = article.Rating,
+                Image = article.Images.First().FileName
                 });
 
             }
@@ -51,6 +52,7 @@ namespace GeekStream.Core.Services
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
                 Rating = 1,
+                Images = model.FilePaths
             };
 
             await _articleRepository.SaveAsync(article);
@@ -71,7 +73,8 @@ namespace GeekStream.Core.Services
                 AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
-                Rating = article.Rating
+                Rating = article.Rating,
+                Image = article.Images.First().FileName
             };
         }
 
@@ -88,7 +91,8 @@ namespace GeekStream.Core.Services
                 AuthorId = article.Author.Id,
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
-                Rating = article.Rating
+                Rating = article.Rating,
+                Image = article.Images.First().FileName
                 });
         }
 
@@ -105,7 +109,8 @@ namespace GeekStream.Core.Services
                     AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
-                    Rating = article.Rating
+                    Rating = article.Rating,
+                    Image = article.Images.First().FileName
                 });
         }
 
@@ -123,7 +128,8 @@ namespace GeekStream.Core.Services
                     AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
-                    Rating = article.Rating
+                    Rating = article.Rating,
+                    Image = article.Images.First().FileName
                 });
 
             return articles;
@@ -143,7 +149,8 @@ namespace GeekStream.Core.Services
                     AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
-                    Rating = article.Rating
+                    Rating = article.Rating,
+                    Image = article.Images.First().FileName
                 });
         }
     }

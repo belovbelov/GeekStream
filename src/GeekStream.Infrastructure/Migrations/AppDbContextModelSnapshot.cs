@@ -142,20 +142,18 @@ namespace GeekStream.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageFileId")
+                    b.Property<int?>("ImageFilePathId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageFileId");
+                    b.HasIndex("ImageFilePathId");
 
                     b.ToTable("Categories");
                 });
@@ -190,22 +188,15 @@ namespace GeekStream.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("GeekStream.Core.Entities.File", b =>
+            modelBuilder.Entity("GeekStream.Core.Entities.FilePath", b =>
                 {
-                    b.Property<int>("FileId")
+                    b.Property<int>("FilePathId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ArticleId")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ContentType")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FileName")
                         .HasMaxLength(255)
@@ -217,13 +208,11 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("FileId");
+                    b.HasKey("FilePathId");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Files");
                 });
@@ -408,9 +397,9 @@ namespace GeekStream.Infrastructure.Migrations
 
             modelBuilder.Entity("GeekStream.Core.Entities.Category", b =>
                 {
-                    b.HasOne("GeekStream.Core.Entities.File", "Image")
+                    b.HasOne("GeekStream.Core.Entities.FilePath", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageFileId");
+                        .HasForeignKey("ImageFilePathId");
 
                     b.Navigation("Image");
                 });
@@ -430,15 +419,15 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("GeekStream.Core.Entities.File", b =>
+            modelBuilder.Entity("GeekStream.Core.Entities.FilePath", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.Article", null)
                         .WithMany("Images")
                         .HasForeignKey("ArticleId");
 
                     b.HasOne("GeekStream.Core.Entities.ApplicationUser", "User")
-                        .WithOne("Avatar")
-                        .HasForeignKey("GeekStream.Core.Entities.File", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -515,8 +504,6 @@ namespace GeekStream.Infrastructure.Migrations
             modelBuilder.Entity("GeekStream.Core.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("AuthoredArticles");
-
-                    b.Navigation("Avatar");
 
                     b.Navigation("Comments");
 

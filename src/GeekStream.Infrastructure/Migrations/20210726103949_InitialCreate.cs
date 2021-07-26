@@ -198,18 +198,16 @@ namespace GeekStream.Infrastructure.Migrations
                 name: "Files",
                 columns: table => new
                 {
-                    FileId = table.Column<int>(type: "int", nullable: false)
+                    FilePathId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    ContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     FileType = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ArticleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.FileId);
+                    table.PrimaryKey("PK_Files", x => x.FilePathId);
                     table.ForeignKey(
                         name: "FK_Files_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -224,18 +222,18 @@ namespace GeekStream.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    ImageFileId = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageFilePathId = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Categories_Files_ImageFileId",
-                        column: x => x.ImageFileId,
+                        name: "FK_Categories_Files_ImageFilePathId",
+                        column: x => x.ImageFilePathId,
                         principalTable: "Files",
-                        principalColumn: "FileId",
+                        principalColumn: "FilePathId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -338,9 +336,9 @@ namespace GeekStream.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_ImageFileId",
+                name: "IX_Categories_ImageFilePathId",
                 table: "Categories",
-                column: "ImageFileId");
+                column: "ImageFilePathId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ApplicationUserId",
@@ -360,9 +358,7 @@ namespace GeekStream.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Files_UserId",
                 table: "Files",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Keywords_ArticleId",

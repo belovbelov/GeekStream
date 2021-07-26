@@ -22,5 +22,7 @@ namespace GeekStream.Core.ViewModels
         public int CategoryId { get; set; }
 
         public int Rating { get; set; }
+
+        public string Image { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
