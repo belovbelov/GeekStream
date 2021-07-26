@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Web.Models;
@@ -24,14 +25,17 @@ namespace GeekStream.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var articles = _articleService.FindBySubscription(id);
-                return View(articles);
+                if (_userService.IsSubscribed(_userService.GetCurrentUser()))
+                {
+                    var allArticles = _articleService.FindBySubscription(id);
+                    return View(allArticles);
+                }
+
+                return View();
             }
-            else
-            {
-                var articles = _articleService.GetAllArticles();
-                return View(articles);
-            }
+
+            var articles = _articleService.GetAllArticles();
+            return View(articles);
         }
 
         [HttpPost]

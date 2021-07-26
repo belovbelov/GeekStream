@@ -16,11 +16,13 @@ namespace GeekStream.Web.Controllers
         private readonly AppDbContext _context;
 
         private readonly ArticleService _articleService;
+        private readonly CategoryService _categoryService;
 
-        public ArticlesController(AppDbContext context, ArticleService articleService)
+        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService)
         {
             _context = context;
             _articleService = articleService;
+            _categoryService = categoryService;
         }
 
         // GET: Articles
@@ -52,7 +54,7 @@ namespace GeekStream.Web.Controllers
         [Route("[controller]/[action]")]
         public IActionResult Create()
         {
-            ViewData["Category"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View();
         }
 
@@ -68,7 +70,7 @@ namespace GeekStream.Web.Controllers
                 await _articleService.SaveArticleAsync(model);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Category"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View(model);
         }
 

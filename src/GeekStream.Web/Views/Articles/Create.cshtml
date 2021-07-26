@@ -3,23 +3,37 @@
 @{
     ViewData["Title"] = "Create";
 }
-    <h1>Create</h1>
 
-    <h4>Article</h4>
+<div class="navbar navbar-light bg-light">
+    <h5>Новая статья</h5>
+              <div class="text-right mb-0">
+            <div class="form-group">
+                <input type="submit" value="Опубликовать" class="btn btn-primary mr-2" />
+                <input type="submit" value="Опубликовать" class="btn btn-primary" />
+            </div>
+        </div>
+</div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" placeholder="Придумайте название статьи"/>
+                <small class="form-text text-muted">Хорошее название может заинтересовать мноигих читателей</small>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Category"></select>
+                <small class="form-text text-muted">Статью можно отправить в одну категорию</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="Keywords" class="control-label"></label>
+                <input asp-for="Keywords" class ="form-control" placeholder="Укажите ключевые слова"/>
+                <small class="form-text text-muted">Ключевые слова помогают найти вашу статью в поиске</small>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">

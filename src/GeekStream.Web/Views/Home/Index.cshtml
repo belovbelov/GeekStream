@@ -4,7 +4,12 @@
     ViewData["Title"] = "Index";
 }
 <h5 class="mb-2">Лента</h5>
-
+@if(Model == null)
+{
+<h4>Пока здесь пусто</h4>
+}
+else
+{
 @foreach (var item in Model)
     {
       <div class="card mb-2">
@@ -24,3 +29,4 @@
           </div>
       </div>
     }
+}

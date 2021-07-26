@@ -37,9 +37,13 @@ namespace GeekStream.Infrastructure.Data
             _context.SaveChanges();
         }
 
-        public bool IsSubscribed(ApplicationUser user, string subId)
+        public bool IsSubscribed(ApplicationUser user, string? subId)
         {
-            return _context.Subscription.Any(s => s.ApplicationUser == user && s.PublishSource == subId);
+            if (subId != null)
+            {
+                return _context.Subscription.Any(s => s.ApplicationUser == user && s.PublishSource == subId);
+            }
+            return _context.Subscription.Any(s => s.ApplicationUser == user);
         }
     }
 }

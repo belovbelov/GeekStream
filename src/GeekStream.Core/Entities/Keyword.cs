@@ -9,13 +9,10 @@ namespace GeekStream.Core.Entities
         {
             
         }
-        
-        [Required]
-        public int Id { get; set; }
-
-        [Required]
+        [Key]
         public string Word { get; set; }
 
-        public ICollection<Article> Articles { get; set; }
+        [Key]
+        public Article Article { get; set; }
     }
 }

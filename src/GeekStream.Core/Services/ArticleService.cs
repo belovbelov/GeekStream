@@ -13,11 +13,13 @@ namespace GeekStream.Core.Services
     {
         private readonly IArticleRepository _articleRepository;
         private readonly UserService _userService;
+        private readonly KeywordService _keywordService;
 
-        public ArticleService(IArticleRepository articleRepository, UserService userService)
+        public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService)
         {
             _articleRepository = articleRepository;
             _userService = userService;
+            _keywordService = keywordService;
         }
 
         public IEnumerable<ArticleViewModel> GetAllArticles(string searchString = null)
@@ -44,12 +46,15 @@ namespace GeekStream.Core.Services
             {
                 Title = model.Title,
                 Content = model.Content,
-                CreatedOn = DateTime.Now,
-                PostedOn = DateTime.MinValue,
+                CreatedOn = DateTime.UtcNow,
+                PostedOn = null,
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
-                Rating = 1
+                Rating = 1,
             };
+
+            
+            article.Keywords = keywords;
             await _articleRepository.SaveAsync(article);
         }
 

@@ -55,8 +55,9 @@ namespace GeekStream.Core.Services
             {
                 Id = user.Id,
                 UserName = user.FirstName + " " + user.LastName,
-                IsSubscribed = IsSubscribed(GetCurrentUser(), user.Id
-                )};
+                IsSubscribed = IsSubscribed(GetCurrentUser(), user.Id),
+                UserMail = user.Email
+            };
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()
@@ -64,7 +65,7 @@ namespace GeekStream.Core.Services
             return _userRepository.GetAll();
         }
 
-        public bool IsSubscribed(ApplicationUser user, string subId)
+        public bool IsSubscribed(ApplicationUser user, string? subId = null)
         {
             return _userRepository.IsSubscribed(user, subId);
         }

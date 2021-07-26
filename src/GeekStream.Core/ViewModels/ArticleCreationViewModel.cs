@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeekStream.Core.ViewModels
 {
@@ -15,5 +16,9 @@ namespace GeekStream.Core.ViewModels
         [Required]
         [Display(Name = "Выберите категорию для статьи")]
         public int CategoryId{ get; set; }
+
+        [Required]
+        [Display(Name = "Укажите ключевые слова")]
+        public string Keywords { get; set; }
     }
 }
