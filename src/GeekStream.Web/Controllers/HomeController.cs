@@ -21,7 +21,7 @@ namespace GeekStream.Web.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index(string? id)
+        public IActionResult Index(string? id = null)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -31,7 +31,6 @@ namespace GeekStream.Web.Controllers
                     return View(allArticles);
                 }
 
-                return View();
             }
 
             var articles = _articleService.GetAllArticles();

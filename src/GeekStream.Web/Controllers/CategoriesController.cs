@@ -29,7 +29,7 @@ namespace GeekStream.Web.Controllers
         // GET: Categories
         [HttpGet]
         [AllowAnonymous]
-        [Route("{controller}/{category}")]
+        [Route("[controller]/{category}")]
         public IActionResult Index(int category)
         {
             if (category != null)
