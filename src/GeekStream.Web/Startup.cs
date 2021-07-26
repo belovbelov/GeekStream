@@ -59,6 +59,9 @@ namespace GeekStream.Web
 
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<KeywordService>();
+            services.AddScoped<IKeywordRepository, KeywordRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

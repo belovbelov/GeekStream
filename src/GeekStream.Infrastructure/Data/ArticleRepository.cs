@@ -18,24 +18,13 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public IEnumerable<Article> GetAll(int page, int pageSize, string searchString = null)
+        public IEnumerable<Article> GetAll(int page, int pageSize)
         {
-            if (searchString == null)
-            {
-                return _context.Articles
-                    .Include(article => article.Category)
-                    .Include(article => article.Author)
-                    .Where(article => article.PostedOn != null)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-            }
-
             return _context.Articles
                     .Include(article => article.Category)
                     .Include(article => article.Author)
+                    .Include(article => article.Keywords)
                     .Where(article => article.PostedOn != null)
-                    .Where(article => article.Title.Contains(searchString))
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToList();
@@ -43,7 +32,7 @@ namespace GeekStream.Infrastructure.Data
 
         public async Task SaveAsync(Article article)
         {
-            _context.Add(article);
+            _context.Articles.Add(article);
             await _context.SaveChangesAsync();
         }
 
@@ -156,5 +145,14 @@ namespace GeekStream.Infrastructure.Data
             ).Concat(articles);
         }
 
+
+        public IEnumerable<Article> FindByKeywords(List<string> words)
+        {
+            return _context.Articles
+                .Include(article => article.Category)
+                .Include(article => article.Author)
+                .Include(article => article.Keywords)
+                .Where(article => article.Keywords.Any(k => words.Contains(k.Word)));
+        }
     }
 }

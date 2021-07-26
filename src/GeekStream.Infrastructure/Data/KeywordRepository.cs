@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
+using GeekStream.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Infrastructure.Data
 {
-    public class KeywordRepository
+    public class KeywordRepository : IKeywordRepository
     {
         private readonly AppDbContext _context;
 

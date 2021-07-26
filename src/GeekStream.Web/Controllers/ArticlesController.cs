@@ -30,7 +30,7 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
-            var articleViewModels = _articleService.GetAllArticles(searchString);
+            var articleViewModels = _articleService.FindByKeywords(searchString);
             return View(articleViewModels);
         }
 

@@ -33,14 +33,12 @@ namespace GeekStream.Core.Entities
         public int Id { get; set; }
         
         [Required]
-        [StringLength(32,MinimumLength = 5)]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
         public File Image { get; set; }
 
         [Required]
-        [StringLength(200,MinimumLength = 10)]
         [Display(Name = "Описание")]
         public string Description { get; set; }
 

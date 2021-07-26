@@ -3,17 +3,17 @@
 @{
     ViewData["Title"] = "Create";
 }
+<form asp-action="Create">
 
-<div class="navbar navbar-light bg-light">
+<div class="navbar">
     <h5>Новая статья</h5>
               <div class="text-right mb-0">
             <div class="form-group">
-                <input type="submit" value="Опубликовать" class="btn btn-primary mr-2" />
+                <input type="submit" value="Сохранить черновик" class="btn btn-light mr-2" />
                 <input type="submit" value="Опубликовать" class="btn btn-primary" />
             </div>
         </div>
 </div>
-        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -35,9 +35,6 @@
                 <label asp-for="Content" class="control-label"></label>
                 <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
 

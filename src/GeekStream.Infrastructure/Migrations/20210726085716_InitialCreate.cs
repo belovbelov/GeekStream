@@ -49,19 +49,6 @@ namespace GeekStream.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Keywords",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Word = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Keywords", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -186,24 +173,6 @@ namespace GeekStream.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleKeyword",
-                columns: table => new
-                {
-                    ArticlesId = table.Column<int>(type: "int", nullable: false),
-                    KeywordsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArticleKeyword", x => new { x.ArticlesId, x.KeywordsId });
-                    table.ForeignKey(
-                        name: "FK_ArticleKeyword_Keywords_KeywordsId",
-                        column: x => x.KeywordsId,
-                        principalTable: "Keywords",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -301,10 +270,23 @@ namespace GeekStream.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ArticleKeyword_KeywordsId",
-                table: "ArticleKeyword",
-                column: "KeywordsId");
+            migrationBuilder.CreateTable(
+                name: "Keywords",
+                columns: table => new
+                {
+                    Word = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ArticleId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Keywords", x => x.Word);
+                    table.ForeignKey(
+                        name: "FK_Keywords_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_AuthorId",
@@ -383,17 +365,14 @@ namespace GeekStream.Infrastructure.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Keywords_ArticleId",
+                table: "Keywords",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subscription_ApplicationUserId",
                 table: "Subscription",
                 column: "ApplicationUserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ArticleKeyword_Articles_ArticlesId",
-                table: "ArticleKeyword",
-                column: "ArticlesId",
-                principalTable: "Articles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Comments_Articles_ArticleId",
@@ -415,11 +394,16 @@ namespace GeekStream.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Files_Articles_ArticleId",
+                name: "FK_Articles_AspNetUsers_AuthorId",
+                table: "Articles");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Files_AspNetUsers_UserId",
                 table: "Files");
 
-            migrationBuilder.DropTable(
-                name: "ArticleKeyword");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Articles_Categories_CategoryId",
+                table: "Articles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -440,16 +424,16 @@ namespace GeekStream.Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Subscription");
+                name: "Keywords");
 
             migrationBuilder.DropTable(
-                name: "Keywords");
+                name: "Subscription");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Articles");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -458,7 +442,7 @@ namespace GeekStream.Infrastructure.Migrations
                 name: "Files");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Articles");
         }
     }
 }

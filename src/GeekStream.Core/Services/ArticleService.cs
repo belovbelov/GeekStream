@@ -22,9 +22,9 @@ namespace GeekStream.Core.Services
             _keywordService = keywordService;
         }
 
-        public IEnumerable<ArticleViewModel> GetAllArticles(string searchString = null)
+        public IEnumerable<ArticleViewModel> GetAllArticles()
         {
-            return _articleRepository.GetAll(page: 1, pageSize: 20, searchString)
+            return _articleRepository.GetAll(page: 1, pageSize: 20)
                 .Select(article => new ArticleViewModel
                 {
                 Id = article.Id,
@@ -47,15 +47,15 @@ namespace GeekStream.Core.Services
                 Title = model.Title,
                 Content = model.Content,
                 CreatedOn = DateTime.UtcNow,
-                PostedOn = null,
+                PostedOn = DateTime.Now,
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
                 Rating = 1,
             };
 
-            
-            article.Keywords = keywords;
             await _articleRepository.SaveAsync(article);
+
+            await _keywordService.SaveKeywordsAsync(model.Keywords, article);
         }
 
         public ArticleViewModel GetArticleById(int id)
@@ -127,6 +127,24 @@ namespace GeekStream.Core.Services
                 });
 
             return articles;
+        }
+
+        public IEnumerable<ArticleViewModel> FindByKeywords(string words)
+        {
+            var keywords = words.Split(" ").ToList();
+            return _articleRepository.FindByKeywords(keywords)
+                  .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.Author.FirstName + " " + article.Author.LastName,
+                    AuthorId = article.Author.Id,
+                    Category = article.Category.Name,
+                    CategoryId = article.CategoryId,
+                    Rating = article.Rating
+                });
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GeekStream.Core.Services
 {
@@ -14,7 +16,7 @@ namespace GeekStream.Core.Services
             _keywordRepository = keywordRepository;
         }
 
-        public async IEnumerable<Keyword> SaveKeywordsAsync(string keywordsString, Article article)
+        public async Task<IEnumerable<Keyword>> SaveKeywordsAsync(string keywordsString, Article article)
         {
             List<Keyword> keywords = new List<Keyword>();
             foreach (var word in keywordsString.Split(" "))
