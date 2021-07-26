@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Core.Entities
 {
@@ -9,10 +11,9 @@ namespace GeekStream.Core.Entities
             
         }
 
-        [Key]
-        public ApplicationUser ApplicationUser  { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
-        [Key]
         public string PublishSource { get; set; }
 
     }

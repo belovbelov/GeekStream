@@ -36,7 +36,7 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Image = article.Images.First().FileName
+                Images = article.Images
                 });
 
             }
@@ -74,7 +74,7 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Image = article.Images.First().FileName
+                Images = article.Images
             };
         }
 
@@ -92,7 +92,7 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Image = article.Images.First().FileName
+                Images = article.Images
                 });
         }
 
@@ -110,7 +110,7 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Image = article.Images.First().FileName
+                    Images = article.Images
                 });
         }
 
@@ -129,13 +129,13 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Image = article.Images.First().FileName
+                    Images = article.Images
                 });
 
             return articles;
         }
 
-        public IEnumerable<ArticleViewModel> FindByKeywords(string words)
+        public IEnumerable<ArticleViewModel> FindByKeywords(string? words)
         {
             var keywords = words.Split(" ").ToList();
             return _articleRepository.FindByKeywords(keywords)
@@ -150,7 +150,7 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Image = article.Images.First().FileName
+                    Images = article.Images
                 });
         }
     }

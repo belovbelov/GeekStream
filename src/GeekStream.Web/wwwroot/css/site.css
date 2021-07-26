@@ -18,8 +18,20 @@ for details on configuring this project to bundle and minify static web assets. 
     padding-left: 10px;
 }
 
-.card {
-    width: 100%;
+.card, .card-body {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.card-text {
+    word-wrap: break-word;
+}
+.card-text {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 .card-navbar {

@@ -37,12 +37,13 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
-            if (_userService.IsSubscribed(_userService.GetCurrentUser()))
+            if (searchString == null)
             {
-                var articleViewModels = _articleService.FindByKeywords(searchString);
+                var articleViewModels = _articleService.GetAllArticles();
                 return View(articleViewModels);
             }
-            return NotFound();
+            var articles = _articleService.FindByKeywords(searchString);
+            return View(articles);
         }
 
         // GET: Articles/Details/5
@@ -74,12 +75,10 @@ namespace GeekStream.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleCreationViewModel model, List<IFormFile> files)
+        public async Task<IActionResult> Create(ArticleCreationViewModel model, List<IFormFile> files = null)
         {
             if (ModelState.IsValid)
             {
-                if (files != null && files.Count > 0)
-                {
                     foreach (var file in files)
                     {
                         var image = new FilePath
@@ -93,7 +92,6 @@ namespace GeekStream.Web.Controllers
                     await _articleService.SaveArticleAsync(model);
                     return RedirectToAction(nameof(Index));
                     
-                }
             }
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View(model);
@@ -113,7 +111,11 @@ namespace GeekStream.Web.Controllers
             {
                 return NotFound();
             }
-            // ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
+
+            if (_userService.GetCurrentUser() != article.Author)
+            {
+                return NotFound();
+            }
             return View(article);
         }
 

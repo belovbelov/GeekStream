@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeekStream.Core.Entities;
 
 namespace GeekStream.Core.ViewModels
@@ -23,6 +24,6 @@ namespace GeekStream.Core.ViewModels
 
         public int Rating { get; set; }
 
-        public string Image { get; set; }
+        public IEnumerable<FilePath> Images { get; set; }
     }
 }

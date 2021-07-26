@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 
 namespace GeekStream.Core.Interfaces
@@ -7,8 +8,8 @@ namespace GeekStream.Core.Interfaces
     {
         public ApplicationUser GetByName(string name);
         public IEnumerable<ApplicationUser> GetAll();
-        public void Subscribe(Subscription subscription);
-        public void Unsubscribe(Subscription subscription);
+        public Task SubscribeAsync(Subscription subscription);
+        public Task UnsubscribeAsync(Subscription subscription);
         public bool IsSubscribed(ApplicationUser user, string subId);
     }
 }

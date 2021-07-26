@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Net.NetworkInformation;
 using GeekStream.Core.Interfaces;
@@ -21,6 +22,7 @@ namespace GeekStream.Core.Entities
 
         public IEnumerable<Comment> Comments { get; set; }
 
+        [NotMapped]
         public IEnumerable<Subscription> Subscriptions { get; set; }
     }
 }

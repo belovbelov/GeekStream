@@ -23,8 +23,6 @@ namespace GeekStream.Infrastructure.Data
             return _context.Articles
                     .Include(article => article.Category)
                     .Include(article => article.Author)
-                    .Include(article => article.Keywords)
-                    .Include(article => article.Images)
                     .Where(article => article.PostedOn != null)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
@@ -81,7 +79,6 @@ namespace GeekStream.Infrastructure.Data
             return _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
-                .Include(article => article.Images)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.CategoryId == id);
         }
@@ -91,7 +88,6 @@ namespace GeekStream.Infrastructure.Data
             return _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
-                .Include(article => article.Images)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.Author.Id == id);
         }
@@ -104,7 +100,6 @@ namespace GeekStream.Infrastructure.Data
             var allArticles = _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
-                    .Include(article => article.Images)
                 .Where(article => article.PostedOn != null);
 
             if (subscriptionId != null)
@@ -128,27 +123,26 @@ namespace GeekStream.Infrastructure.Data
                     Category = a.Category,
                     CategoryId = a.CategoryId,
                     Rating = a.Rating,
-                    Images = a.Images
                 }
             );
             return allArticles.Join(
-                sub,
-                a => a.Author.Id,
-                s => s.PublishSource,
-                (a, s) => new Article
-                {
-                    Id = a.Id,
-                    Title = a.Title,
-                    Content = a.Content,
-                    CreatedOn = a.CreatedOn,
-                    PostedOn = a.PostedOn,
-                    Author = a.Author,
-                    Category = a.Category,
-                    CategoryId = a.CategoryId,
-                    Rating = a.Rating,
-                    Images = a.Images
-                }
-            ).Concat(articles);
+                    sub,
+                    a => a.Author.Id,
+                    s => s.PublishSource,
+                    (a, s) => new Article
+                    {
+                        Id = a.Id,
+                        Title = a.Title,
+                        Content = a.Content,
+                        CreatedOn = a.CreatedOn,
+                        PostedOn = a.PostedOn,
+                        Author = a.Author,
+                        Category = a.Category,
+                        CategoryId = a.CategoryId,
+                        Rating = a.Rating,
+                    }
+                )
+                .Concat(articles);
         }
 
 
@@ -158,7 +152,6 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Category)
                 .Include(article => article.Author)
                 .Include(article => article.Keywords)
-                    .Include(article => article.Images)
                 .Where(article => article.Keywords.Any(k => words.Contains(k.Word)));
         }
     }

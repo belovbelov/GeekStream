@@ -240,7 +240,7 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PublishSource");
+                    b.HasKey("PublishSource", "ApplicationUserId");
 
                     b.HasIndex("ApplicationUserId");
 
@@ -444,8 +444,10 @@ namespace GeekStream.Infrastructure.Migrations
             modelBuilder.Entity("GeekStream.Core.Entities.Subscription", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("ApplicationUserId");
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });
@@ -506,8 +508,6 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Navigation("AuthoredArticles");
 
                     b.Navigation("Comments");
-
-                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>

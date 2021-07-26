@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Web.Models;
@@ -21,7 +22,7 @@ namespace GeekStream.Web.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index(string? id)
+        public IActionResult Index(string? id = null)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -31,7 +32,6 @@ namespace GeekStream.Web.Controllers
                     return View(allArticles);
                 }
 
-                return View();
             }
 
             var articles = _articleService.GetAllArticles();
@@ -39,11 +39,11 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Subscribe(bool isSubscribed, string id)
+        public async Task<IActionResult> Subscribe(bool isSubscribed, string id)
         {
             if (ModelState.IsValid)
             {
-                _userService.Subscribe(id);
+                await _userService.SubscribeAsync(id);
                 return RedirectToAction("Index", "Categories");
             }
 
@@ -51,11 +51,11 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Unsubscribe(bool isSubscribed, string id)
+        public async Task<IActionResult> Unsubscribe(bool isSubscribed, string id)
         {
             if (ModelState.IsValid)
             {
-                _userService.Unsubscribe(id);
+                await _userService.UnsubscribeAsync(id);
                 return RedirectToAction("Index", "Categories");
             }
             return NotFound();
