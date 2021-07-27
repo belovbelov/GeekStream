@@ -95,7 +95,7 @@ namespace GeekStream.Infrastructure.Data
         public IEnumerable<Article> FindBySubscription(string currentUserId,string? subscriptionId)
         {
             var sub = _context.Subscription
-                    .Where(s => currentUserId == s.ApplicationUser.Id);
+                .Where(s => currentUserId == s.ApplicationUser.Id);
 
             var allArticles = _context.Articles
                 .Include(article => article.Category)
@@ -108,7 +108,9 @@ namespace GeekStream.Infrastructure.Data
                     .Where(article => article.CategoryId.ToString() == subscriptionId || article.Author.Id == subscriptionId);
             }
 
-            var articles = allArticles.Join(
+
+
+            return allArticles.Join(
                 sub,
                 a => a.CategoryId.ToString(),
                 s => s.PublishSource,
@@ -124,8 +126,7 @@ namespace GeekStream.Infrastructure.Data
                     CategoryId = a.CategoryId,
                     Rating = a.Rating,
                 }
-            );
-            return allArticles.Join(
+            ).Concat(allArticles.Join(
                     sub,
                     a => a.Author.Id,
                     s => s.PublishSource,
@@ -141,8 +142,7 @@ namespace GeekStream.Infrastructure.Data
                         CategoryId = a.CategoryId,
                         Rating = a.Rating,
                     }
-                )
-                .Concat(articles);
+                ));
         }
 
 

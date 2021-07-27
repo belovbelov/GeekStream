@@ -3,6 +3,7 @@ using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GeekStream.Infrastructure.Data
 {
@@ -25,16 +26,17 @@ namespace GeekStream.Infrastructure.Data
             return _context.Users.ToList();
         }
 
-        public void Subscribe(Subscription subscription)
+        public async Task SubscribeAsync(Subscription subscription)
         {
-            _context.Subscription.Add(subscription);
-            _context.SaveChanges();
+            _context.Add(subscription);
+            await _context.SaveChangesAsync();
         }
 
-        public void Unsubscribe(Subscription subscription)
+        public async Task UnsubscribeAsync(Subscription subscription)
         {
             _context.Subscription.Remove(subscription);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
         }
 
         public bool IsSubscribed(ApplicationUser user, string? subId)

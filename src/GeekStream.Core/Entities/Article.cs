@@ -28,7 +28,6 @@ namespace GeekStream.Core.Entities
             Title = title;
             Content = content;
         }
-
         public int Id { get; set; }
 
         [Required]

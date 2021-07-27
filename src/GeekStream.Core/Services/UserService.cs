@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
@@ -26,7 +27,7 @@ namespace GeekStream.Core.Services
             return _userManager.GetUserAsync(_accessor.HttpContext.User).Result;
         }
 
-        public void Subscribe(string subscriptionId)
+        public async Task SubscribeAsync(string subscriptionId)
         {
             var user = GetCurrentUser();
             var subscription = new Subscription
@@ -34,10 +35,10 @@ namespace GeekStream.Core.Services
                 ApplicationUser = user,
                 PublishSource = subscriptionId
             };
-            _userRepository.Subscribe(subscription);
+            await _userRepository.SubscribeAsync(subscription);
         }
 
-        public void Unsubscribe(string subscriptionId)
+        public async Task UnsubscribeAsync(string subscriptionId)
         {
             var user = GetCurrentUser();
             var subscription = new Subscription
@@ -45,7 +46,7 @@ namespace GeekStream.Core.Services
                 ApplicationUser = user,
                 PublishSource = subscriptionId
             };
-            _userRepository.Unsubscribe(subscription);
+            await _userRepository.UnsubscribeAsync(subscription);
         }
 
         public UserViewModel GetUserById(string id)

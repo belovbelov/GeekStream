@@ -158,18 +158,18 @@ namespace GeekStream.Infrastructure.Migrations
                 name: "Subscription",
                 columns: table => new
                 {
-                    PublishSource = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PublishSource = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscription", x => x.PublishSource);
+                    table.PrimaryKey("PK_Subscription", x => new { x.PublishSource, x.ApplicationUserId });
                     table.ForeignKey(
                         name: "FK_Subscription_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

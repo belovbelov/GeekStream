@@ -10,6 +10,14 @@ namespace GeekStream.Infrastructure.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Subscription>()
+                .HasKey(s => new {s.PublishSource, s.ApplicationUserId}
+                );
+        }
+
         public new DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }

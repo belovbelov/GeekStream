@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="card mb-2">
+        <div class="card-body rounded-lg">
+            <div class="card-navbar justify-content-between">
+                <div class="navbar-right">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                        @item.Category
+                    </a>
+                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                </div>
+                <div class="navbar-left">
+                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.Author)</a>
+                </div>
+            </div>
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+            </a>
+            <p>@Html.DisplayFor(modelItem => item.Content)</p>
+            <div class="text-right mb-0">
+                <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+            </div>
+        </div>
+    </div>
+}

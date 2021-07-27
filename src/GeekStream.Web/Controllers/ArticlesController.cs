@@ -111,7 +111,11 @@ namespace GeekStream.Web.Controllers
             {
                 return NotFound();
             }
-            // ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
+
+            if (_userService.GetCurrentUser() != article.Author)
+            {
+                return NotFound();
+            }
             return View(article);
         }
 

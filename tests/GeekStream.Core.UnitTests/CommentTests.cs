@@ -14,8 +14,9 @@ namespace GeekStream.Core.UnitTests
             int articleId = 5;
             Assert.Throws<ArgumentException>(() =>
             {
-                 var article = new Comment(name, content, articleId);
+                var article = new Comment(name, content, articleId);
             });
         }
     }
 }
+//a test that asserts that constructor will throw exception with null content

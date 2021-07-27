@@ -18,8 +18,20 @@ for details on configuring this project to bundle and minify static web assets. 
     padding-left: 10px;
 }
 
-.card {
-    width: 100%;
+.card, .card-body {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.card-text {
+    word-wrap: break-word;
+}
+.card-text {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 .card-navbar {
@@ -42,13 +54,12 @@ a {
   color: #0366d6;
 }
 
-.btn.btn-primary:hover,
-.btn.btn-primary:focus,
-.btn.btn-primary:active,
-.btn.btn-primary.active {
+.btn-color,
+.btn-color:hover,
+.btn-color:active{
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #7B61FF;
+    border-color: #7B61FF;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
