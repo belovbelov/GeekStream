@@ -41,7 +41,7 @@ namespace GeekStream.Web.Controllers
                     Name = foundCategory.Name,
                     IsSubscribed = _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString())
                 };
-                categoryViewModel.Articles = _articleService.FindByCategoryId(category);
+                categoryViewModel.Articles = _articleService.FindByCategoryId(category).ToList();
                 return View(categoryViewModel);
             }
             return NotFound();

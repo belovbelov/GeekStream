@@ -1,4 +1,5 @@
-﻿@model GeekStream.Core.ViewModels.CategoryViewModel
+﻿@using GeekStream.Core.Entities
+@model GeekStream.Core.ViewModels.CategoryViewModel
 
 @{
     ViewData["Title"] = Model.Name;
@@ -27,24 +28,34 @@
 </div>
 
 @foreach (var item in Model.Articles)
-    {
-            
-            <div class="card mb-2">
-                <div class="card-body">
-                    <div class="card-navbar">
-                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
-                        @item.Category
-                    </a>
-                        <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
-                        <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.Author)</a>
-                    </div>
-                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
-                        <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
-                    </a>
-                    <p>@Html.DisplayFor(modelItem => item.Content)</p>
-                    <div class="text-right mb-0">
-                        <p>@Html.DisplayFor(modelItem => item.Rating)</p>
-                    </div>
-                </div>
+{
+    var id = item.Id;
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="card-navbar">
+                <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                    @item.Category
+                </a>
+                <p>@Html.DisplayFor(modelItem => item.PublishedDate)</p>
+                <a asp-controller="Users" asp-action="UserProfile" asp-route-name="@item.Id">@Html.DisplayFor(modelItem => item.Author)</a>
             </div>
-    }
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+            </a>
+            <p>@Html.DisplayFor(modelItem => item.Content)</p>
+            <div class="text-right mb-0">
+            <form asp-controller="Vote" asp-action="ProcessVotes">
+                <input type="hidden" asp-for="@id"/>
+                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                <input type="submit" class="btn btn-success"/>
+            </form>
+            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                <form asp-controller="Vote" asp-action="ProcessVotes">
+                    <input type="hidden" asp-for="@id"/>
+                    <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                    <input type="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+}

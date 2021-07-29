@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
@@ -17,13 +18,13 @@ namespace GeekStream.Infrastructure.Data
 
         public async Task Save(VoteOnPost vote)
         {
-            _context.Votes.Add(vote);
+            _context.Add(vote);
             await _context.SaveChangesAsync();
         }
 
         public async Task Update(VoteOnPost vote)
         {
-            _context.Votes.Update(vote);
+            _context.Update(vote);
             await _context.SaveChangesAsync();
         }
 
@@ -33,13 +34,20 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        public VoteOnPost GetVoteById(string userId, int articleId)
+        public bool GetVoteOnPost(string userId, int articleId)
         {
             if (userId == null)
             {
-                return null;
             }
-            return _context.Votes.FirstOrDefault(v => v.ApplicationUserId == userId && v.ArticleId == articleId);
+
+            return _context.Votes
+                .Any(v => v.ApplicationUserId == userId && v.ArticleId == articleId);
+        }
+
+        public IEnumerable<VoteOnPost> GetVotesOnPost(int articleId)
+        {
+            return _context.Votes
+                .Where(v => v.ArticleId == articleId);
         }
     }
 }

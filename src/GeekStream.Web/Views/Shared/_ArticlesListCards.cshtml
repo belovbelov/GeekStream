@@ -1,7 +1,8 @@
-﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
-
+﻿@using GeekStream.Core.Entities
+@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
 @foreach (var item in Model)
 {
+  var id = item.Id;
     <div class="card mb-2">
         <div class="card-body rounded-lg">
             <div class="card-navbar justify-content-between">
@@ -20,7 +21,17 @@
             </a>
             <p>@Html.DisplayFor(modelItem => item.Content)</p>
             <div class="text-right mb-0">
-                <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+            <form asp-controller="Vote" asp-action="ProcessVotes">
+                <input type="hidden" asp-for="@id"/>
+                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                <input type="submit" class="btn btn-success"/>
+            </form>
+            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                <form asp-controller="Vote" asp-action="ProcessVotes">
+                    <input type="hidden" asp-for="@id"/>
+                    <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                    <input type="submit" class="btn btn-danger"/>
+                </form>
             </div>
         </div>
     </div>

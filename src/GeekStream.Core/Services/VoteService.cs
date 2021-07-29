@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +20,7 @@ namespace GeekStream.Core.Services
         }
 
 
-        public void CreateOrUpdateVote(string userId, int articleId, VoteType type)
+        public async Task CreateOrUpdateVote(string userId, int articleId, VoteType type)
         {
             var vote = new VoteOnPost
             {
@@ -28,15 +31,15 @@ namespace GeekStream.Core.Services
 
             try
             {
-                _voteRepository.Save(vote);
+                await _voteRepository.Save(vote);
             }
             catch (DbUpdateException e)
             {
-                _voteRepository.Update(vote);
+                await _voteRepository.Update(vote);
             }
         }
 
-        public void RemoveVote(string userId, int articleId, VoteType type)
+        public async Task RemoveVote(string userId, int articleId, VoteType type)
         {
             var vote = new VoteOnPost
             {
@@ -44,18 +47,19 @@ namespace GeekStream.Core.Services
                 ArticleId = articleId,
                 Type = type
             };
-            _voteRepository.Delete(vote);
+            await _voteRepository.Delete(vote);
+        }
+
+        public int GetRatingForPost(int articleId)
+        {
+            var votes = _voteRepository.GetVotesOnPost(articleId);
+            return votes.Sum(v => (int) v.Type);
         }
 
         public bool CheckIfPostIsVoted(string userId, int articleId)
         {
-            var vote = _voteRepository.GetVoteById(userId, articleId);
-            if (vote == null)
-            {
-                return false;
-            }
-
-            return true;
+            var vote = _voteRepository.GetVoteOnPost(userId, articleId);
+            return vote;
         }
     }
 }

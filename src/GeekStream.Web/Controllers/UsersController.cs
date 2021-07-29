@@ -1,4 +1,5 @@
-﻿using GeekStream.Core.Services;
+﻿using System.Linq;
+using GeekStream.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ namespace GeekStream.Web.Controllers
         public IActionResult UserProfile(string id)
         {
             var userViewModel = _userService.GetUserById(id);
-            userViewModel.Articles = _articleService.FindByAuthorId(id);
+            userViewModel.Articles = _articleService.FindByAuthorId(id).ToList();
             if (userViewModel == null)
             {
                 return NotFound();

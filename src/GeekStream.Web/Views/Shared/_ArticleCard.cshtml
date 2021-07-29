@@ -1,4 +1,5 @@
-﻿@model GeekStream.Core.ViewModels.ArticleViewModel;
+﻿@using GeekStream.Core.Entities
+@model GeekStream.Core.ViewModels.ArticleViewModel;
 
 <div class="card mb-2">
     <div class="card-body rounded-lg">
@@ -20,7 +21,17 @@
         }
         <p>@Html.DisplayFor(modelItem => Model.Content)</p>
         <div class="text-right mb-0">
+            <form asp-controller="Vote" asp-action="ProcessVotes">
+                <input type="hidden" asp-for="@Model.Id"/>
+                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                <input type="submit" class="btn btn-success"/>
+            </form>
             <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
+            <form asp-controller="Vote" asp-action="ProcessVotes">
+                <input type="hidden" asp-for="@Model.Id"/>
+                <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                <input type="submit" class="btn btn-danger"/>
+            </form>
         </div>
     </div>
 </div>

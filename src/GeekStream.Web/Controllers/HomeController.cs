@@ -28,13 +28,13 @@ namespace GeekStream.Web.Controllers
             {
                 if (_userService.IsSubscribed(_userService.GetCurrentUser()))
                 {
-                    var allArticles = _articleService.FindBySubscription(id);
+                    var allArticles = _articleService.FindBySubscription(id).ToList();
                     return View(allArticles);
                 }
 
             }
 
-            var articles = _articleService.GetAllArticles();
+            var articles = _articleService.GetAllArticles().ToList();
             return View(articles);
         }
 

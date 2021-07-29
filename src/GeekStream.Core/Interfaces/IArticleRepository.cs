@@ -8,6 +8,7 @@ namespace GeekStream.Core.Interfaces
     public interface IArticleRepository
     {
         public Task SaveAsync(Article article);
+        public void Update(Article article);
         public void Delete(int id);
         public void Publish(int id);
         public void UnPublish(int id);

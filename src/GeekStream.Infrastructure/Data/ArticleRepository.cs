@@ -35,6 +35,12 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
+        public void Update(Article article)
+        {
+            _context.Articles.Update(article);
+            _context.SaveChanges();
+        }
+
         public Article GetById(int id)
         {
             var article = _context.Articles
