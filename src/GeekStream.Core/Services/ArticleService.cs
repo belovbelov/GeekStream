@@ -43,10 +43,21 @@ namespace GeekStream.Core.Services
 
             }
 
-        public void UpdateArticle(int articleId, int votes)
+        public void UpdateArticleRating(int articleId, int votes)
         {
             var article = _articleRepository.GetById(articleId);
             article.Rating = votes;
+            _articleRepository.Update(article);
+        }
+        public void UpdateArticle(ArticleCreationViewModel model)
+        {
+            var article = new Article
+            {
+                Title = model.Title,
+                Content = model.Content,
+                CategoryId= model.CategoryId,
+                Images = model.FilePaths
+            };
             _articleRepository.Update(article);
         }
 
@@ -67,6 +78,27 @@ namespace GeekStream.Core.Services
             await _articleRepository.SaveAsync(article);
 
             await _keywordService.SaveKeywordsAsync(model.Keywords, article);
+        }
+
+        public async Task DeleteArticle(int id)
+        {
+            var article = _articleRepository.GetById(id);
+            await _articleRepository.Delete(article);
+        }
+
+        public ArticleCreationViewModel GetArticleToEditById(int id)
+        {
+            var article = _articleRepository.GetById(id);
+            var keywords = article.Keywords
+                .Select(k => k.Word).ToString();
+            return new ArticleCreationViewModel
+            {
+                Title = article.Title,
+                Content = article.Content,
+                CategoryId = article.CategoryId,
+                Keywords = keywords,
+                FilePaths = article.Images.ToList()
+            };
         }
 
         public ArticleViewModel GetArticleById(int id)

@@ -7,7 +7,7 @@ namespace GeekStream.Core.ViewModels
     {
         public string Id { get; set; }
         public string UserName { get; set; }
-
+        public int Rating { get; set; }
         public string UserMail { get; set; }
 
         public bool IsSubscribed { get; set; }

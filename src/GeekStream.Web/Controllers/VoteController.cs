@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
@@ -22,26 +19,32 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProcessVotes(int id, VoteType type)
+        public async Task<IActionResult> ProcessVotes(int articleId, VoteType type)
         {
             if (User.Identity == null)
             {
                 return BadRequest();
             }
 
-            var userId = _userService.GetCurrentUser().Id;
-            var wasOn = _voteService.CheckIfPostIsVoted(userId, id);
+            var user = _userService.GetCurrentUser();
+            var wasOn = _voteService.CheckIfPostIsVoted(user.Id, articleId);
+
             if (!wasOn)
             {
-                await _voteService.CreateOrUpdateVote(userId, id, type);
+                await _voteService.CreateOrUpdateVote(user.Id, articleId, type);
             }
             else
             {
-                await _voteService.RemoveVote(userId, id, type);
+                await _voteService.RemoveVote(user.Id, articleId, type);
             }
 
-            var votes = _voteService.GetRatingForPost(id);
-            _articleService.UpdateArticle(id, votes);
+            var votes = _voteService.GetRatingForPost(articleId);
+            var articleAuthorId = _articleService.GetArticleById(articleId).AuthorId;
+
+            _articleService.UpdateArticleRating(articleId, votes);
+
+            var userRating = _userService.GetUserRating(articleAuthorId);
+            _userService.UpdateUserRating(articleAuthorId, userRating);
 
             return NoContent();
         }

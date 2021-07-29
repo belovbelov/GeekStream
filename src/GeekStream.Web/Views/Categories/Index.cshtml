@@ -11,14 +11,14 @@
             <h3 class="card-title">@Model.Name</h3>
             @if(Model.IsSubscribed)
             {
-                <form asp-controller="Home" asp-action="Unsubscribe">
+                <form asp-controller="Users" asp-action="Unsubscribe">
                     <input type="hidden" asp-for="@Model.Id" />
                     <input asp-for="Id" class="btn btn-outline-primary" type="submit" value="✓ Вы подписаны" script="window.location.reload()"/>
                 </form>
             }
             else
             {
-                <form asp-controller="Home" asp-action="Subscribe">
+                <form asp-controller="Users" asp-action="Subscribe">
                     <input type="hidden" asp-for="@Model.Id" />
                     <input class="btn btn-primary" type="submit"value="Подписаться" />
                 </form>
@@ -29,7 +29,7 @@
 
 @foreach (var item in Model.Articles)
 {
-    var id = item.Id;
+    var articleId = item.Id;
     <div class="card mb-2">
         <div class="card-body">
             <div class="card-navbar">
@@ -45,13 +45,13 @@
             <p>@Html.DisplayFor(modelItem => item.Content)</p>
             <div class="text-right mb-0">
             <form asp-controller="Vote" asp-action="ProcessVotes">
-                <input type="hidden" asp-for="@id"/>
+                <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.UpVote"/>
                 <input type="submit" class="btn btn-success"/>
             </form>
             <p>@Html.DisplayFor(modelItem => item.Rating)</p>
                 <form asp-controller="Vote" asp-action="ProcessVotes">
-                    <input type="hidden" asp-for="@id"/>
+                    <input type="hidden" asp-for="@articleId"/>
                     <input type="hidden" name="type" value="@VoteType.DownVote"/>
                     <input type="submit" class="btn btn-danger"/>
                 </form>
