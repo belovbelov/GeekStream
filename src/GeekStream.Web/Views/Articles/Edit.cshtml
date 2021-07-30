@@ -1,4 +1,4 @@
-﻿@model GeekStream.Core.Entities.Article
+﻿@model GeekStream.Core.ViewModels.ArticleCreationViewModel;
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,40 +8,45 @@
 
 <h4>Article</h4>
 <hr />
-        <form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+
+<div class="navbar">
+    <h5>Черновик</h5>
+        <div class="text-right mb-0">
+            <div class="form-group">
+                <input type="submit" value="Сохранить черновик" class="btn btn-light mr-2" />
+                <input type="submit" value="Опубликовать" class="btn btn-primary" />
+            </div>
+        </div>
+</div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" placeholder="Придумайте название статьи"/>
+                <small class="form-text text-muted">Хорошее название может заинтересовать мноигих читателей</small>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Category"></select>
+                <small class="form-text text-muted">Статью можно отправить в одну категорию</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="Keywords" class="control-label"></label>
+                <input asp-for="Keywords" class ="form-control" placeholder="Укажите ключевые слова"/>
+                <small class="form-text text-muted">Ключевые слова помогают найти вашу статью в поиске</small>
+            </div>
+            <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostedOn" class="control-label"></label>
-                <input asp-for="PostedOn" class="form-control" />
-                <span asp-validation-for="PostedOn" class="text-danger"></span>
+                    <label  asp-for="FilePaths"></label>
+                    <input type="file" name="files" multiple=""/>
             </div>
-            @*
-            <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
-            *@
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    </form>
+
 
 <div>
     <a asp-action="Index">Back to List</a>

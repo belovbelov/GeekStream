@@ -18,6 +18,8 @@ namespace GeekStream.Core.Entities
         [Required]
         public string LastName { get; set; }
 
+        public int Rating { get; set; }
+
         public IEnumerable<Article> AuthoredArticles { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }

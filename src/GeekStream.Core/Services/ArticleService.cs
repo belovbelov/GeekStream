@@ -14,12 +14,14 @@ namespace GeekStream.Core.Services
         private readonly IArticleRepository _articleRepository;
         private readonly UserService _userService;
         private readonly KeywordService _keywordService;
+        private readonly VoteService _voteService;
 
-        public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService)
+        public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService, VoteService voteService)
         {
             _articleRepository = articleRepository;
             _userService = userService;
             _keywordService = keywordService;
+            _voteService = voteService;
         }
 
         public IEnumerable<ArticleViewModel> GetAllArticles()
@@ -41,6 +43,24 @@ namespace GeekStream.Core.Services
 
             }
 
+        public void UpdateArticleRating(int articleId, int votes)
+        {
+            var article = _articleRepository.GetById(articleId);
+            article.Rating = votes;
+            _articleRepository.Update(article);
+        }
+        public void UpdateArticle(ArticleCreationViewModel model)
+        {
+            var article = new Article
+            {
+                Title = model.Title,
+                Content = model.Content,
+                CategoryId= model.CategoryId,
+                Images = model.FilePaths
+            };
+            _articleRepository.Update(article);
+        }
+
         public async Task SaveArticleAsync(ArticleCreationViewModel model)
         {
             var article = new Article
@@ -51,13 +71,34 @@ namespace GeekStream.Core.Services
                 PostedOn = DateTime.Now,
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
-                Rating = 1,
+                Rating = 0,
                 Images = model.FilePaths
             };
 
             await _articleRepository.SaveAsync(article);
 
             await _keywordService.SaveKeywordsAsync(model.Keywords, article);
+        }
+
+        public async Task DeleteArticle(int id)
+        {
+            var article = _articleRepository.GetById(id);
+            await _articleRepository.Delete(article);
+        }
+
+        public ArticleCreationViewModel GetArticleToEditById(int id)
+        {
+            var article = _articleRepository.GetById(id);
+            var keywords = article.Keywords
+                .Select(k => k.Word).ToString();
+            return new ArticleCreationViewModel
+            {
+                Title = article.Title,
+                Content = article.Content,
+                CategoryId = article.CategoryId,
+                Keywords = keywords,
+                FilePaths = article.Images.ToList()
+            };
         }
 
         public ArticleViewModel GetArticleById(int id)

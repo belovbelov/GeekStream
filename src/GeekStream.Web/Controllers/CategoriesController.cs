@@ -26,25 +26,21 @@ namespace GeekStream.Web.Controllers
             _userService = userService;
         }
 
-        // GET: Categories
         [HttpGet]
         [AllowAnonymous]
         [Route("[controller]/{category}")]
         public IActionResult Index(int category)
         {
-            if (category != null)
+            var foundCategory = _categoryService.GetCategoryById(category);
+            var categoryViewModel = new CategoryViewModel
             {
-                var foundCategory = _categoryService.GetCategoryById(category);
-                var categoryViewModel = new CategoryViewModel
-                {
-                    Id = foundCategory.Id,
-                    Name = foundCategory.Name,
-                    IsSubscribed = _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString())
-                };
-                categoryViewModel.Articles = _articleService.FindByCategoryId(category);
-                return View(categoryViewModel);
-            }
-            return NotFound();
+                Id = foundCategory.Id,
+                Name = foundCategory.Name,
+                IsSubscribed =
+                    _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString()),
+                Articles = _articleService.FindByCategoryId(category).ToList()
+            };
+            return View(categoryViewModel);
         }
 
         [HttpGet]
@@ -55,11 +51,6 @@ namespace GeekStream.Web.Controllers
             var categories = _categoryService.GetAllCategories();
 
             return View(categories);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

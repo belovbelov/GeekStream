@@ -22,6 +22,18 @@ namespace GeekStream.Core.Services
             _accessor = accessor;
         }
 
+
+        public void UpdateUserRating(string userId, int rating)
+        {
+            var user = GetUserById(userId);
+            user.Rating = rating;
+            _userRepository.UpdateRating(user);
+        }
+
+        public int GetUserRating(string userId)
+        {
+            return _userRepository.GetUserRating(userId);
+        }
         public ApplicationUser GetCurrentUser()
         {
             return _userManager.GetUserAsync(_accessor.HttpContext.User).Result;
@@ -49,16 +61,9 @@ namespace GeekStream.Core.Services
             await _userRepository.UnsubscribeAsync(subscription);
         }
 
-        public UserViewModel GetUserById(string id)
+        public ApplicationUser GetUserById(string id)
         {
-            var user = _userRepository.GetByName(id);
-            return new UserViewModel
-            {
-                Id = user.Id,
-                UserName = user.FirstName + " " + user.LastName,
-                IsSubscribed = IsSubscribed(GetCurrentUser(), user.Id),
-                UserMail = user.Email
-            };
+            return _userRepository.GetByName(id);
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()
@@ -66,7 +71,7 @@ namespace GeekStream.Core.Services
             return _userRepository.GetAll();
         }
 
-        public bool IsSubscribed(ApplicationUser user, string? subId = null)
+        public bool IsSubscribed(ApplicationUser user, string subId = null)
         {
             return _userRepository.IsSubscribed(user, subId);
         }

@@ -35,11 +35,33 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
+        public void Update(Article article)
+        {
+            _context.Articles.Update(article);
+            _context.SaveChanges();
+        }
+
+        public async Task Delete(Article article)
+        {
+            if (article != null)
+            {
+                _context.Articles.Remove(article);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteAsync(Article article)
+        {
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync();
+        }
+
         public Article GetById(int id)
         {
             var article = _context.Articles
                 .Include(article => article.Category)
                 .Include(article => article.Author)
+                .Include(article => article.Keywords)
                 .Include(article => article.Images)
                 .SingleOrDefault(x => x.Id == id);
             return article;

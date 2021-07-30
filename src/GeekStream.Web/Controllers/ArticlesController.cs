@@ -32,21 +32,22 @@ namespace GeekStream.Web.Controllers
             _userService = userService;
         }
 
-        // GET: Articles
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
+            IEnumerable<ArticleViewModel> articles;
+
             if (searchString == null)
             {
-                var articleViewModels = _articleService.GetAllArticles();
-                return View(articleViewModels);
+                articles = _articleService.GetAllArticles();
+                return View(articles);
             }
-            var articles = _articleService.FindByKeywords(searchString);
+
+            articles = _articleService.FindByKeywords(searchString);
             return View(articles);
         }
 
-        // GET: Articles/Details/5
         [HttpGet]
         [Route("[controller]/{id}")]
         public async Task<IActionResult> Details(int id)
@@ -61,7 +62,6 @@ namespace GeekStream.Web.Controllers
             return View(articleViewModel);
         }
 
-        // GET: Articles/Create
         [HttpGet]
         [Route("[controller]/[action]")]
         public IActionResult Create()
@@ -70,9 +70,6 @@ namespace GeekStream.Web.Controllers
             return View();
         }
 
-        // POST: Articles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ArticleCreationViewModel model, List<IFormFile> files = null)
@@ -97,77 +94,48 @@ namespace GeekStream.Web.Controllers
             return View(model);
         }
 
-        // GET: Articles/Edit/5
         [Route("[controller]/{id}/[action]")]
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var article = _articleService.GetArticleToEditById(id);
 
-            var article = await _context.Articles.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
             }
 
-            if (_userService.GetCurrentUser() != article.Author)
-            {
-                return NotFound();
-            }
             return View(article);
         }
 
-        // POST: Articles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,ShortDescription,PostedOn,AuthorId,Rating")] Article article)
+        public async Task<IActionResult> Edit(int id,  ArticleCreationViewModel model, List<IFormFile> files = null)
         {
-            if (id != article.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(article);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ArticleExists(article.Id))
+                    foreach (var file in files)
                     {
-                        return NotFound();
+                        var image = new FilePath
+                        {
+                            FileName = System.IO.Path.GetFileName(file.FileName),
+                            FileType = FileType.Photo,
+                            User = _userService.GetCurrentUser()
+                        };
+                        model.FilePaths.Add(image);
                     }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    _articleService.UpdateArticle(model);
+                    return RedirectToAction(nameof(Index));
             }
-            // ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", article.AuthorId);
-            return View(article);
+            ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
+            return View(model);
         }
 
-        // GET: Articles/Delete/5
         [HttpGet]
         [Route("[controller]/{id}/[action]")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var article = await _context.Articles
-                .Include(a => a.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var article = _articleService.GetArticleById(id);
             if (article == null)
             {
                 return NotFound();
@@ -176,22 +144,14 @@ namespace GeekStream.Web.Controllers
             return View(article);
         }
 
-        // POST: Articles/Delete/5
         [HttpPost]
         [ActionName("Delete")]
         [Route("[controller]/{id}/[action]")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _context.Articles.FindAsync(id);
-            _context.Articles.Remove(article);
-            await _context.SaveChangesAsync();
+            await _articleService.DeleteArticle(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ArticleExists(int id)
-        {
-            return _context.Articles.Any(e => e.Id == id);
         }
     }
 }
