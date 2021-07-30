@@ -115,7 +115,8 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Images = article.Images
+                Images = article.Images,
+                Comments = article.Comments
             };
         }
 

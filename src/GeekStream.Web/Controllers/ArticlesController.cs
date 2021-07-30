@@ -23,13 +23,15 @@ namespace GeekStream.Web.Controllers
         private readonly ArticleService _articleService;
         private readonly CategoryService _categoryService;
         private readonly UserService _userService;
+        private readonly CommentService _commentService;
 
-        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService, UserService userService)
+        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService, UserService userService, CommentService commentService)
         {
             _context = context;
             _articleService = articleService;
             _categoryService = categoryService;
             _userService = userService;
+            _commentService = commentService;
         }
 
         [HttpGet]
@@ -152,6 +154,14 @@ namespace GeekStream.Web.Controllers
         {
             await _articleService.DeleteArticle(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(int articleId, string text)
+        {
+            await _commentService.LeaveComment(articleId, text);
+
+            return NoContent();
         }
     }
 }

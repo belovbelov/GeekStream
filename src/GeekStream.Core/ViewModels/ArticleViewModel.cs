@@ -25,5 +25,7 @@ namespace GeekStream.Core.ViewModels
         public int Rating { get; set; }
 
         public IEnumerable<FilePath> Images { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

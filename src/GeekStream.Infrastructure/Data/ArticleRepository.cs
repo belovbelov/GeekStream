@@ -63,6 +63,7 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Author)
                 .Include(article => article.Keywords)
                 .Include(article => article.Images)
+                .Include(article => article.Comments)
                 .SingleOrDefault(x => x.Id == id);
             return article;
         }

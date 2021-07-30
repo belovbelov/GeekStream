@@ -34,6 +34,61 @@
                 <input type="submit" class="btn btn-danger"/>
             </form>
         </div>
+        @{
+            if (Model.Comments.Any())
+            {
+                <h5>Комментарии (@Model.Comments.Count())</h5>
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="comment">
+                        <div class="comment-navbar">
+                            <img/>
+                            <b>@comment.UserName</b>
+                        </div>
+                        <div class="comment-body">
+                            <span class="comment-text">
+                                @comment.Content
+                            </span>
+                        </div>
+                        <div class="comment-footer d-flex justify-content-between">
+                            <b class="comment-reply">
+                                Ответить
+                            </b>
+        
+                            <form asp-controller="Vote" asp-action="ProcessVotes">
+                                <input type="hidden" asp-for="@articleId"/>
+                                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                                <input type="submit" class="btn btn-success"/>
+                            </form>
+                            <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
+                            <form asp-controller="Vote" asp-action="ProcessVotes">
+                                <input type="hidden" asp-for="@articleId"/>
+                                <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                                <input type="submit" class="btn btn-danger"/>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h5>Комментариев пока нет</h5>
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                <form asp-action="Comment" asp-controller="Articles">
+                    <div class="form-row">
+                        <div class="col-10">
+                            <input type="hidden" name="articleId" asp-for="@Model.Id"/>
+                            <input type="text" class="form-control" name="text" placeholder="Ваш комментарий">
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" class="btn btn-outline-light"/>
+                        </div>
+                    </div>
+                </form>
+            }
+        }
     </div>
 </div>
 }

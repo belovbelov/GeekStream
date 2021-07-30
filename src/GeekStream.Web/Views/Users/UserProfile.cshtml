@@ -14,7 +14,7 @@
             <div>
                 @if (Model.UserMail != User.Identity.Name)
                 {
-                    @if (Model.IsSubscribed)
+                    @if (Model.IsSubscribed) 
                     {
                         <form asp-controller="Users" asp-action="Unsubscribe">
                             <input type="hidden" asp-for="@Model.Id"/>

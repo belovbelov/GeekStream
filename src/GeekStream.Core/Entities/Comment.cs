@@ -32,6 +32,10 @@ namespace GeekStream.Core.Entities
         [Display(Name = "Имя пользователя")]
         public string UserName{ get; set; }
 
+        public string ApplicationUserId { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
+
         [Required]
         [StringLength(200)]
         [Display(Name = "Содержимое")]
