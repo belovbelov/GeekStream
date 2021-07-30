@@ -9,7 +9,12 @@ namespace GeekStream.Core.Interfaces
         public Task Save(VoteOnPost vote);
         public Task Update(VoteOnPost vote);
         public Task Delete(VoteOnPost vote);
-        public bool GetVoteOnPost(string userId, int articleId);
+        public Task Save(VoteOnReply vote);
+        public Task Update(VoteOnReply vote);
+        public Task Delete(VoteOnReply vote);
+        public bool GetVoteOnPost(string userId, int articleId, VoteType type);
         public IEnumerable<VoteOnPost> GetVotesOnPost(int articleId);
+        public bool GetVoteOnReply(string userId, int commentId, VoteType type);
+        public IEnumerable<VoteOnReply> GetVotesOnReply(int commentId);
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
-using GeekStream.Core.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Infrastructure.Data
@@ -77,6 +76,7 @@ namespace GeekStream.Infrastructure.Data
                 _context.SaveChanges();
             }
         }
+
         public void UnPublish(int id)
         {
             var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
@@ -167,7 +167,6 @@ namespace GeekStream.Infrastructure.Data
                     }
                 ));
         }
-
 
         public IEnumerable<Article> FindByKeywords(List<string> words)
         {

@@ -23,7 +23,19 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task Save(VoteOnReply vote)
+        {
+            _context.Add(vote);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task Update(VoteOnPost vote)
+        {
+            _context.Update(vote);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(VoteOnReply vote)
         {
             _context.Update(vote);
             await _context.SaveChangesAsync();
@@ -35,20 +47,42 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        public bool GetVoteOnPost(string userId, int articleId)
+        public async Task Delete(VoteOnReply vote)
+        {
+            _context.VotesOnReplies.Remove(vote);
+            await _context.SaveChangesAsync();
+        }
+
+        public bool GetVoteOnReply(string userId, int commentId, VoteType type)
+        {
+            if (userId == null)
+            {
+            }
+
+            return _context.VotesOnReplies
+                .Any(v => v.ApplicationUserId == userId && v.CommentId == commentId && type == v.Type);
+        }
+
+        public bool GetVoteOnPost(string userId, int articleId, VoteType type)
         {
             if (userId == null)
             {
             }
 
             return _context.Votes
-                .Any(v => v.ApplicationUserId == userId && v.ArticleId == articleId);
+                .Any(v => v.ApplicationUserId == userId && v.ArticleId == articleId && type == v.Type);
         }
 
         public IEnumerable<VoteOnPost> GetVotesOnPost(int articleId)
         {
             return _context.Votes
                 .Where(v => v.ArticleId == articleId);
+        }
+
+        public IEnumerable<VoteOnReply> GetVotesOnReply(int commentId)
+        {
+            return _context.VotesOnReplies
+                .Where(v => v.CommentId == commentId);
         }
     }
 }

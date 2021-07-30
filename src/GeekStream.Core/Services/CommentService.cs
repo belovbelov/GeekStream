@@ -27,5 +27,17 @@ namespace GeekStream.Core.Services
             };
             await _commentRepository.Create(comment);
         }
+
+        public async Task UpdateCommentRating(int commentId, int votes)
+        {
+            var comment = _commentRepository.FindCommentById(commentId);
+            comment.Rating = votes;
+            await _commentRepository.Update(comment);
+        }
+
+        public Comment FindCommentById(int commentId)
+        {
+            return _commentRepository.FindCommentById(commentId);
+        }
     }
 }

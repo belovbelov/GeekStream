@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
-using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Core.Services
 {
@@ -49,7 +48,8 @@ namespace GeekStream.Core.Services
             article.Rating = votes;
             _articleRepository.Update(article);
         }
-        public void UpdateArticle(ArticleCreationViewModel model)
+
+        public void UpdateArticle(ArticleEditViewModel model)
         {
             var article = new Article
             {
@@ -61,7 +61,7 @@ namespace GeekStream.Core.Services
             _articleRepository.Update(article);
         }
 
-        public async Task SaveArticleAsync(ArticleCreationViewModel model)
+        public async Task SaveArticleAsync(ArticleEditViewModel model)
         {
             var article = new Article
             {
@@ -86,12 +86,12 @@ namespace GeekStream.Core.Services
             await _articleRepository.Delete(article);
         }
 
-        public ArticleCreationViewModel GetArticleToEditById(int id)
+        public ArticleEditViewModel GetArticleToEditById(int id)
         {
             var article = _articleRepository.GetById(id);
             var keywords = article.Keywords
                 .Select(k => k.Word).ToString();
-            return new ArticleCreationViewModel
+            return new ArticleEditViewModel
             {
                 Title = article.Title,
                 Content = article.Content,

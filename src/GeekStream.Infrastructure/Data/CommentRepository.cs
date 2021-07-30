@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 
@@ -12,10 +13,23 @@ namespace GeekStream.Infrastructure.Data
         {
             _context = context;
         }
+
         public async Task Create(Comment comment)
         {
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(Comment comment)
+        {
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+        }
+
+        public Comment FindCommentById(int id)
+        {
+            return _context.Comments
+                .FirstOrDefault(c => c.Id == id);
         }
     }
 }

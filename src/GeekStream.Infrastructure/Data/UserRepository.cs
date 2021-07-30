@@ -22,16 +22,23 @@ namespace GeekStream.Infrastructure.Data
             _context.Users.Update(user);
             _context.SaveChanges();
         }
+
         public ApplicationUser GetByName(string id)
         {
             return _context.Users.SingleOrDefault(a => a.Id == id);
         }
+
         public int GetUserRating(string userId)
         {
-            return _context.Votes
+            var rating = _context.Votes
                 .Include(v => v.Article)
                 .Where(v => v.Article.Author.Id == userId)
                 .Sum(v => (int) v.Type);
+            rating += _context.VotesOnReplies
+                .Include(v => v.Comment)
+                .Where(v => v.Comment.ApplicationUserId == userId)
+                .Sum(v => (int) v.Type);
+            return rating;
         }
 
         public IEnumerable<ApplicationUser> GetAll()

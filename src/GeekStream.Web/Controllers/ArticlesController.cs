@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using GeekStream.Core.Entities;
 using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using System.Web;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 
 namespace GeekStream.Web.Controllers
@@ -52,6 +51,7 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [Route("[controller]/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var articleViewModel = _articleService.GetArticleById(id);
@@ -74,22 +74,30 @@ namespace GeekStream.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleCreationViewModel model, List<IFormFile> files = null)
+        public async Task<IActionResult> Create(ArticleEditViewModel model, IFormFileCollection files = null)
         {
             if (ModelState.IsValid)
             {
+                if (files != null)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
                     foreach (var file in files)
                     {
                         var image = new FilePath
                         {
-                            FileName = System.IO.Path.GetFileName(file.FileName),
+                            FileName = Guid.NewGuid() + Path.GetExtension(file.FileName),
                             FileType = FileType.Photo,
                             User = _userService.GetCurrentUser()
                         };
+                        await using (Stream fileStream = new FileStream(path + image.FileName, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
                         model.FilePaths.Add(image);
                     }
-                    await _articleService.SaveArticleAsync(model);
-                    return RedirectToAction(nameof(Index));
+                }
+                await _articleService.SaveArticleAsync(model);
+                return RedirectToAction(nameof(Index));
                     
             }
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
@@ -111,7 +119,7 @@ namespace GeekStream.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  ArticleCreationViewModel model, List<IFormFile> files = null)
+        public async Task<IActionResult> Edit(int id,  ArticleEditViewModel model, List<IFormFile> files = null)
         {
             if (ModelState.IsValid)
             {
@@ -162,6 +170,25 @@ namespace GeekStream.Web.Controllers
             await _commentService.LeaveComment(articleId, text);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public IActionResult Pending()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("[controller]/Pending/{id}")]
+        public IActionResult Review(int id)
+        {
+            var article = _articleService.GetArticleById(id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            return View(article);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Core.Services
 {
@@ -16,9 +16,9 @@ namespace GeekStream.Core.Services
             _keywordRepository = keywordRepository;
         }
 
-        public async Task<IEnumerable<Keyword>> SaveKeywordsAsync(string keywordsString, Article article)
+        public async Task SaveKeywordsAsync(string keywordsString, Article article)
         {
-            List<Keyword> keywords = new List<Keyword>();
+            var keywords = new List<Keyword>();
             foreach (var word in keywordsString.Split(" "))
             {
                 var keyword = new Keyword
@@ -27,9 +27,14 @@ namespace GeekStream.Core.Services
                     Article = article
                 };
                 keywords.Add(keyword);
-                await _keywordRepository.SaveAsync(keyword);
+                try
+                {
+                    await _keywordRepository.SaveAsync(keyword);
+                }
+                catch (DbUpdateException e)
+                {
+                }
             }
-            return keywords;
         }
     }
 }

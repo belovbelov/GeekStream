@@ -1,6 +1,6 @@
 ﻿@using GeekStream.Core.Entities
 @using GeekStream.Core.Services
-@inject UserService userService;
+@inject UserService _userService;
 
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container h-100">
@@ -35,12 +35,12 @@
                     @{
                         if (User.IsInRole("Reviewer"))
                         {
-                            <a class="btn btn-outline-info" asp-area="" asp-controller="Articles" asp-action="Index">Проверить статьи</a>//TODO ACTION - PENDING
+                            <a class="btn btn-outline-info" asp-area="" asp-controller="Articles" asp-action="Pending">Проверить статьи</a>//TODO ACTION - PENDING
                         }
 
                         if (User.Identity.IsAuthenticated)
                         {
-                            var user = userService.GetCurrentUser();
+                            var user = _userService.GetCurrentUser();
                             <div class="dropdown">
                                 <div class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @user.FirstName @user.LastName

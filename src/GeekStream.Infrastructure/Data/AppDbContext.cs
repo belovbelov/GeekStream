@@ -20,6 +20,10 @@ namespace GeekStream.Infrastructure.Data
             builder.Entity<VoteOnPost>()
                 .HasKey(v => new {v.ApplicationUserId, v.ArticleId}
                 );
+
+            builder.Entity<VoteOnReply>()
+                .HasKey(v => new {v.ApplicationUserId, v.CommentId}
+                );
         }
 
         public new DbSet<ApplicationUser> Users { get; set; }
@@ -30,5 +34,6 @@ namespace GeekStream.Infrastructure.Data
         public DbSet<Subscription> Subscription { get; set; }
         public DbSet<FilePath> Files { get; set; }
         public DbSet<VoteOnPost> Votes { get; set; }
+        public DbSet<VoteOnReply> VotesOnReplies { get; set; }
     }
 }

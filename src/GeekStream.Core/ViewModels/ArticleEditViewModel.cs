@@ -4,7 +4,7 @@ using GeekStream.Core.Entities;
 
 namespace GeekStream.Core.ViewModels
 {
-    public class ArticleCreationViewModel 
+    public class ArticleEditViewModel 
     {
         [Required]
         [Display(Name = "Придумайте название статьи")]
@@ -23,6 +23,6 @@ namespace GeekStream.Core.ViewModels
         public string Keywords { get; set; }
 
         [Display(Name = "Выберите изображения")]
-        public List<FilePath> FilePaths { get; set; } = new();
+        public List<FilePath> FilePaths { get; set; } = new List<FilePath>();
     }
 }

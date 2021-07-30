@@ -1,4 +1,5 @@
 ﻿@using GeekStream.Core.Entities
+@using Microsoft.EntityFrameworkCore
 @model GeekStream.Core.ViewModels.ArticleViewModel;
 @{
     var articleId = @Model.Id;
@@ -18,7 +19,7 @@
         <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
         @foreach (var image in Model.Images)
         {
-            <img src="/images/@image.FileName"/>
+            <img src="~/images/@image.FileName"/>
         }
         <p>@Html.DisplayFor(modelItem => Model.Content)</p>
         <div class="text-right mb-0">
@@ -38,16 +39,17 @@
             if (Model.Comments.Any())
             {
                 <h5>Комментарии (@Model.Comments.Count())</h5>
-                foreach (var comment in Model.Comments)
+                foreach (var item in Model.Comments)
                 {
+                    var commentId = item.Id;
                     <div class="comment">
                         <div class="comment-navbar">
                             <img/>
-                            <b>@comment.UserName</b>
+                            <b>@item.UserName</b>
                         </div>
                         <div class="comment-body">
                             <span class="comment-text">
-                                @comment.Content
+                                @item.Content
                             </span>
                         </div>
                         <div class="comment-footer d-flex justify-content-between">
@@ -55,14 +57,14 @@
                                 Ответить
                             </b>
         
-                            <form asp-controller="Vote" asp-action="ProcessVotes">
-                                <input type="hidden" asp-for="@articleId"/>
+                            <form asp-controller="Vote" asp-action="ProcessVotesOnReply">
+                                <input type="hidden" asp-for="@commentId"/>
                                 <input type="hidden" name="type" value="@VoteType.UpVote"/>
                                 <input type="submit" class="btn btn-success"/>
                             </form>
-                            <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
-                            <form asp-controller="Vote" asp-action="ProcessVotes">
-                                <input type="hidden" asp-for="@articleId"/>
+                            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                            <form asp-controller="Vote" asp-action="ProcessVotesOnReply">
+                                <input type="hidden" asp-for="@commentId"/>
                                 <input type="hidden" name="type" value="@VoteType.DownVote"/>
                                 <input type="submit" class="btn btn-danger"/>
                             </form>
