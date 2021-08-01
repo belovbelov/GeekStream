@@ -5,8 +5,8 @@ namespace GeekStream.Core.Interfaces
 {
     public interface ICommentRepository
     {
-        public Task Create(Comment comment);
-        public Task Update(Comment comment);
+        public Task CreateAsync(Comment comment);
+        public Task UpdateAsync(Comment comment);
         public Comment FindCommentById(int id);
     }
 }

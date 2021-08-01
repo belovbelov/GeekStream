@@ -4,6 +4,5 @@
     {
         Avatar = 1,
         Photo,
-        Image
     }
 }

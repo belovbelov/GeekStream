@@ -9,7 +9,7 @@ namespace GeekStream.Core.Interfaces
         public IEnumerable<Category> GetAll();
         public Task SaveAsync(Category category);
         public Category GetById(int id);
-        public Task Update(Category category);
-        public Task Delete(Category category);
+        public Task UpdateAsync(Category category);
+        public Task DeleteAsync(Category category);
     }
 }

@@ -2,7 +2,7 @@
 @using GeekStream.Core.Services
 @inject UserService _userService;
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 align-items-center">
             <div class="container h-100">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="/images/NavBarLogo.png" width="50" height="43" alt="">
@@ -31,7 +31,8 @@
                             </form>
                         </li>
                     </ul>
-                    
+                    <ul class="navbar-nav flex-grow-1 align-items-center">
+
                     @{
                         if (User.IsInRole("Reviewer"))
                         {
@@ -60,6 +61,7 @@
                             <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
                         }
                     }
+                    </ul>
                 </div>
             </div>
         </nav>

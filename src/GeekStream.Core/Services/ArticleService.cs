@@ -37,19 +37,21 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Images = article.Images
+                Images = article.Images,
+                UserIcon = article.Author.Avatar,
+                CategoryIcon = article.Category.Image
                 });
 
             }
 
-        public void UpdateArticleRating(int articleId, int votes)
+        public async Task UpdateArticleRatingAsync(int articleId, int votes)
         {
             var article = _articleRepository.GetById(articleId);
             article.Rating = votes;
-            _articleRepository.Update(article);
+            await _articleRepository.UpdateAsync(article);
         }
 
-        public void UpdateArticle(ArticleEditViewModel model)
+        public async Task UpdateArticleAsync(ArticleEditViewModel model)
         {
             var article = new Article
             {
@@ -58,7 +60,7 @@ namespace GeekStream.Core.Services
                 CategoryId= model.CategoryId,
                 Images = model.FilePaths
             };
-            _articleRepository.Update(article);
+            await _articleRepository.UpdateAsync(article);
         }
 
         public async Task SaveArticleAsync(ArticleEditViewModel model)
@@ -80,10 +82,10 @@ namespace GeekStream.Core.Services
             await _keywordService.SaveKeywordsAsync(model.Keywords, article);
         }
 
-        public async Task DeleteArticle(int id)
+        public async Task DeleteArticleAsync(int id)
         {
             var article = _articleRepository.GetById(id);
-            await _articleRepository.Delete(article);
+            await _articleRepository.DeleteAsync(article);
         }
 
         public ArticleEditViewModel GetArticleToEditById(int id)
@@ -116,7 +118,9 @@ namespace GeekStream.Core.Services
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
                 Images = article.Images,
-                Comments = article.Comments
+                Comments = article.Comments,
+                UserIcon = article.Author.Avatar,
+                CategoryIcon = article.Category.Image
             };
         }
 
@@ -134,7 +138,9 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Images = article.Images
+                Images = article.Images,
+                UserIcon = article.Author.Avatar,
+                CategoryIcon = article.Category.Image
                 });
         }
 
@@ -152,15 +158,17 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images
+                    Images = article.Images,
+                    UserIcon = article.Author.Avatar,
+                    CategoryIcon = article.Category.Image
                 });
         }
 
-        public IEnumerable<ArticleViewModel> FindBySubscription(string? subscriptionId = null)
+        public async Task<IEnumerable<ArticleViewModel>> FindBySubscription(string? subscriptionId = null)
         {
             var userId = _userService.GetCurrentUser().Id;
-            var articles = _articleRepository.FindBySubscription(userId, subscriptionId)
-                .Select(article => new ArticleViewModel
+            var articles = await _articleRepository.FindBySubscription(userId, subscriptionId);
+                return articles.Select(article => new ArticleViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
@@ -171,10 +179,11 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images
+                    Images = article.Images,
+                    UserIcon = article.Author.Avatar,
+                    CategoryIcon = article.Category.Image
                 });
 
-            return articles;
         }
 
         public IEnumerable<ArticleViewModel> FindByKeywords(string? words)
@@ -192,7 +201,9 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images
+                    Images = article.Images,
+                    UserIcon = article.Author.Avatar,
+                    CategoryIcon = article.Category.Image
                 });
         }
     }

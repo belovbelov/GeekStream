@@ -6,21 +6,14 @@
     <title>@ViewData["Title"] - GeekStream</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/upvotejs/upvotejs.css">
-    <script type="text/javascript" src="~/lib/upvotejs/upvotejs.vanilla.js"></script>
-    <script type="text/javascript" src="~/lib/upvotejs/upvotejs.jquery.js"></script>
 </head>
 <body>
     <header>
-        @await Html.PartialAsync("_Navbar");
+        @await Html.PartialAsync("_Navbar")
     </header>
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h5 class="mb-2">Подписки</h5>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="true" autocomplete="off"asp-controller="Home" asp-action="Index">Все подряд</button>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="false" autocomplete="off" asp-controller="Home" asp-action="Index" asp-route-id="1">IT</button>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="false" autocomplete="off">Физика</button>
                 @await RenderSectionAsync("subscriptions", required: false)
             </div>
             <div class="col">

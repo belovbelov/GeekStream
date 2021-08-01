@@ -4,17 +4,23 @@
 @foreach (var item in Model)
 {
   var articleId = item.Id;
+    var categoryIcon = item.CategoryIcon.FileName;
+    var userIcon = item.UserIcon.FileName;
     <div class="card mb-2">
         <div class="card-body rounded-lg">
             <div class="card-navbar justify-content-between">
                 <div class="navbar-right">
                     <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                    <img class="category__icon" width="20" src="/images/@categoryIcon"/>
                         @item.Category
                     </a>
                     @Html.DisplayFor(modelItem => item.PublishedDate)
                 </div>
                 <div class="navbar-left">
-                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.Author)</a>
+                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">
+                        <img class="user__icon" width="20" src="/images/@userIcon"/>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </a>
                 </div>
             </div>
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">

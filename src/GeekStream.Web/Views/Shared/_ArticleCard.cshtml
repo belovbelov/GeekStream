@@ -8,12 +8,16 @@
         <div class="card-navbar justify-content-between">
             <div class="navbar-right">
                 <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">
+                <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
                     @Model.Category
                 </a>
                 @Html.DisplayFor(modelItem => Model.PublishedDate)
             </div>
             <div class="navbar-left">
-                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">@Html.DisplayFor(modelItem => Model.Author)</a>
+                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">
+                <img class="user__icon" width="20" src="/images/@Model.UserIcon.FileName"/>
+                    @Html.DisplayFor(modelItem => Model.Author)
+                </a>
             </div>
         </div>
         <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>

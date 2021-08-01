@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.ViewModels;
@@ -44,7 +43,8 @@ namespace GeekStream.Web.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    AvatarId = 1
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

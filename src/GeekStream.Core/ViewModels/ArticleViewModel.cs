@@ -17,6 +17,8 @@ namespace GeekStream.Core.ViewModels
         public string Author { get; set; }
 
         public string AuthorId { get; set; }
+        public FilePath CategoryIcon { get; set; }
+        public FilePath UserIcon { get; set; }
 
         public string Category { get; set; }
 

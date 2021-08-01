@@ -27,11 +27,11 @@ namespace GeekStream.Core.Services
 
             try
             {
-                await _voteRepository.Save(vote);
+                await _voteRepository.SaveAsync(vote);
             }
             catch (DbUpdateException e)
             {
-                await _voteRepository.Update(vote);
+                await _voteRepository.UpdateAsync(vote);
             }
         }
         public async Task CreateOrUpdateVoteOnReply(string userId, int commentId, VoteType type)
@@ -45,11 +45,11 @@ namespace GeekStream.Core.Services
 
             try
             {
-                await _voteRepository.Save(vote);
+                await _voteRepository.SaveAsync(vote);
             }
             catch (DbUpdateException e)
             {
-                await _voteRepository.Update(vote);
+                await _voteRepository.UpdateAsync(vote);
             }
         }
 
@@ -61,7 +61,7 @@ namespace GeekStream.Core.Services
                 ArticleId = articleId,
                 Type = type
             };
-            await _voteRepository.Delete(vote);
+            await _voteRepository.DeleteAsync(vote);
         }
 
         public async Task RemoveVoteFromReply(string userId, int commentId, VoteType type)
@@ -72,7 +72,7 @@ namespace GeekStream.Core.Services
                 CommentId = commentId,
                 Type = type
             };
-            await _voteRepository.Delete(vote);
+            await _voteRepository.DeleteAsync(vote);
         }
         public int GetRatingForPost(int articleId)
         {

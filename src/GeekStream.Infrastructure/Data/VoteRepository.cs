@@ -17,37 +17,37 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public async Task Save(VoteOnPost vote)
+        public async Task SaveAsync(VoteOnPost vote)
         {
             _context.Add(vote);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Save(VoteOnReply vote)
+        public async Task SaveAsync(VoteOnReply vote)
         {
             _context.Add(vote);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(VoteOnPost vote)
+        public async Task UpdateAsync(VoteOnPost vote)
         {
             _context.Update(vote);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(VoteOnReply vote)
+        public async Task UpdateAsync(VoteOnReply vote)
         {
             _context.Update(vote);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(VoteOnPost vote)
+        public async Task DeleteAsync(VoteOnPost vote)
         {
             _context.Votes.Remove(vote);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(VoteOnReply vote)
+        public async Task DeleteAsync(VoteOnReply vote)
         {
             _context.VotesOnReplies.Remove(vote);
             await _context.SaveChangesAsync();

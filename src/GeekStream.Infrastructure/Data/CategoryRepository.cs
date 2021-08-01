@@ -29,16 +29,18 @@ namespace GeekStream.Infrastructure.Data
 
         public Category GetById(int id)
         {
-            return _context.Categories.SingleOrDefault(c => c.Id == id);
+            return _context.Categories
+                .Include(c => c.Image)
+                .SingleOrDefault(c => c.Id == id);
         }
 
-        public async Task Update(Category category)
+        public async Task UpdateAsync(Category category)
         {
             _context.Entry(category).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(Category category)
+        public async Task DeleteAsync(Category category)
         {
             if (category != null)
             {

@@ -14,13 +14,13 @@ namespace GeekStream.Infrastructure.Data
             _context = context;
         }
 
-        public async Task Create(Comment comment)
+        public async Task CreateAsync(Comment comment)
         {
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Comment comment)
+        public async Task UpdateAsync(Comment comment)
         {
             _context.Comments.Update(comment);
             await _context.SaveChangesAsync();

@@ -10,7 +10,6 @@ using GeekStream.Core.Entities;
 using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 
 namespace GeekStream.Web.Controllers
@@ -87,7 +86,6 @@ namespace GeekStream.Web.Controllers
                         {
                             FileName = Guid.NewGuid() + Path.GetExtension(file.FileName),
                             FileType = FileType.Photo,
-                            User = _userService.GetCurrentUser()
                         };
                         await using (Stream fileStream = new FileStream(path + image.FileName, FileMode.Create))
                         {
@@ -129,11 +127,10 @@ namespace GeekStream.Web.Controllers
                         {
                             FileName = System.IO.Path.GetFileName(file.FileName),
                             FileType = FileType.Photo,
-                            User = _userService.GetCurrentUser()
                         };
                         model.FilePaths.Add(image);
                     }
-                    _articleService.UpdateArticle(model);
+                    await _articleService.UpdateArticleAsync(model);
                     return RedirectToAction(nameof(Index));
             }
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
@@ -142,7 +139,7 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [Route("[controller]/{id}/[action]")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
 
             var article = _articleService.GetArticleById(id);
@@ -160,7 +157,7 @@ namespace GeekStream.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _articleService.DeleteArticle(id);
+            await _articleService.DeleteArticleAsync(id);
             return RedirectToAction(nameof(Index));
         }
 

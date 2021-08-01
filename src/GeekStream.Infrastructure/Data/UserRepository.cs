@@ -25,7 +25,9 @@ namespace GeekStream.Infrastructure.Data
 
         public ApplicationUser GetByName(string id)
         {
-            return _context.Users.SingleOrDefault(a => a.Id == id);
+            return _context.Users
+                .Include(u => u.Avatar)
+                .SingleOrDefault(a => a.Id == id);
         }
 
         public int GetUserRating(string userId)
@@ -43,7 +45,9 @@ namespace GeekStream.Infrastructure.Data
 
         public IEnumerable<ApplicationUser> GetAll()
         {
-            return _context.Users.ToList();
+            return _context.Users
+                .Include(u => u.Avatar)
+                .ToList();
         }
 
         public async Task SubscribeAsync(Subscription subscription)

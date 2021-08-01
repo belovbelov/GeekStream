@@ -21,7 +21,9 @@ namespace GeekStream.Infrastructure.Data
         {
             return _context.Articles
                     .Include(article => article.Category)
+                    .ThenInclude(c => c.Image)
                     .Include(article => article.Author)
+                    .ThenInclude(a => a.Avatar)
                     .Where(article => article.PostedOn != null)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
@@ -34,19 +36,10 @@ namespace GeekStream.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        public void Update(Article article)
+        public async Task UpdateAsync(Article article)
         {
             _context.Articles.Update(article);
-            _context.SaveChanges();
-        }
-
-        public async Task Delete(Article article)
-        {
-            if (article != null)
-            {
-                _context.Articles.Remove(article);
-                await _context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Article article)
@@ -58,8 +51,10 @@ namespace GeekStream.Infrastructure.Data
         public Article GetById(int id)
         {
             var article = _context.Articles
-                .Include(article => article.Category)
-                .Include(article => article.Author)
+                    .Include(article => article.Category)
+                    .ThenInclude(c => c.Image)
+                    .Include(article => article.Author)
+                    .ThenInclude(a => a.Avatar)
                 .Include(article => article.Keywords)
                 .Include(article => article.Images)
                 .Include(article => article.Comments)
@@ -87,21 +82,13 @@ namespace GeekStream.Infrastructure.Data
             }
         }
 
-        public void Delete(int id)
-        {
-            var article = GetById(id);
-            if (article != null)
-            {
-                _context.Articles.Remove(article);
-                _context.SaveChanges();
-            }
-        }
-
         public IEnumerable<Article> FindByCategoryId(int id)
         {
             return _context.Articles
-                .Include(article => article.Category)
-                .Include(article => article.Author)
+                    .Include(article => article.Category)
+                    .ThenInclude(c => c.Image)
+                    .Include(article => article.Author)
+                    .ThenInclude(a => a.Avatar)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.CategoryId == id);
         }
@@ -109,31 +96,34 @@ namespace GeekStream.Infrastructure.Data
         public IEnumerable<Article> FindByAuthorId(string id)
         {
             return _context.Articles
-                .Include(article => article.Category)
-                .Include(article => article.Author)
+                    .Include(article => article.Category)
+                    .ThenInclude(c => c.Image)
+                    .Include(article => article.Author)
+                    .ThenInclude(a => a.Avatar)
                 .Where(article => article.PostedOn != null)
                 .Where(a => a.Author.Id == id);
         }
 
-        public IEnumerable<Article> FindBySubscription(string currentUserId,string? subscriptionId)
+        public async Task<IEnumerable<Article>> FindBySubscription(string currentUserId,string? subscriptionId)
         {
             var sub = _context.Subscription
                 .Where(s => currentUserId == s.ApplicationUser.Id);
 
-            var allArticles = _context.Articles
+            var articles = await _context.Articles
+                .Where(article => article.PostedOn != null)
                 .Include(article => article.Category)
+                .ThenInclude(c => c.Image)
                 .Include(article => article.Author)
-                .Where(article => article.PostedOn != null);
+                .ThenInclude(a => a.Avatar)
+                .ToArrayAsync();
 
             if (subscriptionId != null)
             {
-                allArticles = allArticles
+                var allArticles = articles
                     .Where(article => article.CategoryId.ToString() == subscriptionId || article.Author.Id == subscriptionId);
             }
 
-
-
-            return allArticles.Join(
+            var category= articles.Join(
                 sub,
                 a => a.CategoryId.ToString(),
                 s => s.PublishSource,
@@ -149,7 +139,8 @@ namespace GeekStream.Infrastructure.Data
                     CategoryId = a.CategoryId,
                     Rating = a.Rating,
                 }
-            ).Concat(allArticles.Join(
+            );
+            var users = articles.Join(
                     sub,
                     a => a.Author.Id,
                     s => s.PublishSource,
@@ -165,14 +156,19 @@ namespace GeekStream.Infrastructure.Data
                         CategoryId = a.CategoryId,
                         Rating = a.Rating,
                     }
-                ));
+                );
+            var subscriptions = category.Union(users);
+
+            return subscriptions;
         }
 
         public IEnumerable<Article> FindByKeywords(List<string> words)
         {
             return _context.Articles
-                .Include(article => article.Category)
-                .Include(article => article.Author)
+                    .Include(article => article.Category)
+                    .ThenInclude(c => c.Image)
+                    .Include(article => article.Author)
+                    .ThenInclude(a => a.Avatar)
                 .Include(article => article.Keywords)
                 .Where(article => article.Keywords.Any(k => words.Contains(k.Word)));
         }
