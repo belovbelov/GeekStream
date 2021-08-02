@@ -24,6 +24,10 @@ namespace GeekStream.Infrastructure.Data
             builder.Entity<VoteOnReply>()
                 .HasKey(v => new {v.ApplicationUserId, v.CommentId}
                 );
+
+            builder.Entity<ChatUser>()
+                .HasKey(x => new { x.ChatId , x.UserId }
+                );
         }
 
         public new DbSet<ApplicationUser> Users { get; set; }
