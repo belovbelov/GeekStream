@@ -24,5 +24,7 @@ namespace GeekStream.Core.Entities
         public IEnumerable<Comment> Comments { get; set; }
 
         public IEnumerable<Subscription> Subscriptions { get; set; }
+
+        public IEnumerable<ChatUser> Chats { get; set; }
     }
 }

@@ -35,5 +35,8 @@ namespace GeekStream.Infrastructure.Data
         public DbSet<FilePath> Files { get; set; }
         public DbSet<VoteOnPost> Votes { get; set; }
         public DbSet<VoteOnReply> VotesOnReplies { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<ChatUser> ChatUsers { get; set; }
     }
 }
