@@ -4,13 +4,18 @@
 
 @{
     var userId = _userService.GetCurrentUser().Id;
+
+    Layout = "~/Views/Shared/_ChatsLayout.cshtml";
 }
 
 <div class="chat-body">
+    @if (Model.Any())
+    {
     @foreach (var chat in Model)
     {
         <a class="room-button" asp-controller="Chats" asp-action="Chat" asp-route-id="@chat.Id">
-            @chat.Users.FirstOrDefault(x => x.UserId != userId).User.UserName
+            @chat.Users.FirstOrDefault(x => x.UserId != userId)?.User.UserName
         </a>
+    }
     }
 </div>

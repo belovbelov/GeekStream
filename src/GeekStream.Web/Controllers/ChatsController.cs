@@ -17,12 +17,23 @@ namespace GeekStream.Web.Controllers
         {
             _chatService = chatService;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> JoinRoom(int id)
+        {
+            await _chatService.JoinRoom(id);
+
+            return RedirectToAction("Chat", "Chats", new { id = id });}
+
+        [HttpGet]
         public IActionResult Index()
         {
             var chats = _chatService.GetChats();
             return View(chats);
         }
 
+        [HttpGet]
+        [Route("[controller]/[action]")]
         public IActionResult Private()
         {
             var chats = _chatService.GetPrivateChats();
@@ -30,17 +41,11 @@ namespace GeekStream.Web.Controllers
             return View(chats);
         }
 
-        public async Task<IActionResult> CreatePrivateRoom(string userId)
+        public async Task<IActionResult> CreatePrivateRoom(string id)
         {
-            var id = await _chatService.CreatePrivateRoom(userId);
+            var chatId = await _chatService.CreatePrivateRoom(id);
 
-            return RedirectToAction("Chat", new { id });
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Chat(int id)
-        {
-            return View(_chatService.GetChat(id));
+            return RedirectToAction(nameof(Chat), new{ id = chatId} );
         }
 
         public async Task<IActionResult> SendMessage(
@@ -48,17 +53,22 @@ namespace GeekStream.Web.Controllers
             string message,
             [FromServices] IHubContext<ChatHub> chat)
         {
-            var Message = await _chatService.CreateMessage(roomId, message;
+            var Message = await _chatService.CreateMessage(roomId, message);
 
             await chat.Clients.Group(roomId.ToString())
                 .SendAsync("RecieveMessage", new
                 {
                     Text = Message.Text,
                     Name = Message.Name,
-                    Timestamp = Message.Timestamp.ToString("dd/MM/yyyy hh:mm:ss")
+                    Timestamp = Message.Timestamp
                 });
 
-            return Ok();
+            return RedirectToAction("Chat", new { id = roomId});
+        }
+        [HttpGet("[controller]/{id}")]
+        public IActionResult Chat(int id)
+        {
+            return View(_chatService.GetChat(id));
         }
     }
 }

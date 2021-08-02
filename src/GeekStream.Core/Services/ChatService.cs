@@ -16,6 +16,12 @@ namespace GeekStream.Core.Services
             _userService = userService;
         }
 
+        public async Task JoinRoom(int id)
+        {
+            var userId = _userService.GetCurrentUser().Id;
+            await _chatRepository.JoinRoom(id, userId);
+        }
+
         public IEnumerable<Chat> GetChats()
         {
             var userId = _userService.GetCurrentUser().Id;

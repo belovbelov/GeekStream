@@ -5,7 +5,6 @@
     <meta name="viewport" content="warticleIdth=device-warticleIdth, initial-scale=1.0" />
     <title>@ViewData["Title"] - GeekStream</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
@@ -13,15 +12,7 @@
     </header>
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                @await RenderSectionAsync("subscriptions", required: false)
-            </div>
-            <div class="col">
                 @RenderBody()
-            </div>
-            <div class="col-md-3">
-                @await RenderSectionAsync("discussingNow",required: false)
-            </div>
         </div>
     </div>
 

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GeekStream.Infrastructure.Data;
+using GeekStream.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -49,6 +50,8 @@ namespace GeekStream.Web
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlDataContractSerializerFormatters();
 
+            services.AddSignalR();
+
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<ArticleService>();
@@ -68,6 +71,9 @@ namespace GeekStream.Web
 
             services.AddScoped<CommentService>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+
+            services.AddScoped<ChatService>();
+            services.AddScoped<IChatRepository, ChatRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +102,8 @@ namespace GeekStream.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

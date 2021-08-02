@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
+using GeekStream.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Infrastructure.Data
 {
-    public class ChatRepository
+    public class ChatRepository : IChatRepository
     {
         private readonly AppDbContext _context;
 
@@ -23,7 +24,7 @@ namespace GeekStream.Infrastructure.Data
                 ChatId = chatId,
                 Text = message,
                 Name = userId,
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.UtcNow
             };
 
             _context.Messages.Add(createMessage);
@@ -50,9 +51,16 @@ namespace GeekStream.Infrastructure.Data
                 UserId = rootId
             });
 
+            chat.Name = "PrivateChat";
             chat.Users = users;
 
-            _context.Chats.Add(chat);
+            try
+            {
+                _context.Chats.Add(chat);
+            }
+            catch (DbUpdateException e)
+            {
+            }
 
             await _context.SaveChangesAsync();
 
@@ -91,8 +99,8 @@ namespace GeekStream.Infrastructure.Data
         {
             return _context.Chats
                 .Include(x => x.Users)
-                .Where(x => x.Users
-                    .All(y => y.UserId != userId))
+                .Where(x => !x.Users
+                    .Any(y => y.UserId == userId))
                 .ToList();
         }
 

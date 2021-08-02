@@ -29,10 +29,7 @@
                             <input class="btn btn-primary" type="submit"value="Подписаться"/>
                         </form>
                     }
-                    <form asp-controller="Chats" asp-action="CreatePrivateRoom">
-                        <input type="hidden" asp-for="@Model.Id"/>
-                        <input type="submit" class="btn btn-outline-light" value="Написать"/>
-                    </form>
+                    <a asp-controller="Chats" asp-action="CreatePrivateRoom" asp-route-id="@Model.Id" class="btn btn-outline-light">Написать</a>
                 }
 
             </div>

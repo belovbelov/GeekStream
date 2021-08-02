@@ -1,7 +1,11 @@
-﻿model Chat
+﻿@model GeekStream.Core.Entities.Chat
+@{
 
+    Layout = "~/Views/Shared/_ChatsLayout.cshtml";
+}
 <div class="chat-body">
-    @foreach(var message in Model.Messages){
+    @foreach(var message in 
+        Model.Messages){
         <div class="message">
             <header>@message.Name:</header>
             <p>@message.Text</p>
@@ -9,14 +13,14 @@
         </div>
     }
 </div>
-<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Chats" asp-action="CreateMessage">
+<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Chats" asp-action="SendMessage">
     <input type="hidden" name="roomId" value="@Model.Id">
     <input type="text" name="message" id="message-input">
     <button type="submit">Send</button>
 </form>
 
 @section scripts {
-    <script src="~/js/signalr.min.js"></script>
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/messageBuilder.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
@@ -24,36 +28,38 @@
             .withUrl("/chatHub")
             .build();
         var _connectionId = '';
-        connection.on("RecieveMessage", function (data) {
-            var message = messageBuilder()
-                .createMessage()
-                .withHeader(data.name)
-                .withParagraph(data.text)
-                .withFooter(data.timestamp)
-                .build();
-            document.querySelector('.chat-body').append(message);
-        })
+        connection.on("RecieveMessage",
+            function(data) {
+                var message = messageBuilder()
+                    .createMessage()
+                    .withHeader(data.name)
+                    .withParagraph(data.text)
+                    .withFooter(data.timestamp)
+                    .build();
+                document.querySelector('.chat-body').append(message);
+            });
         connection.start()
-            .then(function () {
+            .then(function() {
                 connection.invoke('joinRoom', '@Model.Id');
             })
-            .catch(function (err) {
-                console.log(err)
-            })
-        window.addEventListener('onunload', function () {
-            connection.invoke('leaveRoom', '@Model.Id');
-        })
+            .catch(function(err) {
+                console.log(err);
+            });
+        window.addEventListener('onunload',
+            function() {
+                connection.invoke('leaveRoom', '@Model.Id');
+            });
         var sendMessage = function (event) {
             event.preventDefault();
-            var data = new FormData(event.target);
+            const data = new FormData(event.target);
             document.getElementById('message-input').value = '';
-            axios.post('/Home/SendMessage', data)
+            window.axios.post('/Chats/SendMessage', data)
                 .then(res => {
-                    console.log("Message Sent!")
+                    console.log("Message Sent!");
                 })
                 .catch(err => {
-                    console.log("Failed to send message!")
-                })
+                    console.log("Failed to send message!");
+                });
         }
     </script>
 }
