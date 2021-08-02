@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
+using GeekStream.Core.ViewModels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GeekStream.Core.Services
 {
@@ -28,15 +30,25 @@ namespace GeekStream.Core.Services
             return _chatRepository.GetChats(userId);
         }
 
-        public Chat GetChat(int id)
+        public async Task<ChatViewModel> GetChat(int id)
         {
-            return _chatRepository.GetChat(id);
+            var chat = _chatRepository.GetChat(id);
+            var chatViewModel = new ChatViewModel
+            {
+                Id = chat.Id,
+                Name = chat.Name,
+                Type = chat.Type,
+                Messages = chat.Messages,
+                Users = chat.Users,
+                Chats = await _chatRepository.GetPrivateChats(_userService.GetCurrentUser().Id)
+            };
+            return chatViewModel;
         }
 
-        public IEnumerable<Chat> GetPrivateChats()
+        public async Task<IEnumerable<Chat>> GetPrivateChats()
         {
             var userId = _userService.GetCurrentUser().Id;
-            return _chatRepository.GetPrivateChats(userId);
+            return await _chatRepository.GetPrivateChats(userId);
         }
 
         public async Task<Message> CreateMessage(int roomId, string message)

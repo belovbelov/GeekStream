@@ -62,26 +62,6 @@ namespace GeekStream.Infrastructure.Data
             return article;
         }
 
-        public void Publish(int id)
-        {
-            var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
-            if (article != null)
-            {
-                article.PostedOn = DateTime.UtcNow;
-                _context.SaveChanges();
-            }
-        }
-
-        public void UnPublish(int id)
-        {
-            var article  = _context.Articles.SingleOrDefault(x => x.Id == id);
-            if (article != null)
-            {
-                article.PostedOn = null;
-                _context.SaveChanges();
-            }
-        }
-
         public IEnumerable<Article> FindByCategoryId(int id)
         {
             return _context.Articles

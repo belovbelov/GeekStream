@@ -3,14 +3,14 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-action="Create" enctype="multipart/form-data" method="post">
+<form asp-action="" enctype="multipart/form-data" method="post">
 
 <div class="navbar">
     <h5>Новая статья</h5>
               <div class="text-right mb-0">
             <div class="form-group">
-                <input type="submit" value="Сохранить черновик" class="btn btn-light mr-2" />
-                <input type="submit" value="Опубликовать" class="btn btn-primary" />
+                <input type="submit" name="action" id="save" value="Сохранить черновик" class="btn btn-light mr-2" />
+                <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary" />
             </div>
         </div>
 </div>

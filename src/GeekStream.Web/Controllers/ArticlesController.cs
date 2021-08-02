@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using GeekStream.Core.Entities;
-using GeekStream.Infrastructure.Data;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 
@@ -16,19 +15,14 @@ namespace GeekStream.Web.Controllers
 {
     public class ArticlesController : Controller
     {
-        private readonly AppDbContext _context;
-
         private readonly ArticleService _articleService;
         private readonly CategoryService _categoryService;
-        private readonly UserService _userService;
         private readonly CommentService _commentService;
 
-        public ArticlesController(AppDbContext context, ArticleService articleService, CategoryService categoryService, UserService userService, CommentService commentService)
+        public ArticlesController(ArticleService articleService, CategoryService categoryService, CommentService commentService)
         {
-            _context = context;
             _articleService = articleService;
             _categoryService = categoryService;
-            _userService = userService;
             _commentService = commentService;
         }
 

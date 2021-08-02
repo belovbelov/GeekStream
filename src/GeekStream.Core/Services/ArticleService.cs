@@ -70,11 +70,12 @@ namespace GeekStream.Core.Services
                 Title = model.Title,
                 Content = model.Content,
                 CreatedOn = DateTime.UtcNow,
-                PostedOn = DateTime.Now,
+                PostedOn = DateTime.UtcNow,
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
                 Rating = 0,
-                Images = model.FilePaths
+                Images = model.FilePaths,
+                Type = ArticleType.Ready
             };
 
             await _articleRepository.SaveAsync(article);

@@ -10,8 +10,6 @@ namespace GeekStream.Core.Interfaces
         public Task SaveAsync(Article article);
         public Task UpdateAsync(Article article);
         public Task DeleteAsync(Article article);
-        public void Publish(int id);
-        public void UnPublish(int id);
         public Article GetById(int id);
         public IEnumerable<Article> GetAll(int page, int pageSize);
         public IEnumerable<Article> FindByCategoryId(int id);

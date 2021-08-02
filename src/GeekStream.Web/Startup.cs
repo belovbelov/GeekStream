@@ -73,7 +73,7 @@ namespace GeekStream.Web
             services.AddScoped<ICommentRepository, CommentRepository>();
 
             services.AddScoped<ChatService>();
-            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddTransient<IChatRepository, ChatRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

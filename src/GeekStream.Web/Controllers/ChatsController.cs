@@ -34,9 +34,9 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [Route("[controller]/[action]")]
-        public IActionResult Private()
+        public async Task<IActionResult> Private()
         {
-            var chats = _chatService.GetPrivateChats();
+            var chats = await _chatService.GetPrivateChats();
 
             return View(chats);
         }
@@ -66,9 +66,10 @@ namespace GeekStream.Web.Controllers
             return RedirectToAction("Chat", new { id = roomId});
         }
         [HttpGet("[controller]/{id}")]
-        public IActionResult Chat(int id)
+        public async Task<IActionResult> Chat(int id)
         {
-            return View(_chatService.GetChat(id));
+            var chats = await _chatService.GetChat(id);
+            return View(chats);
         }
     }
 }

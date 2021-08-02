@@ -104,15 +104,16 @@ namespace GeekStream.Infrastructure.Data
                 .ToList();
         }
 
-        public IEnumerable<Chat> GetPrivateChats(string userId)
+        public async Task<IEnumerable<Chat>> GetPrivateChats(string userId)
         {
-            return _context.Chats
+            var chats= await _context.Chats
                    .Include(x => x.Users)
                        .ThenInclude(x => x.User)
                    .Where(x => x.Type == ChatType.Private
                        && x.Users
                            .Any(y => y.UserId == userId))
-                   .ToList();
+                   .ToListAsync();
+            return chats.ToList();
         }
 
         public async Task JoinRoom(int chatId, string userId)

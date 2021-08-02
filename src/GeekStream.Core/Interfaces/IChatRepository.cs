@@ -11,7 +11,7 @@ namespace GeekStream.Core.Interfaces
         Task JoinRoom(int chatId, string userId);
         IEnumerable<Chat> GetChats(string userId);
         Task<int> CreatePrivateRoom(string rootId, string targetId);
-        IEnumerable<Chat> GetPrivateChats(string userId);
+        public Task<IEnumerable<Chat>> GetPrivateChats(string userId);
 
         Task<Message> CreateMessage(int chatId, string message, string userId); 
     }
