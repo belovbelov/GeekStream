@@ -152,5 +152,16 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Keywords)
                 .Where(article => article.Keywords.Any(k => words.Contains(k.Word)));
         }
+
+        public IEnumerable<Article> GetPending()
+        {
+            return _context.Articles
+                .Include(article => article.Category)
+                .ThenInclude(c => c.Image)
+                .Include(article => article.Author)
+                .ThenInclude(a => a.Avatar)
+                .Include(article => article.Keywords)
+                .Where(a => a.Type == ArticleType.Ready && a.PostedOn == null);
+        }
     }
 }

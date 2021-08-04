@@ -31,5 +31,12 @@ namespace GeekStream.Infrastructure.Data
             return _context.Comments
                 .FirstOrDefault(c => c.Id == id);
         }
+
+        public async Task RemoveAll(int articleId)
+        {
+            var commentList = _context.Comments.Where(c => c.ArticleId == articleId);
+            _context.Comments.RemoveRange(commentList);
+            await _context.SaveChangesAsync();
+        }
     }
 }

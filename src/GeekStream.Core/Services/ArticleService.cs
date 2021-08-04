@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekStream.Core.Services
 {
@@ -13,14 +14,14 @@ namespace GeekStream.Core.Services
         private readonly IArticleRepository _articleRepository;
         private readonly UserService _userService;
         private readonly KeywordService _keywordService;
-        private readonly VoteService _voteService;
+        private readonly CommentService _commentService;
 
-        public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService, VoteService voteService)
+        public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService, CommentService commentService)
         {
             _articleRepository = articleRepository;
             _userService = userService;
             _keywordService = keywordService;
-            _voteService = voteService;
+            _commentService = commentService;
         }
 
         public IEnumerable<ArticleViewModel> GetAllArticles()
@@ -49,6 +50,48 @@ namespace GeekStream.Core.Services
             var article = _articleRepository.GetById(articleId);
             article.Rating = votes;
             await _articleRepository.UpdateAsync(article);
+        }
+
+        public async Task ProcessArticle(ArticleEditViewModel model, string action)
+        {
+            Article article;
+            try
+            {
+                article = new Article
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    CreatedOn = DateTime.UtcNow,
+                    PostedOn = null,
+                    Author = _userService.GetCurrentUser(),
+                    CategoryId= model.CategoryId,
+                    Rating = 0,
+                    Images = model.FilePaths,
+                    Type = ArticleType.Draft
+                };
+
+                await _articleRepository.SaveAsync(article);
+
+                await _keywordService.SaveKeywordsAsync(model.Keywords, article);
+
+            }
+            catch (DbUpdateException e)
+            {
+                article = new Article
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    CategoryId= model.CategoryId,
+                    Images = model.FilePaths
+                };
+                await _articleRepository.UpdateAsync(article);
+            }
+
+            if (action == "Опубликовать")
+            {
+                article.Type = ArticleType.Ready;
+                await _articleRepository.UpdateAsync(article);
+            }
         }
 
         public async Task UpdateArticleAsync(ArticleEditViewModel model)
@@ -81,6 +124,14 @@ namespace GeekStream.Core.Services
             await _articleRepository.SaveAsync(article);
 
             await _keywordService.SaveKeywordsAsync(model.Keywords, article);
+        }
+
+        public async Task Approve(int id)
+        {
+            var article = _articleRepository.GetById(id);
+            article.PostedOn = DateTime.UtcNow;
+            await _articleRepository.UpdateAsync(article);
+            await _commentService.RemoveAll(id);
         }
 
         public async Task DeleteArticleAsync(int id)
@@ -192,6 +243,26 @@ namespace GeekStream.Core.Services
             var keywords = words.Split(" ").ToList();
             return _articleRepository.FindByKeywords(keywords)
                   .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.Author.FirstName + " " + article.Author.LastName,
+                    AuthorId = article.Author.Id,
+                    Category = article.Category.Name,
+                    CategoryId = article.CategoryId,
+                    Rating = article.Rating,
+                    Images = article.Images,
+                    UserIcon = article.Author.Avatar,
+                    CategoryIcon = article.Category.Image
+                });
+        }
+
+        public IEnumerable<ArticleViewModel> PendingArticles()
+        {
+            return _articleRepository.GetPending()
+            .Select(article => new ArticleViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,

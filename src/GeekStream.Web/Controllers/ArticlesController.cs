@@ -42,6 +42,38 @@ namespace GeekStream.Web.Controllers
             return View(articles);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
+        {
+            await _articleService.Approve(id);
+            return RedirectToAction("Details","Articles", new{id = id});
+        }
+
+        [HttpGet]
+        [Route("[controller]/Pending/{id}")]
+        [Authorize(Roles = "Reviewer")]
+        public IActionResult Review(int id)
+        {
+                var article = _articleService.GetArticleById(id);
+                return View(article);
+
+        }
+
+        [HttpGet]
+        [Route("[controller]/Pending/")]
+        [Authorize(Roles = "Reviewer")]
+        public IActionResult Pending()
+        {
+            IEnumerable<ArticleViewModel> articles;
+
+            articles = _articleService.PendingArticles();
+            if (articles == null)
+            {
+               return RedirectToAction("Index", "Home");
+            }
+            return View(articles);
+        }
+
         [HttpGet]
         [Route("[controller]/{id}")]
         [AllowAnonymous]
@@ -67,7 +99,7 @@ namespace GeekStream.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleEditViewModel model, IFormFileCollection files = null)
+        public async Task<IActionResult> Create(ArticleEditViewModel model, string action, IFormFileCollection files = null)
         {
             if (ModelState.IsValid)
             {
@@ -88,11 +120,8 @@ namespace GeekStream.Web.Controllers
                         model.FilePaths.Add(image);
                     }
                 }
-                await _articleService.SaveArticleAsync(model);
-                return RedirectToAction(nameof(Index));
-                    
+                await _articleService.ProcessArticle(model, action);
             }
-            ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View(model);
         }
 
@@ -161,25 +190,6 @@ namespace GeekStream.Web.Controllers
             await _commentService.LeaveComment(articleId, text);
 
             return NoContent();
-        }
-
-        [HttpGet]
-        public IActionResult Pending()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [Route("[controller]/Pending/{id}")]
-        public IActionResult Review(int id)
-        {
-            var article = _articleService.GetArticleById(id);
-            if (article == null)
-            {
-                return NotFound();
-            }
-
-            return View(article);
         }
     }
 }

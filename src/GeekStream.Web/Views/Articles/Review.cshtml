@@ -1,1 +1,11 @@
-﻿
+﻿@model GeekStream.Core.ViewModels.ArticleViewModel
+
+@{
+    ViewData["Title"] = "Review";
+}
+<form asp-action="Approve">
+    <input type="hidden" asp-for="Id"/>
+    <input type="submit" class="btn btn-primary" value="Одобрить"/>
+</form>
+
+@{await Html.RenderPartialAsync("_ArticleCard"); }

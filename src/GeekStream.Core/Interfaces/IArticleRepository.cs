@@ -16,5 +16,7 @@ namespace GeekStream.Core.Interfaces
         public IEnumerable<Article> FindByAuthorId(string name);
         public Task<IEnumerable<Article>> FindBySubscription(string currentUserId,string subscriptionId);
         public IEnumerable<Article> FindByKeywords(List<string> words);
+
+        public IEnumerable<Article> GetPending();
     }
 }

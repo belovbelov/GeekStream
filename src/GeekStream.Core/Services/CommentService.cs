@@ -39,5 +39,10 @@ namespace GeekStream.Core.Services
         {
             return _commentRepository.FindCommentById(commentId);
         }
+
+        public async Task RemoveAll(int articleId)
+        {
+            await _commentRepository.RemoveAll(articleId);
+        }
     }
 }
