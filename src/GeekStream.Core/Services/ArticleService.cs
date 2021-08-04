@@ -52,49 +52,7 @@ namespace GeekStream.Core.Services
             await _articleRepository.UpdateAsync(article);
         }
 
-        public async Task ProcessArticle(ArticleEditViewModel model, string action)
-        {
-            Article article;
-            try
-            {
-                article = new Article
-                {
-                    Title = model.Title,
-                    Content = model.Content,
-                    CreatedOn = DateTime.UtcNow,
-                    PostedOn = null,
-                    Author = _userService.GetCurrentUser(),
-                    CategoryId= model.CategoryId,
-                    Rating = 0,
-                    Images = model.FilePaths,
-                    Type = ArticleType.Draft
-                };
-
-                await _articleRepository.SaveAsync(article);
-
-                await _keywordService.SaveKeywordsAsync(model.Keywords, article);
-
-            }
-            catch (DbUpdateException e)
-            {
-                article = new Article
-                {
-                    Title = model.Title,
-                    Content = model.Content,
-                    CategoryId= model.CategoryId,
-                    Images = model.FilePaths
-                };
-                await _articleRepository.UpdateAsync(article);
-            }
-
-            if (action == "Опубликовать")
-            {
-                article.Type = ArticleType.Ready;
-                await _articleRepository.UpdateAsync(article);
-            }
-        }
-
-        public async Task UpdateArticleAsync(ArticleEditViewModel model)
+        public async Task UpdateArticleAsync(ArticleEditViewModel model, string action)
         {
             var article = new Article
             {
@@ -104,32 +62,44 @@ namespace GeekStream.Core.Services
                 Images = model.FilePaths
             };
             await _articleRepository.UpdateAsync(article);
+
+            if (action == "Опубликовать")
+            {
+                article.Type = ArticleType.Ready;
+                await _articleRepository.UpdateAsync(article);
+            }
         }
 
-        public async Task SaveArticleAsync(ArticleEditViewModel model)
+        public async Task SaveArticleAsync(ArticleEditViewModel model,string action)
         {
             var article = new Article
             {
                 Title = model.Title,
                 Content = model.Content,
                 CreatedOn = DateTime.UtcNow,
-                PostedOn = DateTime.UtcNow,
+                PostedOn = null,
                 Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
                 Rating = 0,
                 Images = model.FilePaths,
-                Type = ArticleType.Ready
+                Type = ArticleType.Draft
             };
 
             await _articleRepository.SaveAsync(article);
 
             await _keywordService.SaveKeywordsAsync(model.Keywords, article);
+            if (action == "Опубликовать")
+            {
+                article.Type = ArticleType.Ready;
+                await _articleRepository.UpdateAsync(article);
+            }
         }
 
         public async Task Approve(int id)
         {
             var article = _articleRepository.GetById(id);
             article.PostedOn = DateTime.UtcNow;
+            article.Rating = 0;
             await _articleRepository.UpdateAsync(article);
             await _commentService.RemoveAll(id);
         }
@@ -144,7 +114,7 @@ namespace GeekStream.Core.Services
         {
             var article = _articleRepository.GetById(id);
             var keywords = article.Keywords
-                .Select(k => k.Word).ToString();
+                .Select(k => k.Word).ToList().Aggregate((i, j) => i + " " + j);
             return new ArticleEditViewModel
             {
                 Title = article.Title,
@@ -257,6 +227,29 @@ namespace GeekStream.Core.Services
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image
                 });
+        }
+
+        public IEnumerable<ArticleViewModel> GetDrafts()
+        {
+            var userId = _userService.GetCurrentUser().Id;
+            var articles = _articleRepository.GetDrafts(userId)
+                .Select(article => new ArticleViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    PublishedDate = article.PostedOn,
+                    Author = article.Author.FirstName + " " + article.Author.LastName,
+                    AuthorId = article.Author.Id,
+                    Category = article.Category.Name,
+                    CategoryId = article.CategoryId,
+                    Rating = article.Rating,
+                    Images = article.Images,
+                    UserIcon = article.Author.Avatar,
+                    CategoryIcon = article.Category.Image
+                });
+
+            return articles;
         }
 
         public IEnumerable<ArticleViewModel> PendingArticles()

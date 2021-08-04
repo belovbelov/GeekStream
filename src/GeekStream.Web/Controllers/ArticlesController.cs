@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -97,6 +98,14 @@ namespace GeekStream.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("[controller]/[action]")]
+        public IActionResult Drafts()
+        {
+            var articles = _articleService.GetDrafts();
+            return View(articles);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ArticleEditViewModel model, string action, IFormFileCollection files = null)
@@ -120,9 +129,9 @@ namespace GeekStream.Web.Controllers
                         model.FilePaths.Add(image);
                     }
                 }
-                await _articleService.ProcessArticle(model, action);
+                await _articleService.SaveArticleAsync(model, action);
             }
-            return View(model);
+            return RedirectToAction("Index","Home");
         }
 
         [Route("[controller]/{id}/[action]")]
@@ -134,62 +143,65 @@ namespace GeekStream.Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
 
             return View(article);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  ArticleEditViewModel model, List<IFormFile> files = null)
+        public async Task<IActionResult> Edit(int id,  ArticleEditViewModel model, string action, List<IFormFile> files = null)
         {
             if (ModelState.IsValid)
             {
-                    foreach (var file in files)
+                foreach (var file in files)
+                {
+                    var image = new FilePath
                     {
-                        var image = new FilePath
-                        {
-                            FileName = System.IO.Path.GetFileName(file.FileName),
-                            FileType = FileType.Photo,
-                        };
-                        model.FilePaths.Add(image);
-                    }
-                    await _articleService.UpdateArticleAsync(model);
-                    return RedirectToAction(nameof(Index));
+                        FileName = System.IO.Path.GetFileName(file.FileName),
+                        FileType = FileType.Photo,
+                    };
+                    model.FilePaths.Add(image);
+                }
+                await _articleService.UpdateArticleAsync(model, action);
+                return RedirectToAction(nameof(Index));
             }
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
             return View(model);
         }
 
-        [HttpGet]
-        [Route("[controller]/{id}/[action]")]
-        public IActionResult Delete(int id)
-        {
 
-            var article = _articleService.GetArticleById(id);
-            if (article == null)
+
+        [HttpGet]
+            [Route("[controller]/{id}/[action]")]
+            public IActionResult Delete(int id)
             {
-                return NotFound();
+
+                var article = _articleService.GetArticleById(id);
+                if (article == null)
+                {
+                    return NotFound();
+                }
+
+                return View(article);
             }
 
-            return View(article);
-        }
+            [HttpPost]
+            [ActionName("Delete")]
+            [Route("[controller]/{id}/[action]")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(int id)
+            {
+                await _articleService.DeleteArticleAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
 
-        [HttpPost]
-        [ActionName("Delete")]
-        [Route("[controller]/{id}/[action]")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _articleService.DeleteArticleAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
+            [HttpPost]
+            public async Task<IActionResult> Comment(int articleId, string text)
+            {
+                await _commentService.LeaveComment(articleId, text);
 
-        [HttpPost]
-        public async Task<IActionResult> Comment(int articleId, string text)
-        {
-            await _commentService.LeaveComment(articleId, text);
-
-            return NoContent();
-        }
+                return NoContent();
+            }
     }
 }

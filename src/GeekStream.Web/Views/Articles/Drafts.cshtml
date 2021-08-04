@@ -1,0 +1,50 @@
+﻿@using GeekStream.Core.Entities
+@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+
+@{
+    ViewData["Title"] = "Drafts";
+}
+
+@foreach (var item in Model)
+{
+    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+  var articleId = item.Id;
+    var categoryIcon = item.CategoryIcon.FileName;
+    var userIcon = item.UserIcon.FileName;
+    <div class="card mb-2">
+        <div class="card-body rounded-lg">
+            <div class="card-navbar justify-content-between">
+                <div class="navbar-right">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                    <img class="category__icon" width="20" src="/images/@categoryIcon"/>
+                        @item.Category
+                    </a>
+                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                </div>
+                <div class="navbar-left">
+                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">
+                        <img class="user__icon" width="20" src="/images/@userIcon"/>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </a>
+                </div>
+            </div>
+            <a asp-controller="Articles" asp-action="Edit" asp-route-id="@item.Id">
+                <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+            </a>
+            <p>@Html.DisplayFor(modelItem => item.Content)</p>
+            <div class="text-right mb-0">
+            <form asp-controller="Vote" asp-action="ProcessVotes">
+                <input type="hidden" asp-for="@articleId"/>
+                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                <input type="submit" class="btn btn-success"/>
+            </form>
+            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                <form asp-controller="Vote" asp-action="ProcessVotes">
+                    <input type="hidden" asp-for="@articleId"/>
+                    <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                    <input type="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+}

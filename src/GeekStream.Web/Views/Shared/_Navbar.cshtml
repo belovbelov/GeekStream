@@ -13,19 +13,19 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
-                        <li class="nav-item mr-2">
+                        <li class="nav-item mr-1">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Index">Статьи</a>
                         </li>
-                        <li class="nav-item mr-2">
+                        <li class="nav-item mr-1">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Chats" asp-action="Private">Дискуссии</a>
                         </li>
-                        <li class="nav-item mr-2">
+                        <li class="nav-item mr-1">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="All">Категории</a>
                         </li>
-                        <li class="nav-item mr-2">
+                        <li class="nav-item mr-1">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Авторы</a>
                         </li>
-                        <li class="nav-item mr-2">
+                        <li class="nav-item mr-1">
                             <a class="btn btn-primary btn-color" asp-area="" asp-controller="Articles" asp-action="Create">Написать статью</a>
                         </li>
                         <li class="nav-item">
@@ -39,11 +39,14 @@
                     @{
                         if (User.IsInRole("Reviewer"))
                         {
-                            <a class="btn btn-outline-info" asp-area="" asp-controller="Articles" asp-action="Pending">Проверить статьи</a>//TODO ACTION - PENDING
+                            <a class="btn btn-outline-info mr-1" asp-area="" asp-controller="Articles" asp-action="Pending">Проверить статьи</a>//TODO ACTION - PENDING
                         }
 
                         if (User.Identity.IsAuthenticated)
                         {
+                            <div class="btn btn-outline-dark mr-1">
+                                <a asp-action="Drafts" asp-controller="Articles">Мои черновики</a>
+                                </div>
                             var user = _userService.GetCurrentUser();
                             <div class="dropdown">
                                 <div class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
