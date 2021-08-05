@@ -132,6 +132,11 @@ namespace GeekStream.Core.Services
         public ArticleEditViewModel GetArticleToEditById(int id)
         {
             var article = _articleRepository.GetById(id);
+
+            if (article.Author.Id != _userService.GetCurrentUser().Id)
+            {
+                return null;
+            }
             var keywords = article.Keywords
                 .Select(k => k.Word).ToList().Aggregate((i, j) => i + " " + j);
             return new ArticleEditViewModel

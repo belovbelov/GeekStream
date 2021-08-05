@@ -19,13 +19,15 @@ namespace GeekStream.Web.Controllers
         private readonly ArticleService _articleService;
         private readonly CategoryService _categoryService;
         private readonly CommentService _commentService;
+        private readonly UserService _userService;
 
         public ArticlesController(ArticleService articleService, CategoryService categoryService,
-            CommentService commentService)
+            CommentService commentService, UserService userService)
         {
             _articleService = articleService;
             _categoryService = categoryService;
             _commentService = commentService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -169,11 +171,15 @@ namespace GeekStream.Web.Controllers
         [Route("[controller]/{id}/[action]")]
         public IActionResult Delete(int id)
         {
-
             var article = _articleService.GetArticleById(id);
             if (article == null)
             {
                 return NotFound();
+            }
+
+            if (article.AuthorId != _userService.GetCurrentUser().Id)
+            {
+                return BadRequest();
             }
 
             return View(article);
