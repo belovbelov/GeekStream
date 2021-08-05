@@ -1,16 +1,31 @@
-﻿@model GeekStream.Core.ViewModels.ArticleEditViewModel
+﻿@using GeekStream.Core.Entities
+@model GeekStream.Core.ViewModels.ArticleEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-<form asp-controller="Articles" asp-action="Edit" enctype="multipart/form-data" method="post">
-
+<form method="post" asp-controller="Articles" asp-action="EditArticle" enctype="multipart/form-data" >
+    <input type="hidden" asp-for="Id"/>
 <div class="navbar">
     <h5>Новая статья</h5>
               <div class="text-right mb-0">
             <div class="form-group">
                 <input type="submit" name="action" id="save" value="Сохранить черновик" class="btn btn-light mr-2" />
-                <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary" />
+                @if (Model.ArticleType == ArticleType.Ready)
+                {
+                    <input type="button" name="action" id="publish" value="Опубликовать" class="btn disabled" />
+                }
+                else
+                {
+                @if (Model.ArticleType == ArticleType.Approved)
+                {
+                    <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary"/>
+                }
+                }
             </div>
         </div>
 </div>

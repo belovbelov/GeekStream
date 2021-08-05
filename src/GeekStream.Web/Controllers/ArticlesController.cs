@@ -20,7 +20,8 @@ namespace GeekStream.Web.Controllers
         private readonly CategoryService _categoryService;
         private readonly CommentService _commentService;
 
-        public ArticlesController(ArticleService articleService, CategoryService categoryService, CommentService commentService)
+        public ArticlesController(ArticleService articleService, CategoryService categoryService,
+            CommentService commentService)
         {
             _articleService = articleService;
             _categoryService = categoryService;
@@ -47,32 +48,15 @@ namespace GeekStream.Web.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             await _articleService.Approve(id);
-            return RedirectToAction("Details","Articles", new{id = id});
+            return RedirectToAction("Pending", "Articles");
         }
 
-        [HttpGet]
-        [Route("[controller]/Pending/{id}")]
-        [Authorize(Roles = "Reviewer")]
-        public IActionResult Review(int id)
+        [HttpPost]
+        public async Task<IActionResult> Post(int id)
         {
-                var article = _articleService.GetArticleById(id);
-                return View(article);
+            await _articleService.Post(id);
 
-        }
-
-        [HttpGet]
-        [Route("[controller]/Pending/")]
-        [Authorize(Roles = "Reviewer")]
-        public IActionResult Pending()
-        {
-            IEnumerable<ArticleViewModel> articles;
-
-            articles = _articleService.PendingArticles();
-            if (articles == null)
-            {
-               return RedirectToAction("Index", "Home");
-            }
-            return View(articles);
+            return RedirectToAction("Details", "Articles", new {id = id});
         }
 
         [HttpGet]
@@ -108,7 +92,8 @@ namespace GeekStream.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ArticleEditViewModel model, string action, IFormFileCollection files = null)
+        public async Task<IActionResult> Create(ArticleEditViewModel model, string action,
+            IFormFileCollection files = null)
         {
             if (ModelState.IsValid)
             {
@@ -126,15 +111,19 @@ namespace GeekStream.Web.Controllers
                         {
                             await file.CopyToAsync(fileStream);
                         }
+
                         model.FilePaths.Add(image);
                     }
                 }
+
                 await _articleService.SaveArticleAsync(model, action);
             }
-            return RedirectToAction("Index","Home");
+
+            return RedirectToAction("Index", "Home");
         }
 
-        [Route("[controller]/{id}/[action]")]
+        [HttpGet]
+        [Route("[controller]/{id}/Edit")]
         public IActionResult Edit(int id)
         {
             var article = _articleService.GetArticleToEditById(id);
@@ -143,6 +132,7 @@ namespace GeekStream.Web.Controllers
             {
                 return NotFound();
             }
+
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
 
             return View(article);
@@ -150,7 +140,8 @@ namespace GeekStream.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  ArticleEditViewModel model, string action, List<IFormFile> files = null)
+        public async Task<IActionResult> EditArticle(ArticleEditViewModel model, string action,
+            List<IFormFile> files = null)
         {
             if (ModelState.IsValid)
             {
@@ -163,45 +154,73 @@ namespace GeekStream.Web.Controllers
                     };
                     model.FilePaths.Add(image);
                 }
+
                 await _articleService.UpdateArticleAsync(model, action);
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction("Drafts", "Articles");
             }
+
             ViewData["Category"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
-            return View(model);
+            return RedirectToAction("Drafts","Articles");
         }
 
 
 
         [HttpGet]
-            [Route("[controller]/{id}/[action]")]
-            public IActionResult Delete(int id)
+        [Route("[controller]/{id}/[action]")]
+        public IActionResult Delete(int id)
+        {
+
+            var article = _articleService.GetArticleById(id);
+            if (article == null)
             {
-
-                var article = _articleService.GetArticleById(id);
-                if (article == null)
-                {
-                    return NotFound();
-                }
-
-                return View(article);
+                return NotFound();
             }
 
-            [HttpPost]
-            [ActionName("Delete")]
-            [Route("[controller]/{id}/[action]")]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(int id)
+            return View(article);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [Route("[controller]/{id}/[action]")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _articleService.DeleteArticleAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(int articleId, string text)
+        {
+            await _commentService.LeaveComment(articleId, text);
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("[controller]/Pending/{id}")]
+        [Authorize(Roles = "Reviewer")]
+        public IActionResult Review(int id)
+        {
+            var article = _articleService.GetArticleById(id);
+            return View(article);
+
+        }
+
+        [HttpGet]
+        [Route("[controller]/Pending/")]
+        [Authorize(Roles = "Reviewer")]
+        public IActionResult Pending()
+        {
+            IEnumerable<ArticleViewModel> articles;
+
+            articles = _articleService.PendingArticles();
+            if (articles == null)
             {
-                await _articleService.DeleteArticleAsync(id);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
-            [HttpPost]
-            public async Task<IActionResult> Comment(int articleId, string text)
-            {
-                await _commentService.LeaveComment(articleId, text);
-
-                return NoContent();
-            }
+            return View(articles);
+        }
     }
 }

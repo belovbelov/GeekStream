@@ -6,6 +6,8 @@ namespace GeekStream.Core.ViewModels
 {
     public class ArticleEditViewModel 
     {
+
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Придумайте название статьи")]
         public string Title { get; set; }
@@ -24,5 +26,7 @@ namespace GeekStream.Core.ViewModels
 
         [Display(Name = "Выберите изображения")]
         public List<FilePath> FilePaths { get; set; } = new List<FilePath>();
+
+        public ArticleType ArticleType { get; set; }
     }
 }

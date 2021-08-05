@@ -58,14 +58,26 @@ namespace GeekStream.Core.Services
             {
                 Title = model.Title,
                 Content = model.Content,
+                PostedOn = null,
+                Author = _userService.GetCurrentUser(),
                 CategoryId= model.CategoryId,
+                Rating = 0,
                 Images = model.FilePaths
             };
-            await _articleRepository.UpdateAsync(article);
 
             if (action == "Опубликовать")
             {
                 article.Type = ArticleType.Ready;
+                await _articleRepository.UpdateAsync(article);
+            }
+
+            if (action == "Статья одобрена")
+            {
+                await Post(model.Id);
+            }
+
+            if (action == null)
+            {
                 await _articleRepository.UpdateAsync(article);
             }
         }
@@ -98,6 +110,13 @@ namespace GeekStream.Core.Services
         public async Task Approve(int id)
         {
             var article = _articleRepository.GetById(id);
+            article.Type = ArticleType.Approved;
+            await _articleRepository.UpdateAsync(article);
+        }
+
+        public async Task Post(int id)
+        {
+            var article = _articleRepository.GetById(id);
             article.PostedOn = DateTime.UtcNow;
             article.Rating = 0;
             await _articleRepository.UpdateAsync(article);
@@ -117,11 +136,13 @@ namespace GeekStream.Core.Services
                 .Select(k => k.Word).ToList().Aggregate((i, j) => i + " " + j);
             return new ArticleEditViewModel
             {
+                Id = article.Id,
                 Title = article.Title,
                 Content = article.Content,
                 CategoryId = article.CategoryId,
                 Keywords = keywords,
-                FilePaths = article.Images.ToList()
+                FilePaths = article.Images.ToList(),
+                ArticleType = article.Type
             };
         }
 
@@ -246,7 +267,7 @@ namespace GeekStream.Core.Services
                     Rating = article.Rating,
                     Images = article.Images,
                     UserIcon = article.Author.Avatar,
-                    CategoryIcon = article.Category.Image
+                    CategoryIcon = article.Category.Image,
                 });
 
             return articles;

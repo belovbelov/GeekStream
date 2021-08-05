@@ -38,7 +38,7 @@ namespace GeekStream.Infrastructure.Data
 
         public async Task UpdateAsync(Article article)
         {
-            _context.Articles.Update(article);
+            _context.Entry(article).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
@@ -173,7 +173,9 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Author)
                 .ThenInclude(a => a.Avatar)
                 .Include(article => article.Keywords)
-                .Where(a => a.Type == ArticleType.Draft && a.Author.Id == userId);
+                .Where(a => a.Type == ArticleType.Draft && a.Author.Id == userId ||
+                            a.Author.Id == userId && a.PostedOn == null)
+                .OrderByDescending(article => article.Type);
         }
     }
 }

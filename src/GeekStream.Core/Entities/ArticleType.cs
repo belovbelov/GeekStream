@@ -3,6 +3,7 @@
     public enum ArticleType
     {
         Draft,
-        Ready
+        Ready,
+        Approved
     }
 }

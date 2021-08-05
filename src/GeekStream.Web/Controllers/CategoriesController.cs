@@ -9,14 +9,12 @@ namespace GeekStream.Web.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly CategoryService _categoryService;
         private readonly ArticleService _articleService;
         private readonly UserService _userService;
 
-        public CategoriesController(AppDbContext context, CategoryService categoryService, ArticleService articleService, UserService userService)
+        public CategoriesController(CategoryService categoryService, ArticleService articleService, UserService userService)
         {
-            _context = context;
             _categoryService = categoryService;
             _articleService = articleService;
             _userService = userService;
