@@ -17,14 +17,18 @@
                 }
                 else
                 {
-                @if (Model.ArticleType == ArticleType.Approved)
-                {
-                    <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
-                }
-                else
-                {
-                    <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary"/>
-                }
+                    @if (Model.ArticleType == ArticleType.Approved || Model.ArticleType == ArticleType.Hidden)
+                    {
+                        <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
+                    }
+                    else
+                    {
+                        @if (Model.ArticleType == ArticleType.Posted)
+                        {
+                           <input type="submit" name="action" value="Скрыть" class="btn btn-primary" />
+                        }
+                        
+                    }
                 }
             </div>
         </div>

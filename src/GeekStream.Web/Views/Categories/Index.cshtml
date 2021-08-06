@@ -56,13 +56,13 @@
             <form asp-controller="Vote" asp-action="ProcessVotes">
                 <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                <input type="submit" class="btn btn-success"/>
+                <input type="submit" class="btn btn-success" value="Upvote"/>
             </form>
             <p>@Html.DisplayFor(modelItem => item.Rating)</p>
                 <form asp-controller="Vote" asp-action="ProcessVotes">
                     <input type="hidden" asp-for="@articleId"/>
                     <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                    <input type="submit" class="btn btn-danger"/>
+                    <input type="submit" class="btn btn-danger" value="Downvote"/>
                 </form>
             </div>
         </div>

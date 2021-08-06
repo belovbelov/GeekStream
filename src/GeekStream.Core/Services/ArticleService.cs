@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
@@ -76,6 +77,12 @@ namespace GeekStream.Core.Services
                 await Post(model.Id);
             }
 
+            if (action == "Скрыть")
+            {
+                
+                await Post(model.Id);
+            }
+
             if (action == null)
             {
                 await _articleRepository.UpdateAsync(article);
@@ -114,11 +121,27 @@ namespace GeekStream.Core.Services
             await _articleRepository.UpdateAsync(article);
         }
 
+
         public async Task Post(int id)
         {
             var article = _articleRepository.GetById(id);
-            article.PostedOn = DateTime.UtcNow;
-            article.Rating = 0;
+            if (article.Type == ArticleType.Hidden)
+            {
+                
+                article.Type = ArticleType.Posted;
+            }
+
+            if (article.Type == ArticleType.Posted)
+            {
+                article.Type = ArticleType.Hidden;
+            }
+
+            if (article.Type == ArticleType.Approved)
+            {
+                article.PostedOn = DateTime.UtcNow;
+                article.Rating = 0;
+                article.Type = ArticleType.Posted;
+            }
             await _articleRepository.UpdateAsync(article);
             await _commentService.RemoveAll(id);
         }
@@ -126,6 +149,10 @@ namespace GeekStream.Core.Services
         public async Task DeleteArticleAsync(int id)
         {
             var article = _articleRepository.GetById(id);
+            if (article.Type == ArticleType.Posted)
+            {
+                return;
+            }
             await _articleRepository.DeleteAsync(article);
         }
 

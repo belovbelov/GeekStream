@@ -4,6 +4,8 @@
     {
         Draft,
         Ready,
-        Approved
+        Approved,
+        Hidden,
+        Posted,
     }
 }

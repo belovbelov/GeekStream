@@ -24,7 +24,7 @@ namespace GeekStream.Infrastructure.Data
                     .ThenInclude(c => c.Image)
                     .Include(article => article.Author)
                     .ThenInclude(a => a.Avatar)
-                    .Where(article => article.PostedOn != null)
+                    .Where(article => article.Type == ArticleType.Posted)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToList();
@@ -69,7 +69,7 @@ namespace GeekStream.Infrastructure.Data
                     .ThenInclude(c => c.Image)
                     .Include(article => article.Author)
                     .ThenInclude(a => a.Avatar)
-                .Where(article => article.PostedOn != null)
+                    .Where(article => article.Type == ArticleType.Posted)
                 .Where(a => a.CategoryId == id);
         }
 
@@ -80,7 +80,7 @@ namespace GeekStream.Infrastructure.Data
                     .ThenInclude(c => c.Image)
                     .Include(article => article.Author)
                     .ThenInclude(a => a.Avatar)
-                .Where(article => article.PostedOn != null)
+                    .Where(article => article.Type == ArticleType.Posted)
                 .Where(a => a.Author.Id == id);
         }
 
@@ -161,7 +161,7 @@ namespace GeekStream.Infrastructure.Data
                 .Include(article => article.Author)
                 .ThenInclude(a => a.Avatar)
                 .Include(article => article.Keywords)
-                .Where(a => a.Type == ArticleType.Ready && a.PostedOn == null);
+                .Where(a => a.Type == ArticleType.Ready);
         }
 
 
@@ -174,7 +174,8 @@ namespace GeekStream.Infrastructure.Data
                 .ThenInclude(a => a.Avatar)
                 .Include(article => article.Keywords)
                 .Where(a => a.Type == ArticleType.Draft && a.Author.Id == userId ||
-                            a.Author.Id == userId && a.PostedOn == null)
+                            a.Author.Id == userId && a.Type == ArticleType.Approved||
+                            a.Author.Id == userId && a.Type == ArticleType.Hidden)
                 .OrderByDescending(article => article.Type);
         }
     }
