@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
+using System.IO;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
@@ -199,12 +198,29 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([Bind("Id,Name,Description")] Category category)
+        public async Task<IActionResult> CreateCategory(Category category, IFormFile file)
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.SaveCategoryAsync(category);
-                return RedirectToAction(nameof(ListCategories));
+                if (file != null)
+                {
+                    
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
+                    var image = new FilePath
+                    {
+                        FileName = Guid.NewGuid() + file.FileName,
+                        FileType = FileType.Photo,
+                    };
+                    await using (Stream fileStream = new FileStream(path + image.FileName, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    category.Image = image;
+                
+                    await _categoryService.SaveCategoryAsync(category);
+                }
+
             }
             return View(category);
         }
@@ -218,8 +234,19 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCategory(Category category)
+        public async Task<IActionResult> EditCategory(Category category, IFormFile? file)
         {
+
+            if (file != null)
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
+                await using (Stream fileStream = new FileStream(path + file.FileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                if (category.Image != null) category.Image.FileName = file.FileName;
+            }
             await _categoryService.UpdateCategory(category);
 
             return RedirectToAction(nameof(ListCategories), "Admin");

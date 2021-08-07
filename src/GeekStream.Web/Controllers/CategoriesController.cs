@@ -1,9 +1,5 @@
-﻿using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Infrastructure.Data;
@@ -13,14 +9,12 @@ namespace GeekStream.Web.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly CategoryService _categoryService;
         private readonly ArticleService _articleService;
         private readonly UserService _userService;
 
-        public CategoriesController(AppDbContext context, CategoryService categoryService, ArticleService articleService, UserService userService)
+        public CategoriesController(CategoryService categoryService, ArticleService articleService, UserService userService)
         {
-            _context = context;
             _categoryService = categoryService;
             _articleService = articleService;
             _userService = userService;
@@ -38,7 +32,8 @@ namespace GeekStream.Web.Controllers
                 Name = foundCategory.Name,
                 IsSubscribed =
                     _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString()),
-                Articles = _articleService.FindByCategoryId(category).ToList()
+                Articles = _articleService.FindByCategoryId(category).ToList(),
+                CategoryIcon = foundCategory.Image
             };
             return View(categoryViewModel);
         }

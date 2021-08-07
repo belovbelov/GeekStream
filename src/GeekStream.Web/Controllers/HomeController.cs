@@ -1,4 +1,5 @@
-﻿using GeekStream.Core.Services;
+﻿using System.Threading.Tasks;
+using GeekStream.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,13 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index(string? id = null)
+        public async Task<IActionResult> Index(string? id = null)
         {
             if (User.Identity is {IsAuthenticated: true})
             {
                 if (_userService.IsSubscribed(_userService.GetCurrentUser()))
                 {
-                    var allArticles = _articleService.FindBySubscription(id);
+                    var allArticles = await _articleService.FindBySubscription(id);
                     return View(allArticles);
                 }
             }

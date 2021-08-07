@@ -9,15 +9,11 @@
 </head>
 <body>
     <header>
-        @await Html.PartialAsync("_Navbar");
+        @await Html.PartialAsync("_Navbar")
     </header>
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h5 class="mb-2">Подписки</h5>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="true" autocomplete="off"asp-controller="Home" asp-action="Index">Все подряд</button>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="false" autocomplete="off" asp-controller="Home" asp-action="Index" asp-route-id="1">IT</button>
-                <button type="button" class="btn btn-light" data-toggle="button" aria-pressed="false" autocomplete="off">Физика</button>
                 @await RenderSectionAsync("subscriptions", required: false)
             </div>
             <div class="col">
@@ -33,7 +29,6 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

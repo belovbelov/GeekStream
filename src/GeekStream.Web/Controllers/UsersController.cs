@@ -70,7 +70,8 @@ namespace GeekStream.Web.Controllers
                 IsSubscribed = _userService.IsSubscribed(_userService.GetCurrentUser(), user.Id),
                 UserMail = user.Email,
                 Rating = user.Rating,
-                Articles = _articleService.FindByAuthorId(id)
+                Articles = _articleService.FindByAuthorId(id),
+                UserIcon = user.Avatar
             };
 
             return View(userViewModel);

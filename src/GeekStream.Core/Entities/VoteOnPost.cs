@@ -1,6 +1,6 @@
 ﻿namespace GeekStream.Core.Entities
 {
-    public class VoteOnPost
+    public class VoteOnPost : Vote
     {
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

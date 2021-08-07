@@ -1,4 +1,5 @@
 ﻿@using GeekStream.Core.Entities
+@using Microsoft.EntityFrameworkCore
 @model GeekStream.Core.ViewModels.ArticleViewModel;
 @{
     var articleId = @Model.Id;
@@ -7,33 +8,93 @@
         <div class="card-navbar justify-content-between">
             <div class="navbar-right">
                 <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">
+                <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
                     @Model.Category
                 </a>
                 @Html.DisplayFor(modelItem => Model.PublishedDate)
             </div>
             <div class="navbar-left">
-                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">@Html.DisplayFor(modelItem => Model.Author)</a>
+                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">
+                <img class="user__icon" width="20" src="/images/@Model.UserIcon.FileName"/>
+                    @Html.DisplayFor(modelItem => Model.Author)
+                </a>
             </div>
         </div>
         <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
         @foreach (var image in Model.Images)
         {
-            <img src="/images/@image.FileName"/>
+            <img src="~/images/@image.FileName"/>
         }
         <p>@Html.DisplayFor(modelItem => Model.Content)</p>
         <div class="text-right mb-0">
             <form asp-controller="Vote" asp-action="ProcessVotes">
                 <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                <input type="submit" class="btn btn-success"/>
+                <input type="submit" class="btn btn-success" value="Upvote"/>
             </form>
             <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
             <form asp-controller="Vote" asp-action="ProcessVotes">
                 <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                <input type="submit" class="btn btn-danger"/>
+                <input type="submit" class="btn btn-danger" value="Downvote"/>
             </form>
         </div>
+        @{
+            if (Model.Comments.Any())
+            {
+                <h5>Комментарии (@Model.Comments.Count())</h5>
+                foreach (var item in Model.Comments)
+                {
+                    var commentId = item.Id;
+                    <div class="comment">
+                        <div class="comment-navbar">
+                            <img/>
+                            <b>@item.UserName</b>
+                        </div>
+                        <div class="comment-body">
+                            <span class="comment-text">
+                                @item.Content
+                            </span>
+                        </div>
+                        <div class="comment-footer d-flex justify-content-between">
+                            <b class="comment-reply">
+                                Ответить
+                            </b>
+        
+                            <form asp-controller="Vote" asp-action="ProcessVotesOnReply">
+                                <input type="hidden" asp-for="@commentId"/>
+                                <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                                <input type="submit" class="btn btn-success"/>
+                            </form>
+                            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
+                            <form asp-controller="Vote" asp-action="ProcessVotesOnReply">
+                                <input type="hidden" asp-for="@commentId"/>
+                                <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                                <input type="submit" class="btn btn-danger"/>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h5>Комментариев пока нет</h5>
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                <form asp-action="Comment" asp-controller="Articles">
+                    <div class="form-row">
+                        <div class="col-10">
+                            <input type="hidden" name="articleId" asp-for="@Model.Id"/>
+                            <input type="text" class="form-control" name="text" placeholder="Ваш комментарий">
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" class="btn btn-outline-light"/>
+                        </div>
+                    </div>
+                </form>
+            }
+        }
     </div>
 </div>
 }

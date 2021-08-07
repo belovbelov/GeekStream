@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Net.NetworkInformation;
-using GeekStream.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Core.Entities
@@ -20,10 +16,15 @@ namespace GeekStream.Core.Entities
 
         public int Rating { get; set; }
 
+        public int? AvatarId { get; set; }
+        public FilePath? Avatar { get; set; }
+
         public IEnumerable<Article> AuthoredArticles { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
 
         public IEnumerable<Subscription> Subscriptions { get; set; }
+
+        public IEnumerable<ChatUser> Chats { get; set; }
     }
 }

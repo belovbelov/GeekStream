@@ -1,0 +1,26 @@
+﻿@using GeekStream.Core.Services
+@model IEnumerable<GeekStream.Core.Entities.Chat>
+@inject UserService _userService
+
+@{
+    var userId = _userService.GetCurrentUser().Id;
+
+    Layout = "~/Views/Shared/_ChatsLayout.cshtml";
+}
+
+<div class="col-4">
+    @if (Model.Any())
+    {
+    @foreach (var chat in Model)
+    {        <div class="card">
+            <div class="card-body">
+                <a class="h4"asp-controller="Chats" asp-action="Chat" asp-route-id="@chat.Id">
+            @chat.Users.FirstOrDefault(x => x.UserId != userId)?.User.FirstName 
+            @chat.Users.FirstOrDefault(x => x.UserId != userId)?.User.LastName
+                 </a>
+
+            </div>
+        </div>
+    }
+    }
+</div>

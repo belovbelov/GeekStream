@@ -6,6 +6,16 @@ for details on configuring this project to bundle and minify static web assets. 
     padding-right: 10px;
 }
 
+.category__icon {
+  max-width: 100%;
+  height: auto;
+}
+
+.user__icon {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
 .leftcolumn {
     float: left;
     width: 20%;

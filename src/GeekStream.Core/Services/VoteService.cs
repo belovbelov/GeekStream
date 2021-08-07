@@ -16,7 +16,7 @@ namespace GeekStream.Core.Services
         }
 
 
-        public async Task CreateOrUpdateVote(string userId, int articleId, VoteType type)
+        public async Task CreateOrUpdateVoteOnPost(string userId, int articleId, VoteType type)
         {
             var vote = new VoteOnPost
             {
@@ -27,15 +27,33 @@ namespace GeekStream.Core.Services
 
             try
             {
-                await _voteRepository.Save(vote);
+                await _voteRepository.SaveAsync(vote);
             }
             catch (DbUpdateException e)
             {
-                await _voteRepository.Update(vote);
+                await _voteRepository.UpdateAsync(vote);
+            }
+        }
+        public async Task CreateOrUpdateVoteOnReply(string userId, int commentId, VoteType type)
+        {
+            var vote = new VoteOnReply
+            {
+                ApplicationUserId = userId,
+                CommentId = commentId,
+                Type = type
+            };
+
+            try
+            {
+                await _voteRepository.SaveAsync(vote);
+            }
+            catch (DbUpdateException e)
+            {
+                await _voteRepository.UpdateAsync(vote);
             }
         }
 
-        public async Task RemoveVote(string userId, int articleId, VoteType type)
+        public async Task RemoveVoteFromPost(string userId, int articleId, VoteType type)
         {
             var vote = new VoteOnPost
             {
@@ -43,18 +61,38 @@ namespace GeekStream.Core.Services
                 ArticleId = articleId,
                 Type = type
             };
-            await _voteRepository.Delete(vote);
+            await _voteRepository.DeleteAsync(vote);
         }
 
+        public async Task RemoveVoteFromReply(string userId, int commentId, VoteType type)
+        {
+            var vote = new VoteOnReply
+            {
+                ApplicationUserId = userId,
+                CommentId = commentId,
+                Type = type
+            };
+            await _voteRepository.DeleteAsync(vote);
+        }
         public int GetRatingForPost(int articleId)
         {
             var votes = _voteRepository.GetVotesOnPost(articleId);
             return votes.Sum(v => (int) v.Type);
         }
-
-        public bool CheckIfPostIsVoted(string userId, int articleId)
+        public int GetRatingForReply(int commentId)
         {
-            var vote = _voteRepository.GetVoteOnPost(userId, articleId);
+            var votes = _voteRepository.GetVotesOnReply(commentId);
+            return votes.Sum(v => (int) v.Type);
+        }
+
+        public bool CheckIfPostIsVoted(string userId, int articleId, VoteType type)
+        {
+            var vote = _voteRepository.GetVoteOnPost(userId, articleId, type);
+            return vote;
+        }
+        public bool CheckIfReplyIsVoted(string userId, int commentId, VoteType type)
+        {
+            var vote = _voteRepository.GetVoteOnReply(userId, commentId,type);
             return vote;
         }
     }

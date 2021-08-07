@@ -1,0 +1,11 @@
+﻿@model IEnumerable<GeekStream.Core.Entities.Chat>
+@{
+    Layout = "~/Views/Shared/_ChatsLayout.cshtml";
+}
+<div class="chat-body">
+    @foreach(var chat in Model) {
+        <a class="room-button" asp-controller="Chats" asp-action="JoinRoom" asp-route-id="@chat.Id">
+            @chat.Name
+        </a>
+    }
+</div>

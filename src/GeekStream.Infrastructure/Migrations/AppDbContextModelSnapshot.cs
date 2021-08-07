@@ -27,6 +27,9 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AvatarId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -84,6 +87,8 @@ namespace GeekStream.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvatarId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -127,6 +132,9 @@ namespace GeekStream.Infrastructure.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -147,7 +155,7 @@ namespace GeekStream.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageFilePathId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -156,9 +164,42 @@ namespace GeekStream.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageFilePathId");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.ChatUser", b =>
+                {
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ChatId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatUsers");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Comment", b =>
@@ -179,6 +220,9 @@ namespace GeekStream.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
@@ -193,7 +237,7 @@ namespace GeekStream.Infrastructure.Migrations
 
             modelBuilder.Entity("GeekStream.Core.Entities.FilePath", b =>
                 {
-                    b.Property<int>("FilePathId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -208,14 +252,9 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Property<int>("FileType")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FilePathId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Files");
                 });
@@ -233,6 +272,32 @@ namespace GeekStream.Infrastructure.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("Keywords");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Subscription", b =>
@@ -266,6 +331,24 @@ namespace GeekStream.Infrastructure.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("Votes");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.VoteOnReply", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationUserId", "CommentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("VotesOnReplies");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -399,6 +482,15 @@ namespace GeekStream.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("GeekStream.Core.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.FilePath", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId");
+
+                    b.Navigation("Avatar");
+                });
+
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
                     b.HasOne("GeekStream.Core.Entities.ApplicationUser", "Author")
@@ -420,22 +512,45 @@ namespace GeekStream.Infrastructure.Migrations
                 {
                     b.HasOne("GeekStream.Core.Entities.FilePath", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageFilePathId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Image");
                 });
 
+            modelBuilder.Entity("GeekStream.Core.Entities.ChatUser", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.Chat", "Chat")
+                        .WithMany("Users")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", "User")
+                        .WithMany("Chats")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GeekStream.Core.Entities.Comment", b =>
                 {
-                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", null)
+                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("Comments")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("GeekStream.Core.Entities.Article", "Article")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Article");
                 });
@@ -445,12 +560,6 @@ namespace GeekStream.Infrastructure.Migrations
                     b.HasOne("GeekStream.Core.Entities.Article", null)
                         .WithMany("Images")
                         .HasForeignKey("ArticleId");
-
-                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Keyword", b =>
@@ -460,6 +569,17 @@ namespace GeekStream.Infrastructure.Migrations
                         .HasForeignKey("ArticleId");
 
                     b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Message", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.Chat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
                 });
 
             modelBuilder.Entity("GeekStream.Core.Entities.Subscription", b =>
@@ -490,6 +610,25 @@ namespace GeekStream.Infrastructure.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.VoteOnReply", b =>
+                {
+                    b.HasOne("GeekStream.Core.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GeekStream.Core.Entities.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -547,6 +686,8 @@ namespace GeekStream.Infrastructure.Migrations
                 {
                     b.Navigation("AuthoredArticles");
 
+                    b.Navigation("Chats");
+
                     b.Navigation("Comments");
 
                     b.Navigation("Subscriptions");
@@ -554,6 +695,8 @@ namespace GeekStream.Infrastructure.Migrations
 
             modelBuilder.Entity("GeekStream.Core.Entities.Article", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Images");
 
                     b.Navigation("Keywords");
@@ -562,6 +705,13 @@ namespace GeekStream.Infrastructure.Migrations
             modelBuilder.Entity("GeekStream.Core.Entities.Category", b =>
                 {
                     b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("GeekStream.Core.Entities.Chat", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

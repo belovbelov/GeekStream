@@ -57,5 +57,7 @@ namespace GeekStream.Core.Entities
         public Category Category { get; set; }
         public IEnumerable<Keyword> Keywords { get; set; }
         public IEnumerable<FilePath> Images { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
+        public ArticleType Type { get; set; }
     }
 }

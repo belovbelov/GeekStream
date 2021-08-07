@@ -1,21 +1,35 @@
-﻿@model GeekStream.Core.ViewModels.ArticleCreationViewModel;
+﻿@using GeekStream.Core.Entities
+@model GeekStream.Core.ViewModels.ArticleEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Article</h4>
-<hr />
-<form asp-action="Edit" enctype="multipart/form-data" method="post">
-
+<form method="post" asp-controller="Articles" asp-action="EditArticle" enctype="multipart/form-data" >
+    <input type="hidden" asp-for="Id"/>
 <div class="navbar">
-    <h5>Черновик</h5>
-        <div class="text-right mb-0">
+    <h5>Новая статья</h5>
+              <div class="text-right mb-0">
             <div class="form-group">
-                <input type="submit" value="Сохранить черновик" class="btn btn-light mr-2" />
-                <input type="submit" value="Опубликовать" class="btn btn-primary" />
+                <input type="submit" name="action" id="save" value="Сохранить черновик" class="btn btn-light mr-2" />
+                @if (Model.ArticleType == ArticleType.Ready)
+                {
+                    <input type="button" name="action" id="publish" value="Опубликовать" class="btn disabled" />
+                }
+                else
+                {
+                    @if (Model.ArticleType == ArticleType.Approved || Model.ArticleType == ArticleType.Hidden)
+                    {
+                        <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
+                    }
+                    else
+                    {
+                        @if (Model.ArticleType == ArticleType.Posted)
+                        {
+                           <input type="submit" name="action" value="Скрыть" class="btn btn-primary" />
+                        }
+                        
+                    }
+                }
             </div>
         </div>
 </div>
@@ -41,12 +55,11 @@
                 <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                    <label  asp-for="FilePaths"></label>
-                    <input type="file" name="files" multiple=""/>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="files">
+                <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
     </form>
-
 
 <div>
     <a asp-action="Index">Back to List</a>

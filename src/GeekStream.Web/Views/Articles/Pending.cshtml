@@ -1,0 +1,25 @@
+﻿@model IEnumerable<GeekStream.Core.ViewModels.ArticleViewModel>
+
+@{
+    ViewData["Title"] = "Pending";
+}
+@foreach (var item in Model)
+{
+    var articleId = item.Id;
+    var categoryIcon = item.CategoryIcon.FileName;
+    var userIcon = item.UserIcon.FileName;
+    <div class="card mb-2">
+        <div class="card-body rounded-lg">
+                <div class="navbar-right">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                    <img class="category__icon" width="20" src="/images/@categoryIcon"/>
+                        @item.Category
+                    </a>
+                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                </div>
+            <a asp-controller="Articles" asp-action="Review" asp-route-id="@item.Id">
+                <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+            </a>
+        </div>
+        </div>
+}

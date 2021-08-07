@@ -1,0 +1,87 @@
+﻿@using System.Security.Claims
+@model GeekStream.Core.ViewModels.ChatViewModel
+@{
+
+    Layout = "~/Views/Shared/_ChatsLayout.cshtml";
+}
+<div class="col-4">
+    @foreach (var chat in Model.Chats)
+    {
+        var otherUser =  @chat.Users.FirstOrDefault(c => c.UserId != User.FindFirst(ClaimTypes.NameIdentifier)?.Value)?.User;
+
+        <div class="card">
+            <div class="card-body">
+                <a class="h4"asp-controller="Chats" asp-action="Chat" asp-route-id="@chat.Id">
+                @otherUser.FirstName @otherUser.LastName
+                 </a>
+
+            </div>
+        </div>
+    }
+</div>
+<div class="col-8">
+
+<div class="chat-body">
+    @foreach (var message in 
+        Model.Messages)
+    {
+        <div class="message">
+            <header>@message.Name:</header>
+            <p>@message.Text</p>
+            <footer>@message.Timestamp</footer>
+        </div>
+    }
+
+    </div>
+        <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Chats" asp-action="SendMessage">
+            <input type="hidden" name="roomId" value="@Model.Id">
+            <input type="text" name="message" id="message-input">
+            <button type="submit">Send</button>
+        </form>
+
+</div>
+
+@section scripts {
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/messageBuilder.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+        var _connectionId = '';
+        connection.on("RecieveMessage",
+            function(data) {
+                var message = messageBuilder()
+                    .createMessage()
+                    .withHeader(data.name)
+                    .withParagraph(data.text)
+                    .withFooter(data.timestamp)
+                    .build();
+                document.querySelector('.chat-body').append(message);
+            });
+        connection.start()
+            .then(function() {
+                connection.invoke('joinRoom', '@Model.Id');
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+        window.addEventListener('onunload',
+            function() {
+                connection.invoke('leaveRoom', '@Model.Id');
+            });
+        var sendMessage = function (event) {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            document.getElementById('message-input').value = '';
+            window.axios.post('/Chats/SendMessage', data)
+                .then(res => {
+                    console.log("Message Sent!");
+                })
+                .catch(err => {
+                    console.log("Failed to send message!");
+                });
+        }
+    </script>
+}

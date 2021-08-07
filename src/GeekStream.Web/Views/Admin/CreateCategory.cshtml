@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create Category";
 }
-        <form asp-action="CreateCategory">
+        <form asp-action="CreateCategory" enctype="multipart/form-data" method="post">
             <h4>Create a new category.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -16,6 +16,10 @@
                 <label asp-for="Description"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="custom-file">
+                 <input type="file" class="custom-file-input" id="customFile" name="file">
+                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
