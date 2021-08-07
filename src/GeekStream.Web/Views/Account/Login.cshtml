@@ -2,8 +2,9 @@
 
 @{
     ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
-
+<div class="col-4">
     <section>
         <form id="account" asp-action="Login">
             <h4>Use a local account to log in.</h4>
@@ -41,3 +42,4 @@
             </div>
         </form>
     </section>
+</div>

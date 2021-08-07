@@ -2,9 +2,11 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
-        <form asp-action="Register">
+<div class="col-4">
+ <form asp-action="Register">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -37,3 +39,5 @@
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
+</div>
+       
