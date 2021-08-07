@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GeekStream.Core.Services
 {

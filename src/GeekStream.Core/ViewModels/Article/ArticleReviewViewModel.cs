@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeekStream.Core.Entities;
+using GeekStream.Core.ViewModels.Comment;
 
 namespace GeekStream.Core.ViewModels.Article
 {
@@ -24,6 +25,6 @@ namespace GeekStream.Core.ViewModels.Article
 
         public IEnumerable<FilePath> Images { get; set; }
 
-        public IEnumerable<Comment> Comments { get; set; }
+        public IEnumerable<CommentsViewModel> Comments { get; set; }
     }
 }

@@ -29,8 +29,7 @@ namespace GeekStream.Web.Controllers
             {
                 Id = foundCategory.Id,
                 Name = foundCategory.Name,
-                IsSubscribed =
-                    _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString()),
+                IsSubscribed = _userService.IsSubscribed(_userService.GetCurrentUser(), foundCategory.Id.ToString()),
                 Articles = _articleService.FindByCategoryId(category).ToList(),
                 CategoryIcon = foundCategory.Image
             };

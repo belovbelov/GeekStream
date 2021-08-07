@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Core.ViewModels.Article;
+using GeekStream.Core.ViewModels.Comment;
 
 
 namespace GeekStream.Web.Controllers
@@ -80,7 +82,14 @@ namespace GeekStream.Web.Controllers
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
                 Images = article.Images,
-                Comments = article.Comments,
+                Comments = article.Comments
+                    .Select(c => new CommentsViewModel
+                {
+                    Id = c.Id,
+                    UserName = c.UserName,
+                    Content = c.Content,
+                    Rating = c.Rating
+                }),
                 UserIcon = article.Author.Avatar,
                 CategoryIcon = article.Category.Image
             };
@@ -240,6 +249,13 @@ namespace GeekStream.Web.Controllers
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Comments = article.Comments
+                    .Select(c => new CommentsViewModel
+                {
+                    Id = c.Id,
+                    UserName = c.UserName,
+                    Content = c.Content,
+                    Rating = c.Rating
+                }),
             };
             return View(articleViewModel);
 
