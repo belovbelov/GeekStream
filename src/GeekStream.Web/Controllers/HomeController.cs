@@ -18,7 +18,7 @@ namespace GeekStream.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? id = null)
+        public async Task<IActionResult> Index(string id = null)
         {
             if (User.Identity is {IsAuthenticated: true})
             {

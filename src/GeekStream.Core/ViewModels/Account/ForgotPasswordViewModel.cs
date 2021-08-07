@@ -6,6 +6,7 @@ namespace GeekStream.Core.ViewModels.Account
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Адрес электроной почты")]
         public string Email { get; set; }
     }
 }

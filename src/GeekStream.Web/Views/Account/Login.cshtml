@@ -4,42 +4,45 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
-<div class="col-4">
-    <section>
+    <div class="card card-16px-border pr-5 pl-5 pt-4 pb-2">
+        <div class="card-title mb-0">
+            <img class="center" src="/images/NavBarLogo.png"/>
+            <h4 class="text-center mb-0">Войти на GeekStream</h4>
+        </div>
+        <div class="card-body">
+
         <form id="account" asp-action="Login">
-            <h4>Use a local account to log in.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Введите email"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control" placeholder="Ваш пароль"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            <div asp-validation-summary="All" class=" small text-danger"></div>
             <div class="form-group">
                 <div class="checkbox">
                     <label asp-for="RememberMe">
-                        <input asp-for="RememberMe" />
+                        <input asp-for="RememberMe"/>
                         @Html.DisplayNameFor(m => m.RememberMe)
                     </label>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="d-flex justify-content-between mb-5">
+
+            <div class="">
+                    <a asp-action="Register"><b>Регистрация</b></a>
+            </div>
+            <div class="">
+                <a asp-action="ForgotPassword"><b>Забыли пароль?</b></a>
+            </div>
+            </div>
+            <div class="form-group mb-0 float-right">
                 <button type="submit" class="btn btn-primary">Log in</button>
             </div>
-            
-            <div>
-                <a asp-action="ForgotPassword">Забыли пароль?</a>
-            </div>
-            <div class="form-group">
-                <p>
-                    <a asp-action="Register">Register as a new user</a>
-                </p>
-            </div>
         </form>
-    </section>
-</div>
+        </div>
+    </div>

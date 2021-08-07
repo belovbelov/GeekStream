@@ -1,1 +1,14 @@
-﻿
+﻿@using GeekStream.Core.Services
+ @inject CategoryService _categoryService
+    @if (User.Identity.IsAuthenticated)
+    {
+
+        <a class="btn btn-light mb-2 w-100" asp-action="Index" asp-controller="Home" asp-route-id="">Все подписки</a>
+        var categories = _categoryService.SubscribedCategories();
+        <div class="subscribtions">
+            @foreach (var item in categories)
+            {
+                <a class="btn btn-light mb-2 w-100" asp-action="Index" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
+            }
+        </div>
+    }

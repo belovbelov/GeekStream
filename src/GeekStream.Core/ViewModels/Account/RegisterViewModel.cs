@@ -24,7 +24,7 @@ namespace GeekStream.Core.ViewModels.Account
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Повторите пароль еще раз")]
         [Compare("Password", ErrorMessage = "Пароль не совпадает.")]
         public string ConfirmPassword { get; set; }
     }

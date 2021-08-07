@@ -39,7 +39,8 @@ namespace GeekStream.Core.Services
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
                 UserIcon = article.Author.Avatar,
-                CategoryIcon = article.Category.Image
+                CategoryIcon = article.Category.Image,
+                CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
 
             }
@@ -197,7 +198,8 @@ namespace GeekStream.Core.Services
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
                 UserIcon = article.Author.Avatar,
-                CategoryIcon = article.Category.Image
+                CategoryIcon = article.Category.Image,
+                    CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
         }
 
@@ -216,14 +218,17 @@ namespace GeekStream.Core.Services
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
                     UserIcon = article.Author.Avatar,
-                    CategoryIcon = article.Category.Image
+                    CategoryIcon = article.Category.Image,
+                    CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
         }
 
-        public async Task<IEnumerable<ArticleFeedViewModel>> FindBySubscription(string? subscriptionId = null)
+        public async Task<IEnumerable<ArticleFeedViewModel>> FindBySubscription(string subscriptionId = null)
         {
             var userId = _userService.GetCurrentUser().Id;
-            var articles = await _articleRepository.FindBySubscription(userId, subscriptionId);
+            var articlesByCategory= await _articleRepository.FindByCategorySubscription(userId, subscriptionId);
+            var articlesByAuthor = await _articleRepository.FindByAuthorSubscription(userId);
+            var articles = articlesByAuthor.Union(articlesByCategory).Distinct(new ArticlesComparer());
                 return articles.Select(article => new ArticleFeedViewModel
                 {
                     Id = article.Id,
@@ -236,7 +241,8 @@ namespace GeekStream.Core.Services
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
                     UserIcon = article.Author.Avatar,
-                    CategoryIcon = article.Category.Image
+                    CategoryIcon = article.Category.Image, 
+                    CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
 
         }
@@ -257,7 +263,8 @@ namespace GeekStream.Core.Services
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
                     UserIcon = article.Author.Avatar,
-                    CategoryIcon = article.Category.Image
+                    CategoryIcon = article.Category.Image,
+                    CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
         }
 
@@ -294,7 +301,8 @@ namespace GeekStream.Core.Services
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
                     UserIcon = article.Author.Avatar,
-                    CategoryIcon = article.Category.Image
+                    CategoryIcon = article.Category.Image,
+                    CommentCount = article.Comments.Any() ? article.Comments.Count() : 0
                 });
         }
     }

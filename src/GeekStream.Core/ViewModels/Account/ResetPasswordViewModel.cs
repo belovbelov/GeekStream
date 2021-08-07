@@ -10,12 +10,13 @@ namespace GeekStream.Core.ViewModels.Account
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Придумайте пароль")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Повторите пароль еще раз")]
         [Compare("Password", 
-            ErrorMessage = "Password and Confirm Password must match")]
+            ErrorMessage = "Пароли должны совпадать")]
         public string ConfirmPassword { get; set; }
 
         public string Token { get; set; }

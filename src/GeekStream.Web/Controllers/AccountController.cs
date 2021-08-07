@@ -115,7 +115,7 @@ namespace GeekStream.Web.Controllers
                     return RedirectToAction(nameof(Index), "Home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Неверные данные");
+                ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
             }
 
             return View(model);

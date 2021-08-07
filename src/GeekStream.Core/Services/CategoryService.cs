@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
@@ -10,10 +11,12 @@ namespace GeekStream.Core.Services
     public class CategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly UserService _userService;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, UserService userService)
         {
             _categoryRepository = categoryRepository;
+            _userService = userService;
         }
         public IEnumerable<CategoriesListViewModel> GetAllCategories()
         {
@@ -36,6 +39,18 @@ namespace GeekStream.Core.Services
         public Category GetCategoryById(int id)
         {
             return _categoryRepository.GetById(id);
+        }
+
+        public IEnumerable<CategoriesListViewModel> SubscribedCategories()
+        {
+            var userId = _userService.GetCurrentUser().Id;
+            var categories = _categoryRepository.SubscribedOn(userId);
+            return categories
+                .Select(c => new CategoriesListViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                });
         }
 
         public async Task DeleteCategory(int id)

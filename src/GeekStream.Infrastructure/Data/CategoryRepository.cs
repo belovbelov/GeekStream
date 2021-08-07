@@ -48,5 +48,28 @@ namespace GeekStream.Infrastructure.Data
                 await _context.SaveChangesAsync();
             }
         }
+
+
+        public IEnumerable<Category> SubscribedOn(string currentUserId)
+        {
+            var sub = _context.Subscription
+                .Where(s => currentUserId == s.ApplicationUser.Id);
+            var categories = _context.Categories;
+
+            return categories.Join(
+                sub,
+                c => c.Id.ToString(),
+                s => s.PublishSource,
+                (c, s) => new Category
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Image = c.Image,
+                    Description = c.Description,
+                    Articles = c.Articles
+                }
+                ).
+                    ToList();
+        }
     }
 }

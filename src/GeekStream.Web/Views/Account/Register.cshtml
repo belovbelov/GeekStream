@@ -5,39 +5,44 @@
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
-<div class="col-4">
- <form asp-action="Register">
-            <h4>Create a new account.</h4>
-            <hr />
+    <div class="card card-16px-border pr-5 pl-5 pt-4 pb-2">
+        <div class="card-title mb-0">
+            <img class="center" src="/images/NavBarLogo.png"/>
+            <h4 class="text-center mb-0">Создание аккаунта</h4>
+        </div>
+        <div class="card-body">
+
+        <form asp-action="Register">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-row">
+            <div class="form-row mb-3">
                 <div class="col">
                     <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" class="form-control" />
+                    <input asp-for="FirstName" class="form-control" placeholder="Имя"/>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="col">
                     <label asp-for="LastName"></label>
-                    <input asp-for="LastName" class="form-control" />
+                    <input asp-for="LastName" class="form-control" placeholder="Фамилия"/>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Ваша почта. Мы никому её не скажем"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control" placeholder="Ваш пароль"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-5">
                 <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Подтверждение пароля"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary float-right">Создать мой аккаунт</button>
         </form>
-</div>
+        </div>
+    </div>
        

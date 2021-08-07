@@ -11,5 +11,6 @@ namespace GeekStream.Core.Interfaces
         public Category GetById(int id);
         public Task UpdateAsync(Category category);
         public Task DeleteAsync(Category category);
+        public IEnumerable<Category> SubscribedOn(string currentUserId);
     }
 }

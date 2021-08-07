@@ -49,6 +49,14 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 
+.card-8px-border {
+    border-radius: 8px;
+}
+
+.card-16px-border {
+    border-radius: 16px;
+}
+
 .card-navbar > * {
     margin-right: 10px;
 }
@@ -59,6 +67,32 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+img.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 560px;
+    /* Whatever width you want */
+}
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

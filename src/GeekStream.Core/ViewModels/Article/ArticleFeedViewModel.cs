@@ -26,6 +26,6 @@ namespace GeekStream.Core.ViewModels.Article
 
         public int Rating { get; set; }
 
-        public int CommentCount { get; set; }
+        public int? CommentCount { get; set; }
     }
 }
