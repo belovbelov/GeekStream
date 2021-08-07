@@ -40,7 +40,8 @@ namespace GeekStream.Web
                     options.Password.RequiredLength = 6;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc(options =>
             {
