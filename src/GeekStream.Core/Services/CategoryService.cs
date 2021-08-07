@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
@@ -45,11 +47,16 @@ namespace GeekStream.Core.Services
         {
             var userId = _userService.GetCurrentUser().Id;
             var categories = _categoryRepository.SubscribedOn(userId);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/sub");
+            var files = Directory.GetFiles(path)
+                .Select(Path.GetFileName).ToArray();
+            var random = new Random();
             return categories
                 .Select(c => new CategoriesListViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    Icon = files[random.Next(0,files.Length)]
                 });
         }
 

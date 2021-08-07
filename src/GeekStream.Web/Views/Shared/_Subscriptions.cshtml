@@ -2,13 +2,20 @@
  @inject CategoryService _categoryService
     @if (User.Identity.IsAuthenticated)
     {
-
-        <a class="btn btn-light mb-2 w-100" asp-action="Index" asp-controller="Home" asp-route-id="">Все подписки</a>
+        <h5 class="mb-3">Подписки</h5>
         var categories = _categoryService.SubscribedCategories();
+
+                <div class="shadow-sm d-flex align-items-center btn btn-light mb-2 w-100">
+                    <img src="/images/sub/@categories.First().Icon" class="mr-3"/>
+                <a class="text-muted" asp-action="Index" asp-controller="Home" asp-route-id="">Все подписки</a>
+                </div>
         <div class="subscribtions">
             @foreach (var item in categories)
             {
-                <a class="btn btn-light mb-2 w-100" asp-action="Index" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
+                <div class="shadow-sm d-flex align-items-center btn btn-light mb-2 w-100">
+                    <img src="/images/sub/@item.Icon" class="mr-3"/>
+                    <a class="text-muted" asp-action="Index" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
+                </div>
             }
         </div>
     }

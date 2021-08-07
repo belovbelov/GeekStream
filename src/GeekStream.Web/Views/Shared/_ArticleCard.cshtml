@@ -2,7 +2,7 @@
 @model GeekStream.Core.ViewModels.Article.ArticleDetailsViewModel;
 @{
     var articleId = @Model.Id;
-<div class="card mb-2 card-8px-border">
+<div class="card mb-2 card-8px-border shadow-sm">
     <div class="card-body">
         <div class="card-navbar justify-content-between">
             <div class="navbar-right">
@@ -24,7 +24,7 @@
         {
             <img src="~/images/@image.FileName"/>
         }
-        <p>@Html.DisplayFor(modelItem => Model.Content)</p>
+        <p class="text-muted mb-2">@Html.DisplayFor(modelItem => Model.Content)</p>
         <div class="d-flex mb-0 justify-content-between float-right align-items-center">
             <form asp-controller="Vote" asp-action="ProcessVotes" class="upvote mr-2">
                 <input type="hidden" asp-for="@articleId"/>
