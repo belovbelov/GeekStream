@@ -6,16 +6,17 @@
 }
 
 
-<div class="card mb-2">
-    <div class="card-body">
-        <div class="card-navbar justify-content-between align-items-center">
-            <img class="user__icon" width="80" src="/images/@Model.UserIcon.FileName"/>
-            <h3 class="card-title">@Model.UserName</h3>
-            <p>RATING: @Model.Rating</p>
-            <div>
+<div class="card mb-2 rounded-0">
+    <div class="card-body justify-content-between align-items-center">
+            <div class="float-left d-flex align-items-center">
+                <img class="user__icon mr-3" width="80" src="/images/@Model.UserIcon.FileName"/>
+                <h3 class="card-title mb-0 mr-2">@Model.UserName</h3>
+                <p>Рейтинг: @Model.Rating</p>
+            </div>
+            <div class="float-right">
                 @if (Model.UserMail != User.Identity.Name)
                 {
-                    @if (Model.IsSubscribed) 
+                    @if (Model.IsSubscribed)
                     {
                         <form asp-controller="Users" asp-action="Unsubscribe">
                             <input type="hidden" asp-for="@Model.Id"/>
@@ -33,47 +34,54 @@
                 }
 
             </div>
-        </div>
     </div>
 </div>
 
 <h3 mb-2>Статьи от данного автора</h3>
 @foreach (var item in Model.Articles)
 {
-    var articleId = item.Id;
-    <div class="card mb-2">
+  var articleId = item.Id;
+    var categoryIcon = item.CategoryIcon.FileName;
+    var userIcon = item.UserIcon.FileName;
+    <div class="card mb-2 card-8px-border">
         <div class="card-body">
-            <div class="card-navbar">
-                                <div class="navbar-right">
+            <div class="card-navbar justify-content-between">
+                <div class="navbar-right">
                     <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
-                    <img class="category__icon" width="20" src="/images/@item.CategoryIcon.FileName"/>
+                    <img class="category__icon" width="20" src="/images/@categoryIcon"/>
                         @item.Category
                     </a>
                     @Html.DisplayFor(modelItem => item.PublishedDate)
                 </div>
                 <div class="navbar-left">
                     <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">
-                        <img class="user__icon" width="20" src="/images/@item.UserIcon.FileName"/>
+                        <img class="user__icon" width="20" src="/images/@userIcon"/>
                         @Html.DisplayFor(modelItem => item.Author)
                     </a>
                 </div>
-                </div>
+            </div>
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
                 <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
             </a>
             <p>@Html.DisplayFor(modelItem => item.Content)</p>
-            <div class="text-right mb-0">
-            <form asp-controller="Vote" asp-action="ProcessVotes">
-                <input type="hidden" asp-for="@articleId"/>
-                <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                <input type="submit" class="btn btn-success" value="Upvote"/>
-            </form>
-            <p>@Html.DisplayFor(modelItem => item.Rating)</p>
-                <form asp-controller="Vote" asp-action="ProcessVotes">
-                    <input type="hidden" asp-for="@articleId"/>
-                    <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                    <input type="submit" class="btn btn-danger" value="Downvote"/>
-                </form>
+            <div class="d-flex justify-content-between">
+                <div class="float-right d-flex align-items-center">
+                    <img src="/images/comments.png" style="height: 20px" class="mr-2"/>
+                    <p class="text-muted">@item.CommentCount</p>
+                </div>
+                <div class="d-flex mb-0 justify-content-between float-right  align-items-center">
+                    <form asp-controller="Vote" asp-action="ProcessVotes" class="upvote mr-2">
+                        <input type="hidden" asp-for="@articleId"/>
+                        <input type="hidden" name="type" value="@VoteType.UpVote"/>
+                        <input type="image" src="/images/upvote.png"/>
+                    </form>
+                    <p class="mr-2">@Html.DisplayFor(modelItem => item.Rating)</p>
+                    <form asp-controller="Vote" asp-action="ProcessVotes" class="downvote">
+                        <input type="hidden" asp-for="@articleId"/>
+                        <input type="hidden" name="type" value="@VoteType.DownVote"/>
+                        <input type="image" src="/images/downvote.png"/>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
