@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using GeekStream.Core.Entities;
 
-namespace GeekStream.Core.ViewModels
+namespace GeekStream.Core.ViewModels.Article
 {
-    public class ArticleViewModel
+    public class ArticleDetailsViewModel
     {
         public int Id { get; set; }
 

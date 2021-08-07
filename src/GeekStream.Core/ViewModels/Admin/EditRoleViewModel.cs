@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GeekStream.Core.ViewModels
+namespace GeekStream.Core.ViewModels.Admin
 {
     public class EditRoleViewModel
     {
@@ -10,6 +10,6 @@ namespace GeekStream.Core.ViewModels
         [Required]
         public string RoleName { get; set; }
 
-        public List<string> Users { get; set; } = new List<string>();
+        public List<string> Users { get; set; } = new();
     }
 }

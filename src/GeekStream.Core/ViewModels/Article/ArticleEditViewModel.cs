@@ -25,7 +25,7 @@ namespace GeekStream.Core.ViewModels
         public string Keywords { get; set; }
 
         [Display(Name = "Выберите изображения")]
-        public List<FilePath> FilePaths { get; set; } = new List<FilePath>();
+        public List<FilePath> FilePaths { get; set; } = new();
 
         public ArticleType ArticleType { get; set; }
     }

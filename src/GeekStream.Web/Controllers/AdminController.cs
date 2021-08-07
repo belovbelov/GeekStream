@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
+using GeekStream.Core.ViewModels.Admin;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 

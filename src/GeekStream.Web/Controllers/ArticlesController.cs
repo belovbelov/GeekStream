@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
+using GeekStream.Core.ViewModels.Article;
 
 
 namespace GeekStream.Web.Controllers
@@ -34,7 +35,7 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index(string searchString = null)
         {
-            IEnumerable<ArticleViewModel> articles;
+            IEnumerable<ArticleFeedViewModel> articles;
 
             if (searchString == null)
             {
@@ -66,7 +67,23 @@ namespace GeekStream.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var articleViewModel = _articleService.GetArticleById(id);
+            var article = _articleService.GetArticleById(id);
+            var articleViewModel = new ArticleDetailsViewModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                PublishedDate = article.PostedOn,
+                Author = article.Author.FirstName + " " + article.Author.LastName,
+                AuthorId = article.Author.Id,
+                Category = article.Category.Name,
+                CategoryId = article.CategoryId,
+                Rating = article.Rating,
+                Images = article.Images,
+                Comments = article.Comments,
+                UserIcon = article.Author.Avatar,
+                CategoryIcon = article.Category.Image
+            };
 
             if (articleViewModel == null)
             {
@@ -177,7 +194,7 @@ namespace GeekStream.Web.Controllers
                 return NotFound();
             }
 
-            if (article.AuthorId != _userService.GetCurrentUser().Id)
+            if (article.Author.Id != _userService.GetCurrentUser().Id)
             {
                 return BadRequest();
             }
@@ -210,7 +227,21 @@ namespace GeekStream.Web.Controllers
         public IActionResult Review(int id)
         {
             var article = _articleService.GetArticleById(id);
-            return View(article);
+            var articleViewModel = new ArticleReviewViewModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                Author = article.Author.FirstName + " " + article.Author.LastName,
+                AuthorId = article.Author.Id,
+                Images = article.Images,
+                UserIcon = article.Author.Avatar,
+                CategoryIcon = article.Category.Image,
+                Category = article.Category.Name,
+                CategoryId = article.CategoryId,
+                Comments = article.Comments
+            };
+            return View(articleViewModel);
 
         }
 
@@ -219,7 +250,7 @@ namespace GeekStream.Web.Controllers
         [Authorize(Roles = "Reviewer")]
         public IActionResult Pending()
         {
-            IEnumerable<ArticleViewModel> articles;
+            IEnumerable<ArticleFeedViewModel> articles;
 
             articles = _articleService.PendingArticles();
             if (articles == null)

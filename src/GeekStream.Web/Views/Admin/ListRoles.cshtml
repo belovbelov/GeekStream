@@ -4,9 +4,9 @@
     ViewData["Title"] = "All Roles";
 }
 
+    <a class="btn btn-primary mb-3" asp-controller="Admin" asp-action="CreateRole">Add new role</a>
 @if (Model.Any())
 {
-    <a class="btn btn-primary mb-3" asp-controller="Admin" asp-action="CreateRole">Add new role</a>
 
     foreach (var role in Model)
     {

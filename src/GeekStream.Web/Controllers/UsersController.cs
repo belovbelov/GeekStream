@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
+using GeekStream.Core.ViewModels.User;
 using GeekStream.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

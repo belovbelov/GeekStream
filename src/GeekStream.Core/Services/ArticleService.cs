@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Interfaces;
 using GeekStream.Core.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using GeekStream.Core.ViewModels.Article;
 
 namespace GeekStream.Core.Services
 {
@@ -25,10 +24,10 @@ namespace GeekStream.Core.Services
             _commentService = commentService;
         }
 
-        public IEnumerable<ArticleViewModel> GetAllArticles()
+        public IEnumerable<ArticleFeedViewModel> GetAllArticles()
         {
             return _articleRepository.GetAll(page: 1, pageSize: 20)
-                .Select(article => new ArticleViewModel
+                .Select(article => new ArticleFeedViewModel
                 {
                 Id = article.Id,
                 Title = article.Title,
@@ -39,7 +38,6 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Images = article.Images,
                 UserIcon = article.Author.Avatar,
                 CategoryIcon = article.Category.Image
                 });
@@ -178,31 +176,16 @@ namespace GeekStream.Core.Services
             };
         }
 
-        public ArticleViewModel GetArticleById(int id)
+        public Article GetArticleById(int id)
         {
             var article = _articleRepository.GetById(id);
-            return new ArticleViewModel
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Content = article.Content,
-                PublishedDate = article.PostedOn,
-                Author = article.Author.FirstName + " " + article.Author.LastName,
-                AuthorId = article.Author.Id,
-                Category = article.Category.Name,
-                CategoryId = article.CategoryId,
-                Rating = article.Rating,
-                Images = article.Images,
-                Comments = article.Comments,
-                UserIcon = article.Author.Avatar,
-                CategoryIcon = article.Category.Image
-            };
+            return article;
         }
 
-        public IEnumerable<ArticleViewModel> FindByCategoryId(int id)
+        public IEnumerable<ArticleFeedViewModel> FindByCategoryId(int id)
         {
             return _articleRepository.FindByCategoryId(id)
-                .Select(article => new ArticleViewModel
+                .Select(article => new ArticleFeedViewModel
                  {
                 Id = article.Id,
                 Title = article.Title,
@@ -213,16 +196,15 @@ namespace GeekStream.Core.Services
                 Category = article.Category.Name,
                 CategoryId = article.CategoryId,
                 Rating = article.Rating,
-                Images = article.Images,
                 UserIcon = article.Author.Avatar,
                 CategoryIcon = article.Category.Image
                 });
         }
 
-        public IEnumerable<ArticleViewModel> FindByAuthorId(string id)
+        public IEnumerable<ArticleFeedViewModel> FindByAuthorId(string id)
         {
             return _articleRepository.FindByAuthorId(id)
-                .Select(article => new ArticleViewModel
+                .Select(article => new ArticleFeedViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
@@ -233,17 +215,16 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images,
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image
                 });
         }
 
-        public async Task<IEnumerable<ArticleViewModel>> FindBySubscription(string? subscriptionId = null)
+        public async Task<IEnumerable<ArticleFeedViewModel>> FindBySubscription(string? subscriptionId = null)
         {
             var userId = _userService.GetCurrentUser().Id;
             var articles = await _articleRepository.FindBySubscription(userId, subscriptionId);
-                return articles.Select(article => new ArticleViewModel
+                return articles.Select(article => new ArticleFeedViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
@@ -254,18 +235,17 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images,
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image
                 });
 
         }
 
-        public IEnumerable<ArticleViewModel> FindByKeywords(string? words)
+        public IEnumerable<ArticleFeedViewModel> FindByKeywords(string? words)
         {
             var keywords = words.Split(" ").ToList();
             return _articleRepository.FindByKeywords(keywords)
-                  .Select(article => new ArticleViewModel
+                  .Select(article => new ArticleFeedViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
@@ -276,28 +256,22 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images,
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image
                 });
         }
 
-        public IEnumerable<ArticleViewModel> GetDrafts()
+        public IEnumerable<ArticleDraftsViewModel> GetDrafts()
         {
             var userId = _userService.GetCurrentUser().Id;
             var articles = _articleRepository.GetDrafts(userId)
-                .Select(article => new ArticleViewModel
+                .Select(article => new ArticleDraftsViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
-                    Content = article.Content,
                     PublishedDate = article.PostedOn,
-                    Author = article.Author.FirstName + " " + article.Author.LastName,
-                    AuthorId = article.Author.Id,
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
-                    Rating = article.Rating,
-                    Images = article.Images,
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image,
                 });
@@ -305,10 +279,10 @@ namespace GeekStream.Core.Services
             return articles;
         }
 
-        public IEnumerable<ArticleViewModel> PendingArticles()
+        public IEnumerable<ArticleFeedViewModel> PendingArticles()
         {
             return _articleRepository.GetPending()
-            .Select(article => new ArticleViewModel
+            .Select(article => new ArticleFeedViewModel
                 {
                     Id = article.Id,
                     Title = article.Title,
@@ -319,7 +293,6 @@ namespace GeekStream.Core.Services
                     Category = article.Category.Name,
                     CategoryId = article.CategoryId,
                     Rating = article.Rating,
-                    Images = article.Images,
                     UserIcon = article.Author.Avatar,
                     CategoryIcon = article.Category.Image
                 });

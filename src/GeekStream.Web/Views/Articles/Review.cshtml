@@ -1,5 +1,5 @@
 ﻿@using GeekStream.Core.Entities
-@model GeekStream.Core.ViewModels.ArticleViewModel
+@model GeekStream.Core.ViewModels.Article.ArticleReviewViewModel
 
 @{
     ViewData["Title"] = "Review";
@@ -20,7 +20,6 @@
                 <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
                     @Model.Category
                 </a>
-                @Html.DisplayFor(modelItem => Model.PublishedDate)
             </div>
             <div class="navbar-left">
                 <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">
@@ -35,19 +34,6 @@
             <img src="~/images/@image.FileName"/>
         }
         <p>@Html.DisplayFor(modelItem => Model.Content)</p>
-        <div class="text-right mb-0">
-            <form asp-controller="Vote" asp-action="ProcessVotes">
-                <input type="hidden" asp-for="@articleId"/>
-                <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                <input type="submit" class="btn btn-success"/>
-            </form>
-            <p>@Html.DisplayFor(modelItem => Model.Rating)</p>
-            <form asp-controller="Vote" asp-action="ProcessVotes">
-                <input type="hidden" asp-for="@articleId"/>
-                <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                <input type="submit" class="btn btn-danger"/>
-            </form>
-        </div>
         @{
             if (Model.Comments.Any())
             {

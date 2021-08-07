@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using GeekStream.Core.Services;
-using GeekStream.Core.ViewModels;
-using GeekStream.Infrastructure.Data;
+using GeekStream.Core.ViewModels.Category;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GeekStream.Web.Controllers

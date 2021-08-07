@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GeekStream.Core.ViewModels
+namespace GeekStream.Core.ViewModels.Account
 {
     public class RegisterViewModel
     {

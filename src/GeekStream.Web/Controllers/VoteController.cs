@@ -41,7 +41,7 @@ namespace GeekStream.Web.Controllers
             }
 
             var votes = _voteService.GetRatingForPost(articleId);
-            var articleAuthorId = _articleService.GetArticleById(articleId).AuthorId;
+            var articleAuthorId = _articleService.GetArticleById(articleId).Author.Id;
 
             await _articleService.UpdateArticleRatingAsync(articleId, votes);
 
