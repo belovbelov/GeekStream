@@ -40,21 +40,21 @@
         <div class="card-body">
             <div class="card-navbar justify-content-between">
                 <div class="navbar-right">
-                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId">
+                    <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@item.CategoryId" class="text-dark">
                     <img class="category__icon" width="20" src="/images/@categoryIcon"/>
                         @item.Category
                     </a>
                     @Html.DisplayFor(modelItem => item.PublishedDate)
                 </div>
                 <div class="navbar-left">
-                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId">
+                    <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@item.AuthorId" class="text-dark">
                         <img class="user__icon" width="20" src="/images/@userIcon"/>
                         @Html.DisplayFor(modelItem => item.Author)
                     </a>
                 </div>
             </div>
-            <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
-                <h3 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h3>
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id" class="text-dark">
+                <h3 class="card-title font-weight-bold"> @Html.DisplayFor(modelItem => item.Title)</h3>
             </a>
             <p class="text-muted mb-2">@Html.DisplayFor(modelItem => item.Content)</p>
             <div class="d-flex justify-content-between">

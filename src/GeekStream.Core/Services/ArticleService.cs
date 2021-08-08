@@ -16,6 +16,8 @@ namespace GeekStream.Core.Services
         private readonly KeywordService _keywordService;
         private readonly CommentService _commentService;
 
+        private const int ArticleFeedContentLength = 256;
+
         public ArticleService(IArticleRepository articleRepository, UserService userService, KeywordService keywordService, CommentService commentService)
         {
             _articleRepository = articleRepository;
@@ -31,7 +33,7 @@ namespace GeekStream.Core.Services
                 {
                 Id = article.Id,
                 Title = article.Title,
-                Content = article.Content,
+                Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                 PublishedDate = article.PostedOn,
                 Author = article.Author.FirstName + " " + article.Author.LastName,
                 AuthorId = article.Author.Id,
@@ -190,7 +192,7 @@ namespace GeekStream.Core.Services
                  {
                 Id = article.Id,
                 Title = article.Title,
-                Content = article.Content,
+                Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                 PublishedDate = article.PostedOn,
                 Author = article.Author.FirstName + " " + article.Author.LastName,
                 AuthorId = article.Author.Id,
@@ -210,7 +212,7 @@ namespace GeekStream.Core.Services
                 {
                     Id = article.Id,
                     Title = article.Title,
-                    Content = article.Content,
+                    Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                     PublishedDate = article.PostedOn,
                     Author = article.Author.FirstName + " " + article.Author.LastName,
                     AuthorId = article.Author.Id,
@@ -233,7 +235,7 @@ namespace GeekStream.Core.Services
                 {
                     Id = article.Id,
                     Title = article.Title,
-                    Content = article.Content,
+                    Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                     PublishedDate = article.PostedOn,
                     Author = article.Author.FirstName + " " + article.Author.LastName,
                     AuthorId = article.Author.Id,
@@ -255,7 +257,7 @@ namespace GeekStream.Core.Services
                 {
                     Id = article.Id,
                     Title = article.Title,
-                    Content = article.Content,
+                    Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                     PublishedDate = article.PostedOn,
                     Author = article.Author.FirstName + " " + article.Author.LastName,
                     AuthorId = article.Author.Id,
@@ -293,7 +295,7 @@ namespace GeekStream.Core.Services
                 {
                     Id = article.Id,
                     Title = article.Title,
-                    Content = article.Content,
+                    Content = article.Content[..Math.Min(article.Content.Length, ArticleFeedContentLength)] + (article.Content.Length > ArticleFeedContentLength ? "..." : ""),
                     PublishedDate = article.PostedOn,
                     Author = article.Author.FirstName + " " + article.Author.LastName,
                     AuthorId = article.Author.Id,

@@ -6,22 +6,22 @@
     <div class="card-body">
         <div class="card-navbar justify-content-between">
             <div class="navbar-right">
-                <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">
+                <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId" class="text-dark">
                 <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
                     @Model.Category
                 </a>
                 @Html.DisplayFor(modelItem => Model.PublishedDate)
             </div>
             <div class="navbar-left">
-                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId">
+                <a asp-controller="Users" asp-action="UserProfile" asp-route-id="@Model.AuthorId" class="text-dark">
                 <img class="user__icon" width="20" src="/images/@Model.UserIcon.FileName"/>
                     @Html.DisplayFor(modelItem => Model.Author)
                 </a>
             </div>
         </div>
-        <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
+        <h3 class="card-title font-weight-bold"> @Html.DisplayFor(modelItem => Model.Title)</h3>
         @foreach (var image in Model.Images)
-        {
+        { 
             <img src="~/images/@image.FileName"/>
         }
         <p class="text-muted mb-2">@Html.DisplayFor(modelItem => Model.Content)</p>
@@ -68,6 +68,7 @@
                                     <p class="mr-2">@Html.DisplayFor(modelItem => item.Rating)</p>
                                     <form asp-controller="Vote" asp-action="ProcessVotesOnReply" class="downvote">
                                         <input type="hidden" asp-for="@commentId"/>
+                                        <input type="hidden" name="type" value="@VoteType.DownVote"/>
                                         <input type="image" src="/images/downvote.png"/>
                                     </form>
                                 </div>
@@ -89,7 +90,7 @@
                             <input type="text" class="form-control" name="text" placeholder="Ваш комментарий">
                         </div>
                         <div class="col-2">
-                            <input type="submit" class="btn btn-outline-light"/>
+                            <input type="submit" class="btn btn-outline-light" value="Отправить"/>
                         </div>
                     </div>
                 </form>

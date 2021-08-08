@@ -28,26 +28,28 @@
                         <li class="nav-item mr-1">
                             <a class="btn btn-primary btn-color" asp-area="" asp-controller="Articles" asp-action="Create">Написать статью</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mr-1">
                             <form class="form-inline" asp-controller="Articles" asp-action="Index" method="get">
                                 <input type="text" name="SearchString" class="form-control" placeholder="Найти статью">
                             </form>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav flex-grow-1 align-items-center">
 
                     @{
                         if (User.IsInRole("Reviewer"))
-                        {
-                            <a class="btn btn-outline-info mr-1" asp-area="" asp-controller="Articles" asp-action="Pending">Проверить статьи</a>//TODO ACTION - PENDING
+                        {<li>
+                             <a class="btn btn-outline-info mr-1" asp-area="" asp-controller="Articles" asp-action="Pending">Проверить статьи</a>    
+                             </li>
                         }
 
                         if (User.Identity.IsAuthenticated)
                         {
-                            <div class="btn btn-outline-dark mr-1">
-                                <a asp-action="Drafts" asp-controller="Articles">Мои черновики</a>
-                                </div>
                             var user = _userService.GetCurrentUser();
+                            <li class="nav-item mr-1">
+                                <div class="btn btn-outline-dark">
+                                    <a asp-action="Drafts" asp-controller="Articles">Мои черновики</a>
+                                </div>
+                            </li>
+                            <li class="nav-item mr-1">
                             <div class="dropdown">
                                 <div class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @user.FirstName @user.LastName
@@ -60,11 +62,13 @@
                                     </form>
                                 </div>
                             </div>
+                         </li>
                         }
                         else
-                        {
+                        {<li>
                             <a asp-area="" asp-controller="Account" asp-action="Login" class="mr-2 btn btn-primary">Войти</a>
                             <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
+                         </li>
                         }
                     }
                     </ul>
