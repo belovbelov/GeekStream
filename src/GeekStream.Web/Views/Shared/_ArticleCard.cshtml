@@ -1,6 +1,7 @@
 ﻿@using GeekStream.Core.Entities
 @model GeekStream.Core.ViewModels.Article.ArticleDetailsViewModel;
 @{
+
     var articleId = @Model.Id;
 <div class="card mb-2 card-8px-border shadow-sm">
     <div class="card-body">
@@ -26,16 +27,16 @@
         }
         <p class="text-muted mb-2">@Html.DisplayFor(modelItem => Model.Content)</p>
         <div class="d-flex mb-0 justify-content-between float-right align-items-center">
-            <form asp-controller="Vote" asp-action="ProcessVotes" class="upvote mr-2">
+            <form asp-controller="Vote" asp-action="ProcessVotes" class="upvote__post mr-2" articleId="@Model.Id">
                 <input type="hidden" asp-for="@articleId"/>
-                <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                <input type="image" src="/images/upvote.png"/>
+                <input type="hidden" name="type" value="@VoteType.UpVote" class="vote"/>
+                <img type="image" src="/images/upvote.png"/>
             </form>
-            <p class="mr-2">@Html.DisplayFor(modelItem => Model.Rating)</p>
-            <form asp-controller="Vote" asp-action="ProcessVotes" class="downvote">
+            <p class="mr-2" id="rating__@Model.Id">@Html.DisplayFor(modelItem => Model.Rating)</p>
+            <form asp-controller="Vote" asp-action="ProcessVotes" class="downvote__post" articleId="@Model.Id">
                 <input type="hidden" asp-for="@articleId"/>
-                <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                <input type="image" src="/images/downvote.png"/>
+                <input type="hidden" name="type" value="@VoteType.DownVote" class="vote"/>
+                <img  type="image" src="/images/downvote.png"/>
             </form>
         </div>
         @{
@@ -60,16 +61,16 @@
                                 Ответить
                             </b>
                                 <div class="d-flex mb-0 justify-content-between float-right align-items-center">
-                                    <form asp-controller="Vote" asp-action="ProcessVotesOnReply" class="upvote mr-2">
+                                    <form asp-controller="Vote" asp-action="ProcessVotesOnReply" class="upvote__comment mr-2" commentId="@item.Id">
                                         <input type="hidden" asp-for="@commentId"/>
-                                        <input type="hidden" name="type" value="@VoteType.UpVote"/>
-                                        <input type="image" src="/images/upvote.png"/>
+                                        <input type="hidden" name="type" value="@VoteType.UpVote" class="vote"/>
+                                        <img type="image" src="/images/upvote.png"/>
                                     </form>
-                                    <p class="mr-2">@Html.DisplayFor(modelItem => item.Rating)</p>
-                                    <form asp-controller="Vote" asp-action="ProcessVotesOnReply" class="downvote">
+                                    <p class="mr-2" id="rating__@item.Id">@Html.DisplayFor(modelItem => item.Rating)</p>
+                                    <form asp-controller="Vote" asp-action="ProcessVotesOnReply" class="downvote__comment" commentId="@item.Id">
                                         <input type="hidden" asp-for="@commentId"/>
-                                        <input type="hidden" name="type" value="@VoteType.DownVote"/>
-                                        <input type="image" src="/images/downvote.png"/>
+                                        <input type="hidden" name="type" value="@VoteType.DownVote" class="vote"/>
+                                        <img type="image" src="/images/downvote.png"/>
                                     </form>
                                 </div>
 

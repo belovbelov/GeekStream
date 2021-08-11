@@ -21,11 +21,10 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProcessVotes(int articleId, VoteType type)
+        public async Task<JsonResult> ProcessVotes(int articleId, VoteType type)
         {
             if (User.Identity == null)
             {
-                return BadRequest();
             }
 
             var user = _userService.GetCurrentUser();
@@ -48,15 +47,14 @@ namespace GeekStream.Web.Controllers
             var userRating = _userService.GetUserRating(articleAuthorId);
             _userService.UpdateUserRating(articleAuthorId, userRating);
 
-            return NoContent();
+            return Json(votes);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProcessVotesOnReply(int commentId, VoteType type)
+        public async Task<JsonResult> ProcessVotesOnReply(int commentId, VoteType type)
         { 
             if (User.Identity == null)
             {
-                return BadRequest();
             }
 
             var user = _userService.GetCurrentUser();
@@ -78,7 +76,7 @@ namespace GeekStream.Web.Controllers
             var userRating = _userService.GetUserRating(comment.ApplicationUserId);
             _userService.UpdateUserRating(comment.ApplicationUserId, userRating);
 
-            return NoContent();
+            return Json(votes);
         }
     }
 }

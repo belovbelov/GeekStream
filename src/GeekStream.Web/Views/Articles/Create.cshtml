@@ -5,46 +5,141 @@
 }
 <form asp-action="Create" enctype="multipart/form-data" method="post">
 
-<div class="navbar">
-    <h5>Новая статья</h5>
-              <div class="text-right mb-0">
+    <div class="navbar">
+        <h5>Новая статья</h5>
+        <div class="text-right mb-0">
             <div class="form-group">
                 <input type="submit" name="action" id="save" value="Сохранить черновик" class="btn btn-light mr-2" />
                 <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary" />
             </div>
         </div>
-</div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" placeholder="Придумайте название статьи"/>
-                <small class="form-text text-muted">Хорошее название может заинтересовать мноигих читателей</small>
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Category"></select>
-                <small class="form-text text-muted">Статью можно отправить в одну категорию</small>
-            </div>
-            <div class="form-group">
-                <label asp-for="Keywords" class="control-label"></label>
-                <input asp-for="Keywords" class ="form-control" placeholder="Укажите ключевые слова"/>
-                <small class="form-text text-muted">Ключевые слова помогают найти вашу статью в поиске</small>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" name="files">
-                <label class="custom-file-label" for="customFile">Choose file</label>
-            </div>
-    </form>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" placeholder="Придумайте название статьи" />
+        <small class="form-text text-muted">Хорошее название может заинтересовать мноигих читателей</small>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category"></select>
+        <small class="form-text text-muted">Статью можно отправить в одну категорию</small>
+    </div>
+    <div class="form-group">
+        <label asp-for="Keywords" class="control-label"></label>
+        <input asp-for="Keywords" class="form-control" placeholder="Укажите ключевые слова" />
+        <small class="form-text text-muted">Ключевые слова помогают найти вашу статью в поиске</small>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content" class="control-label"></label>
+        <textarea asp-for="Content" class="form-control text-muted" rows="10"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    <div class="custom-file files" id="files">
+        <input type="file" class="custom-file-input" id="customFile" name="files" >
+        <label class="custom-file-label" for="customFile">Choose file</label>
+        <output id="image-gallery"></output>
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<style>
+
+    .upload-file {
+        float: left;
+        width: 100%;
+    }
+
+        .upload-file .upload-wrapper {
+            float: left;
+            width: 100%;
+        }
+
+            .upload-file .upload-wrapper label {
+                float: left;
+                width: 100%;
+                border-radius: 10px;
+                text-align: center;
+                background: url(images/2813838.jpg) top center no-repeat #fff;
+                background-size: 300px;
+                position: relative;
+                box-shadow: 10px 10px 0px #ffbe32, -10px -10px 0px #32adff;
+            }
+
+                .upload-file .upload-wrapper label > input[type=file] {
+                    display: none;
+                }
+
+                .upload-file .upload-wrapper label p {
+                    font-size: 20px;
+                    font-weight: 300;
+                    margin-top: 50px;
+                }
+
+                    .upload-file .upload-wrapper label p a {
+                        font-weight: 700;
+                        color: #007bff;
+                    }
+
+    #image-gallery {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        #image-gallery .thumb-Images {
+            float: left;
+            width: 100%;
+            padding-left: 0;
+        }
+
+            #image-gallery .thumb-Images li {
+                float: left;
+                width: 100%;
+                background: #fff;
+                border-radius: 10px;
+                display: flex;
+                padding: 10px 10px;
+                margin-bottom: 30px;
+                position: relative;
+            }
+
+                #image-gallery .thumb-Images li .file-info {
+                    display: inline-block;
+                    font-size: 15px;
+                    font-weight: 400;
+                    width: 70%;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    line-height: 30px;
+                }
+
+                #image-gallery .thumb-Images li .img-wrap {
+                    margin-right: 10px;
+                }
+
+                    #image-gallery .thumb-Images li .img-wrap img.thumb {
+                        height: 30px;
+                        width: 30px;
+                        border-radius: 30px;
+                        margin-left: 5px;
+                        cursor: pointer;
+                        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+                    }
+
+                    #image-gallery .thumb-Images li .img-wrap .close {
+                        position: absolute;
+                        right: 12px;
+                        color: red;
+                    }
+
+                        #image-gallery .thumb-Images li .img-wrap .close i {
+                            font-size: 20px;
+                        }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

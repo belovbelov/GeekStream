@@ -5,7 +5,12 @@
     <meta name="viewport" content="warticleIdth=device-warticleIdth, initial-scale=1.0" />
     <title>@ViewData["Title"] - GeekStream</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/upload.js"></script>
+    <script src="/js/voting.js"></script>
 </head>
 <body>
     <header>
@@ -27,8 +32,6 @@
 
     <footer class="border-top footer text-muted">
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
