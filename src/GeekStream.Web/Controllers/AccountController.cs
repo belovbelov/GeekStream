@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
-using GeekStream.Core.ViewModels;
 using GeekStream.Core.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace GeekStream.Web.Controllers
 {
