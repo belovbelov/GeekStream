@@ -208,6 +208,11 @@ namespace GeekStream.Web.Controllers
                 return BadRequest();
             }
 
+            if (article.Type == ArticleType.Posted)
+            {
+                return BadRequest();
+            }
+
 
             return View(article);
         }
