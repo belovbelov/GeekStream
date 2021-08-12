@@ -64,13 +64,13 @@
                 </div>
                 
         <div class="d-flex mb-0 justify-content-between float-right align-items-center">
-            <form asp-controller="Vote" asp-action="ProcessVotes" class="upvote__post mr-2" articleId="@item.Id">
+            <form asp-controller="Vote" asp-action="ProcessVotes" class="vote__post mr-2" articleId="@item.Id">
                 <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.UpVote" class="vote"/>
                 <img type="image" src="/images/upvote.png"/>
             </form>
             <p class="mr-2" id="rating__@item.Id">@Html.DisplayFor(modelItem => item.Rating)</p>
-            <form asp-controller="Vote" asp-action="ProcessVotes" class="downvote__post" articleId="@item.Id">
+            <form asp-controller="Vote" asp-action="ProcessVotes" class="vote__post" articleId="@item.Id">
                 <input type="hidden" asp-for="@articleId"/>
                 <input type="hidden" name="type" value="@VoteType.DownVote" class="vote"/>
                 <img  type="image" src="/images/downvote.png"/>

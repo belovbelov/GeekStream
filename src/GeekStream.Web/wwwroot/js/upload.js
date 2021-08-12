@@ -222,5 +222,3 @@ function FillAttachmentArray(e, readerEvt) {
 	};
 	arrCounter = arrCounter + 1;
 }
-
-

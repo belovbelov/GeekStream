@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
+using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Core.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -13,13 +15,13 @@ namespace GeekStream.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly MailService _mailService;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MailService mailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mailService = mailService;
         }
 
         public IActionResult Index()
@@ -58,11 +60,24 @@ namespace GeekStream.Web.Controllers
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account",
                         new { userId = user.Id, token = token }, Request.Scheme);
 
+                    var mail = new MailRequest
+                    {
+                        ToEmail = user.Email,
+                        Subject = "GeekStream",
+                        Body = "Подтвердите:\n" + confirmationLink,
+                    };
+                    try
+                    {
+                        await _mailService.SendEmailAsync(mail);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    ViewBag.ErrorTitle = "Регистрация завершена";
-                    ViewBag.ErrorMessage =
-                        "Прежде чем продолжить, пожалуйста, подтвердите Вашу электронную почту, нажав на подтвержающее письмо на Вашей почте";
-                    return View("Error");
+                    return View("ConfirmMail");
                 }
             }
 
@@ -149,6 +164,22 @@ namespace GeekStream.Web.Controllers
 
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                         new { email = model.Email, token = token }, Request.Scheme);
+
+                    var mail = new MailRequest
+                    {
+                        ToEmail = user.Email,
+                        Subject = "GeekStream",
+                        Body = "Перейдите для восстановления пароля:\n" + passwordResetLink,
+                    };
+                    try
+                    {
+                        await _mailService.SendEmailAsync(mail);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
 
                     return View("ForgotPasswordConfirmation");
                 }
