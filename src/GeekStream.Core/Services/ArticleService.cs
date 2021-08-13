@@ -56,16 +56,12 @@ namespace GeekStream.Core.Services
 
         public async Task UpdateArticleAsync(ArticleEditViewModel model, string action)
         {
-            var article = new Article
-            {
-                Title = model.Title,
-                Content = model.Content,
-                PostedOn = null,
-                Author = _userService.GetCurrentUser(),
-                CategoryId= model.CategoryId,
-                Rating = 0,
-                Images = model.FilePaths
-            };
+            var article = _articleRepository.GetById(model.Id);
+            article.Title = model.Title;
+                 article.Content = model.Content;
+                 article.Author = _userService.GetCurrentUser();
+                 article.CategoryId = model.CategoryId;
+                 article.Images = model.FilePaths;
 
             if (action == "Опубликовать")
             {
@@ -81,10 +77,10 @@ namespace GeekStream.Core.Services
             if (action == "Скрыть")
             {
                 
-                await Post(model.Id);
+                await Hide(model.Id);
             }
 
-            if (action == null)
+            if (action == "Сохранить черновик")
             {
                 await _articleRepository.UpdateAsync(article);
             }
@@ -123,18 +119,20 @@ namespace GeekStream.Core.Services
         }
 
 
+        public async Task Hide(int id)
+        {
+
+            var article = _articleRepository.GetById(id);
+            article.Type = ArticleType.Hidden;
+            await _articleRepository.UpdateAsync(article);
+        }
+
         public async Task Post(int id)
         {
             var article = _articleRepository.GetById(id);
             if (article.Type == ArticleType.Hidden)
             {
-                
                 article.Type = ArticleType.Posted;
-            }
-
-            if (article.Type == ArticleType.Posted)
-            {
-                article.Type = ArticleType.Hidden;
             }
 
             if (article.Type == ArticleType.Approved)
@@ -142,9 +140,9 @@ namespace GeekStream.Core.Services
                 article.PostedOn = DateTime.UtcNow;
                 article.Rating = 0;
                 article.Type = ArticleType.Posted;
+                await _commentService.RemoveAll(id);
             }
             await _articleRepository.UpdateAsync(article);
-            await _commentService.RemoveAll(id);
         }
 
         public async Task DeleteArticleAsync(int id)

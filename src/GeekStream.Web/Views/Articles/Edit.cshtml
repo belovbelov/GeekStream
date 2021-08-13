@@ -6,33 +6,33 @@
 }
 <form method="post" asp-controller="Articles" asp-action="EditArticle" enctype="multipart/form-data" >
     <input type="hidden" asp-for="Id"/>
-<div class="navbar">
-    <h5>Новая статья</h5>
-              <div class="text-right mb-0">
+    <div class="navbar">
+        <h5>Новая статья</h5>
+        <div class="text-right mb-0">
             <div class="form-group">
                 <input type="submit" name="action" id="save" value="Сохранить черновик" class="btn btn-light mr-2" />
+                @if (Model.ArticleType == ArticleType.Draft)
+                {
+                    <input type="submit" name="action" id="publish" value="Опубликовать" class="btn btn-primary" />
+                }
                 @if (Model.ArticleType == ArticleType.Ready)
                 {
                     <input type="button" name="action" id="publish" value="Опубликовать" class="btn disabled" />
                 }
-                else
+                @if (Model.ArticleType == ArticleType.Approved || Model.ArticleType == ArticleType.Hidden)
                 {
-                    @if (Model.ArticleType == ArticleType.Approved || Model.ArticleType == ArticleType.Hidden)
-                    {
-                        <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
-                    }
-                    else
-                    {
-                        @if (Model.ArticleType == ArticleType.Posted)
-                        {
-                           <input type="submit" name="action" value="Скрыть" class="btn btn-primary" />
-                        }
-                        
-                    }
+                    <input type="submit" name="action" value="Статья одобрена" class="btn btn-primary" />
                 }
+                @if (Model.ArticleType == ArticleType.Posted)
+                {
+                    <input type="submit" name="action" value="Скрыть" class="btn btn-primary" />
+                }
+                        
+                
             </div>
         </div>
-</div>
+    </div>
+    <input type="hidden" asp-for="ArticleType"/>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>

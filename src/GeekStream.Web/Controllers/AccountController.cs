@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
@@ -14,12 +16,14 @@ namespace GeekStream.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly MailService _mailService;
+        private readonly UserService _userService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MailService mailService)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MailService mailService, UserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mailService = mailService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -198,6 +202,50 @@ namespace GeekStream.Web.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        [Route("[controller]/[action]")]
+        public IActionResult Manage()
+        {
+            var userId = _userService.GetCurrentUser().Id;
+            var user = _userService.GetUserById(userId);
+            var model = new EditAccount
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Avatar = user.Avatar
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditAccount model, IFormFile file)
+        {
+            var user = await _userManager.FindByIdAsync(_userService.GetCurrentUser().Id);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            if (file != null)
+            {
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
+                var image = new FilePath
+                {
+                    FileName = Guid.NewGuid() + file.FileName,
+                    FileType = FileType.Avatar,
+                };
+                await using (Stream fileStream = new FileStream(path + image.FileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                user.Avatar = image;
+
+            }
+
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction(nameof(Manage));
+        }
+
 
         [HttpPost]
         [AllowAnonymous]

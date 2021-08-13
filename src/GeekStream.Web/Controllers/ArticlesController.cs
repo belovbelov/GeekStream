@@ -173,14 +173,19 @@ namespace GeekStream.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
                 foreach (var file in files)
                 {
                     var image = new FilePath
                     {
-                        FileName = System.IO.Path.GetFileName(file.FileName),
+                        FileName = Guid.NewGuid() + Path.GetExtension(file.FileName),
                         FileType = FileType.Photo,
                     };
-                    model.FilePaths.Add(image);
+                        await using (Stream fileStream = new FileStream(path + image.FileName, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+                        model.FilePaths.Add(image);
                 }
 
                 await _articleService.UpdateArticleAsync(model, action);

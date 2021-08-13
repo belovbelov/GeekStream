@@ -19,7 +19,8 @@ namespace GeekStream.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CategoryService _categoryService;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, CategoryService categoryService)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
+            CategoryService categoryService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -52,9 +53,10 @@ namespace GeekStream.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                   return RedirectToAction(nameof(Index), "Home");
+                    return RedirectToAction(nameof(Index), "Home");
                 }
             }
+
             return View(model);
         }
 
@@ -185,11 +187,11 @@ namespace GeekStream.Web.Controllers
                     if (i < (model.Count - 1))
                         continue;
                     else
-                        return RedirectToAction("EditRole", new { Id = roleId });
+                        return RedirectToAction("EditRole", new {Id = roleId});
                 }
             }
 
-            return RedirectToAction("EditRole", new { Id = roleId });
+            return RedirectToAction("EditRole", new {Id = roleId});
         }
 
         [HttpGet]
@@ -205,7 +207,7 @@ namespace GeekStream.Web.Controllers
             {
                 if (file != null)
                 {
-                    
+
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
                     var image = new FilePath
                     {
@@ -218,11 +220,12 @@ namespace GeekStream.Web.Controllers
                     }
 
                     category.Image = image;
-                
+
                     await _categoryService.SaveCategoryAsync(category);
                 }
 
             }
+
             return View(category);
         }
 
@@ -235,20 +238,25 @@ namespace GeekStream.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCategory(Category category, IFormFile? file)
+        public async Task<IActionResult> EditCategory(Category category, IFormFile file)
         {
 
             if (file != null)
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/");
-                await using (Stream fileStream = new FileStream(path + file.FileName, FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-
-                if (category.Image != null) category.Image.FileName = file.FileName;
+                await using Stream fileStream = new FileStream(path + category.Image.FileName, FileMode.Create);
+                await file.CopyToAsync(fileStream);
             }
-            await _categoryService.UpdateCategory(category);
+
+            var newCategory = new Category
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                ImageId = category.ImageId
+            };
+            await _categoryService.UpdateCategory(newCategory);
+
 
             return RedirectToAction(nameof(ListCategories), "Admin");
         }

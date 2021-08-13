@@ -55,10 +55,9 @@
                                     @user.FirstName @user.LastName
                                 </div>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-controller="Users" asp-action="UserProfile" asp-route-id="@user.Id">Профиль</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Manage" asp-route-id="@user.Id">Профиль</a>
                                     <form class="dropdown-item" asp-controller="Account" asp-action="Logout" method="post">
-                                        <button type="submit" class="nav-link btn btn-link text-dark">Logout @user.FirstName</button>
+                                        <button type="submit" class="nav-link btn btn-link text-dark">Выйти, @user.FirstName</button>
                                     </form>
                                 </div>
                             </div>

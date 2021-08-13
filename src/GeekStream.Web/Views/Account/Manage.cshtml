@@ -1,0 +1,30 @@
+﻿@model GeekStream.Core.ViewModels.Account.EditAccount
+<div class="">
+<img style="width: 100px"src="/images/@Model.Avatar.FileName"/>
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-row mb-3">
+                    <div class="col">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Имя"/>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="Фамилия"/>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+        <div class="custom-file files" id="files">
+            <input type="file" class="custom-file-input" id="customFile" name="file" >
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+
+        <div class="text-right mb-0">
+            <div class="form-group">
+                <input type="submit"value="Сохранить изменения" class="btn btn-light mr-2" />
+            </div>
+        </div>
+</form>
+
+</div>
