@@ -7,12 +7,13 @@ using GeekStream.Core.Entities;
 using GeekStream.Core.Services;
 using GeekStream.Core.ViewModels;
 using GeekStream.Core.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekStream.Web.Controllers
 {
-    // [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

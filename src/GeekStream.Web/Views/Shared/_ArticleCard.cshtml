@@ -8,7 +8,7 @@
     var articleId = @Model.Id;
 <div class="card mb-2 card-8px-border shadow-sm">
     <div class="card-body">
-        <div class="card-navbar justify-content-between">
+        <div class="card-navbar justify-content-between mb-2">
             <div class="navbar-right">
                 <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId" class="text-dark">
                 <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
@@ -24,11 +24,11 @@
             </div>
         </div>
         <h3 class="card-title font-weight-bold"> @Html.DisplayFor(modelItem => Model.Title)</h3>
-        <p class="text-muted mb-2">@Html.DisplayFor(modelItem => Model.Content)</p>
-        <div id="images">
+        <p class="text-muted mb-3">@Html.DisplayFor(modelItem => Model.Content)</p>
+        <div id="images" class="row">
             @foreach (var image in Model.Images)
             { 
-            <img data-enlargeable src="~/images/@image.FileName" style="cursor: zoom-in" width=" 100" />
+            <img class="col mb-2"data-enlargeable src="~/images/@image.FileName" style="cursor: zoom-in;" width="500px"/>
             }
         </div>
         <div class="d-flex mb-0 justify-content-between float-right align-items-center">
@@ -51,7 +51,7 @@
                 foreach (var item in Model.Comments)
                 {
                     var commentId = item.Id;
-                    <div class="comment">
+                    <div class="comment mb-3">
                         <div class="comment-navbar">
                             <img/>
                             <b>@item.UserName</b>

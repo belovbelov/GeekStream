@@ -18,13 +18,13 @@
     </header>
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-2">
             @await Html.PartialAsync("_Subscriptions")
             </div>
-            <div class="col">
+            <div class="col-8">
                 @RenderBody()
             </div>
-            <div class="col-md-2">
+            <div class="col-2">
                 @await RenderSectionAsync("discussingNow",required: false)
             </div>
         </div>

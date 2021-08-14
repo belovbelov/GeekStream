@@ -14,7 +14,7 @@
 
 <div class="card mb-2">
     <div class="card-body rounded-lg">
-        <div class="card-navbar justify-content-between">
+        <div class="card-navbar justify-content-between mb-2">
             <div class="navbar-right">
                 <a name="category" asp-controller="Categories" asp-action="Index" asp-route-category="@Model.CategoryId">
                 <img class="category__icon" width="20" src="/images/@Model.CategoryIcon.FileName"/>
@@ -29,11 +29,13 @@
             </div>
         </div>
         <h3 class="card-title"> @Html.DisplayFor(modelItem => Model.Title)</h3>
-        @foreach (var image in Model.Images)
-        {
-            <img src="~/images/@image.FileName"/>
-        }
-        <p>@Html.DisplayFor(modelItem => Model.Content)</p>
+        <p class="text-muted mb-3">@Html.DisplayFor(modelItem => Model.Content)</p>
+        <div id="images" class="row">
+            @foreach (var image in Model.Images)
+            { 
+            <img class="col mb-2"data-enlargeable src="~/images/@image.FileName" style="cursor: zoom-in;" width="500px"/>
+            }
+        </div>
         @{
             if (Model.Comments.Any())
             {
@@ -41,7 +43,7 @@
                 foreach (var item in Model.Comments)
                 {
                     var commentId = item.Id;
-                    <div class="comment">
+                    <div class="comment mb-3">
                         <div class="comment-navbar">
                             <img/>
                             <b>@item.UserName</b>
