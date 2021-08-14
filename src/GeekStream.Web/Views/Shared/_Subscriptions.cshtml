@@ -12,7 +12,6 @@
             @foreach (var item in categories)
             {
                 <div class="shadow-sm d-flex align-items-center btn btn-light mb-2 w-100">
-                    <img src="/images/sub/@item.Icon" class="mr-3"/>
                     <a class="text-muted" asp-action="Index" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
                 </div>
             }

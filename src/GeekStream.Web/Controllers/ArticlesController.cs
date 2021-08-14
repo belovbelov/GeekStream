@@ -59,7 +59,8 @@ namespace GeekStream.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(int id)
         {
-            await _articleService.Post(id);
+            var article = _articleService.GetArticleById(id);
+            await _articleService.Post(article);
 
             return RedirectToAction("Details", "Articles", new {id = id});
         }

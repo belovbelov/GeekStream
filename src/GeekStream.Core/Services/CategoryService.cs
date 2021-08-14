@@ -56,7 +56,6 @@ namespace GeekStream.Core.Services
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    Icon = files[random.Next(0,files.Length)]
                 });
         }
 

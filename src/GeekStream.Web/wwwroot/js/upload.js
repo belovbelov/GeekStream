@@ -1,4 +1,4 @@
-//I added event handler for the file upload control to access the files properties.
+﻿//I added event handler for the file upload control to access the files properties.
 document.addEventListener("DOMContentLoaded", init, false);
 
 //To save an array of attachments

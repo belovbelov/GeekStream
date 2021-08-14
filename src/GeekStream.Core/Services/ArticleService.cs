@@ -61,7 +61,6 @@ namespace GeekStream.Core.Services
                  article.Content = model.Content;
                  article.Author = _userService.GetCurrentUser();
                  article.CategoryId = model.CategoryId;
-                 article.Images = model.FilePaths;
 
             if (action == "Опубликовать")
             {
@@ -71,13 +70,13 @@ namespace GeekStream.Core.Services
 
             if (action == "Статья одобрена")
             {
-                await Post(model.Id);
+                await Post(article);
             }
 
             if (action == "Скрыть")
             {
                 
-                await Hide(model.Id);
+                await Hide(article);
             }
 
             if (action == "Сохранить черновик")
@@ -119,17 +118,15 @@ namespace GeekStream.Core.Services
         }
 
 
-        public async Task Hide(int id)
+        public async Task Hide(Article article)
         {
 
-            var article = _articleRepository.GetById(id);
             article.Type = ArticleType.Hidden;
             await _articleRepository.UpdateAsync(article);
         }
 
-        public async Task Post(int id)
+        public async Task Post(Article article)
         {
-            var article = _articleRepository.GetById(id);
             if (article.Type == ArticleType.Hidden)
             {
                 article.Type = ArticleType.Posted;
@@ -140,7 +137,7 @@ namespace GeekStream.Core.Services
                 article.PostedOn = DateTime.UtcNow;
                 article.Rating = 0;
                 article.Type = ArticleType.Posted;
-                await _commentService.RemoveAll(id);
+                await _commentService.RemoveAll(article.Id);
             }
             await _articleRepository.UpdateAsync(article);
         }

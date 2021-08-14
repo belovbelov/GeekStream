@@ -39,7 +39,7 @@
         @{
             if (Model.Comments.Any())
             {
-                <h5>Комментарии (@Model.Comments.Count())</h5>
+                <h5>Ревью (@Model.Comments.Count())</h5>
                 foreach (var item in Model.Comments)
                 {
                     var commentId = item.Id;
@@ -75,7 +75,7 @@
             }
             else
             {
-                <h5>Комментариев пока нет</h5>
+                <h5>Ревью пока нет</h5>
             }
             if (User.Identity.IsAuthenticated)
             {
