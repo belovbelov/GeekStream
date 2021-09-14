@@ -1,3 +1,1 @@
 # GeekStream
-
-Course project
